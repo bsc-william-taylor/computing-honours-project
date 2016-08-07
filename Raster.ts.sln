@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raster.Ts", "Raster.Ts\Raster.Ts.vcxproj", "{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{471C9745-166A-44E6-A66C-70F660C4ED19} = {471C9745-166A-44E6-A66C-70F660C4ED19}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raster.Ts.Core", "Raster.Ts.Core\Raster.Ts.Core.vcxproj", "{471C9745-166A-44E6-A66C-70F660C4ED19}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A16AA1EE-4543-4432-8D20-0E7D94415196} = {A16AA1EE-4543-4432-8D20-0E7D94415196}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raster.Ts.Dependencies", "Raster.Ts.Dependencies\Raster.Ts.Dependencies.vcxproj", "{A16AA1EE-4543-4432-8D20-0E7D94415196}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Debug|x64.ActiveCfg = Debug|x64
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Debug|x64.Build.0 = Debug|x64
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Debug|x86.ActiveCfg = Debug|Win32
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Debug|x86.Build.0 = Debug|Win32
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Release|Any CPU.ActiveCfg = Release|Win32
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Release|x64.ActiveCfg = Release|x64
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Release|x64.Build.0 = Release|x64
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Release|x86.ActiveCfg = Release|Win32
+		{4AFB9480-DF7D-4B60-8756-7B6654FC95A7}.Release|x86.Build.0 = Release|Win32
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Debug|x64.ActiveCfg = Debug|x64
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Debug|x64.Build.0 = Debug|x64
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Debug|x86.ActiveCfg = Debug|Win32
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Debug|x86.Build.0 = Debug|Win32
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Release|Any CPU.ActiveCfg = Release|Win32
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Release|x64.ActiveCfg = Release|x64
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Release|x64.Build.0 = Release|x64
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Release|x86.ActiveCfg = Release|Win32
+		{471C9745-166A-44E6-A66C-70F660C4ED19}.Release|x86.Build.0 = Release|Win32
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Debug|x64.ActiveCfg = Debug|x64
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Debug|x64.Build.0 = Debug|x64
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Debug|x86.ActiveCfg = Debug|Win32
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Debug|x86.Build.0 = Debug|Win32
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Release|Any CPU.ActiveCfg = Release|Win32
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Release|x64.ActiveCfg = Release|x64
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Release|x64.Build.0 = Release|x64
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Release|x86.ActiveCfg = Release|Win32
+		{A16AA1EE-4543-4432-8D20-0E7D94415196}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

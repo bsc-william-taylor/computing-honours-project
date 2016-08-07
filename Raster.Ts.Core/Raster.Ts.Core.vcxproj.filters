@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Code">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Code\Modules">
+      <UniqueIdentifier>{0e30dd41-7f62-435f-b9ed-67e26a0dc9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Console">
+      <UniqueIdentifier>{adf80663-caac-411f-a541-a91699026b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Fs">
+      <UniqueIdentifier>{ca44f343-6b9d-43f2-95d1-c817dc354d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Fs\TextFile">
+      <UniqueIdentifier>{c8f8752c-66f8-4bd5-923a-b35974ba3680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Fs\ImageFile">
+      <UniqueIdentifier>{ad461f41-6ad0-4cbe-b251-0bacbe94d2d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Graphics">
+      <UniqueIdentifier>{f01dc84e-ebda-4029-a479-e6322cc0ec88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Display">
+      <UniqueIdentifier>{ec291963-3cb0-4103-a914-8239d5df7aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Graphics\Texture">
+      <UniqueIdentifier>{ca88a076-a706-4b4a-8f48-c9feb477d0bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Time">
+      <UniqueIdentifier>{18794fb5-d36c-40df-9988-956e3839cd70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Subsystems">
+      <UniqueIdentifier>{bdbe552b-ee78-4e90-a261-0d89941e5ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Subsystems\Arguments">
+      <UniqueIdentifier>{4f8844fc-f942-407e-85f2-38cb3c6934a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Subsystems\JavaScript">
+      <UniqueIdentifier>{1103f043-ba74-4bb5-a2cd-156d30b9668d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenGL">
+      <UniqueIdentifier>{0b816f25-2673-4bd6-be4f-0f88bca583ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Computer">
+      <UniqueIdentifier>{d13d6177-b570-4da8-ba75-bbd3198e25e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Application">
+      <UniqueIdentifier>{7d3451f7-02dc-4234-8d81-ec4fbe6c7fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\V8">
+      <UniqueIdentifier>{b1de2429-0e43-4c9d-9dca-66fa9c2e8643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL">
+      <UniqueIdentifier>{78672bbc-3ed4-44e0-abf5-8151abddae08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL\Platform">
+      <UniqueIdentifier>{897f403a-6fcf-496d-b777-a0da31e52f3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL\Device">
+      <UniqueIdentifier>{5cc16bee-912c-4152-a022-f074fd7db75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL\Program">
+      <UniqueIdentifier>{626d1a5c-1836-4cbb-af84-50ae7da6334c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL\Context">
+      <UniqueIdentifier>{667f2e1e-c6d1-46aa-bb10-a0a6aa8cc8fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL\Buffer">
+      <UniqueIdentifier>{c725548b-c8cb-4427-a65f-0b25e3b72078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL\Kernal">
+      <UniqueIdentifier>{6da5bd85-7926-4289-a17c-a7e21f46c7b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\OpenCL\CommandQueue">
+      <UniqueIdentifier>{df62a39f-5aca-4d04-8914-eed245c2362c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Modules.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Source Code\Modules\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Code\Modules\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Code\Modules\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TextFile.cpp">
+      <Filter>Source Code\Modules\Fs\TextFile</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageFile.cpp">
+      <Filter>Source Code\Modules\Fs\ImageFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Code\Modules\Graphics\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeModule.cpp">
+      <Filter>Source Code\Modules\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="ArgumentsSubsystem.cpp">
+      <Filter>Source Code\Subsystems\Arguments</Filter>
+    </ClCompile>
+    <ClCompile Include="JavaScriptSubsystem.cpp">
+      <Filter>Source Code\Subsystems\JavaScript</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL.cpp">
+      <Filter>Source Code\Modules\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Computer.cpp">
+      <Filter>Source Code\Modules\Computer</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Code\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterCore.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenCL.cpp">
+      <Filter>Source Code\Modules\OpenCL</Filter>
+    </ClCompile>
+    <ClCompile Include="CL_Platform.cpp">
+      <Filter>Source Code\Modules\OpenCL\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="CL_Device.cpp">
+      <Filter>Source Code\Modules\OpenCL\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="CL_Context.cpp">
+      <Filter>Source Code\Modules\OpenCL\Context</Filter>
+    </ClCompile>
+    <ClCompile Include="CL_Program.cpp">
+      <Filter>Source Code\Modules\OpenCL\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="CL_Buffer.cpp">
+      <Filter>Source Code\Modules\OpenCL\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Kernel.cpp">
+      <Filter>Source Code\Modules\OpenCL\Kernal</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandQueue.cpp">
+      <Filter>Source Code\Modules\OpenCL\CommandQueue</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Console.h">
+      <Filter>Source Code\Modules\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Source Code\Modules\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Source Code\Modules\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Fs.h">
+      <Filter>Source Code\Modules\Fs</Filter>
+    </ClInclude>
+    <ClInclude Include="TextFile.h">
+      <Filter>Source Code\Modules\Fs\TextFile</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageFile.h">
+      <Filter>Source Code\Modules\Fs\ImageFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Source Code\Modules\Graphics\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeModule.h">
+      <Filter>Source Code\Modules\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="ArgumentsSubsystem.h">
+      <Filter>Source Code\Subsystems\Arguments</Filter>
+    </ClInclude>
+    <ClInclude Include="JavaScriptSubsystem.h">
+      <Filter>Source Code\Subsystems\JavaScript</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Source Code\Modules\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Computer.h">
+      <Filter>Source Code\Modules\Computer</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Source Code\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterCore.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenCL.h">
+      <Filter>Source Code\Modules\OpenCL</Filter>
+    </ClInclude>
+    <ClInclude Include="CL_Platform.h">
+      <Filter>Source Code\Modules\OpenCL\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="CL_Device.h">
+      <Filter>Source Code\Modules\OpenCL\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="CL_Context.h">
+      <Filter>Source Code\Modules\OpenCL\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="CL_Program.h">
+      <Filter>Source Code\Modules\OpenCL\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="CL_Buffer.h">
+      <Filter>Source Code\Modules\OpenCL\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Kernel.h">
+      <Filter>Source Code\Modules\OpenCL\Kernal</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>Source Code\Modules\OpenCL\CommandQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="V8_Object.h">
+      <Filter>Source Code\V8</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

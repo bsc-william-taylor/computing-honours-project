@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs"
+    },
+    "filesGlob": [
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/**.d.ts",
+        "**/*.ts",
+        "**/*.d.ts"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "files": [
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/computer.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/console.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/display.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/fs.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/graphics.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/opencl.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/opengl.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/raster.d.ts",
+        "C:/Users/B0023/Desktop/Projects/Raster.ts/Raster.ts/Debug/typedefs/time.d.ts",
+        "opencl-helpers.ts",
+        "opencl.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}
