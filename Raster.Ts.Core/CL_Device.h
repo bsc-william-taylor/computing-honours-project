@@ -2,13 +2,13 @@
 #pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 
 #include "Window.h"
 
 namespace raster
 {
-	class CL_Device : public V8_Object<CL_Device> {
+	class CL_Device : public JsObject<CL_Device> {
 		static v8::Persistent<v8::Function> constructor;
 		cl::Device device;
 	public:

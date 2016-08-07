@@ -3,10 +3,10 @@
 #include "RasterCore.h"
 
 template<typename T>
-class V8_Object {
+class JsObject {
     v8::Persistent<v8::Object> instance;
 public:
-    virtual ~V8_Object(){}
+    virtual ~JsObject(){}
 
     static v8::Local<v8::FunctionTemplate> newTemplate(v8::FunctionCallback New, const char * name)
     {
@@ -38,14 +38,14 @@ public:
     static T0 * unwrapArg(v8::Handle<v8::Object> local)
     {
         auto ptr = local->GetAlignedPointerFromInternalField(0);
-        auto wrap = static_cast<V8_Object<T0> *>(ptr);
+        auto wrap = static_cast<JsObject<T0> *>(ptr);
         return static_cast<T0 *>(wrap);
     }
 
     static T * unwrap(v8::Handle<v8::Object> handle)
     {
         auto ptr = handle->GetAlignedPointerFromInternalField(0);
-        auto wrap = static_cast<V8_Object *>(ptr);
+        auto wrap = static_cast<JsObject *>(ptr);
         return static_cast<T *>(wrap);
     }
 
@@ -55,7 +55,7 @@ public:
         return unwrap(that);
     }
 
-    static void weakCallback(const v8::WeakCallbackData<v8::Object, V8_Object>& data)
+    static void weakCallback(const v8::WeakCallbackData<v8::Object, JsObject>& data)
     {
         v8::HandleScope scope(data.GetIsolate());
         auto wrap = data.GetParameter();

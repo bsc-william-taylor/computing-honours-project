@@ -2,14 +2,14 @@
 #pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 #include "CL_Device.h"
 #include "CL_Context.h"
 
 
 namespace raster
 {
-	class CL_Buffer : public V8_Object<CL_Buffer> {
+	class CL_Buffer : public JsObject<CL_Buffer> {
 		static v8::Persistent<v8::Function> constructor;
 		cl::Buffer buffer;
 		int size;

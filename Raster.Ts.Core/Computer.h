@@ -2,7 +2,7 @@
 #pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 
 namespace raster {
 	void cpuCacheLineSize(const v8::FunctionCallbackInfo<v8::Value>& args);

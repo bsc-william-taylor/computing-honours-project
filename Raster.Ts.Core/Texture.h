@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 
-class Texture : public V8_Object<Texture> {
+class Texture : public JsObject<Texture> {
 	static v8::Persistent<v8::Function> constructor;
 	SDL_Texture * texture;
 public:

@@ -1,11 +1,11 @@
 ﻿#pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 #include "Texture.h"
 
 namespace raster {
-	class Renderer : public V8_Object<Renderer> {
+	class Renderer : public JsObject<Renderer> {
 		static v8::Persistent<v8::Function> constructor;
 		SDL_Renderer * renderer;
 		std::mutex mutex;

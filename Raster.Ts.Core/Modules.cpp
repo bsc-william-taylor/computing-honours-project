@@ -38,7 +38,7 @@ std::string getScript(const char * filename)
 
 std::string getInternalModuleFilename(std::string name)
 {
-	auto path = Poco::Path(modulesDirectory);
+	auto path = Poco::Path(cwd);
 	path.append("/modules/");
 	path.append(name);
 	path.setExtension("js");
@@ -47,7 +47,7 @@ std::string getInternalModuleFilename(std::string name)
 
 std::string getExternalModuleFilename(std::string name)
 {
-	auto path = Poco::Path(compilerDirectory);
+	auto path = Poco::Path(cwd);
 	path.append("/compiler/output/");
 	path.append(name);
 	path.setExtension("js");

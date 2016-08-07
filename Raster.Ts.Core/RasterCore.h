@@ -79,6 +79,4 @@
 #define V8_Integer(data) v8::Integer::New(v8::Isolate::GetCurrent(), data)
 #define V8_String(data) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), data)
 
-extern std::string compilerDirectory;
-extern std::string modulesDirectory;
-
+extern std::string cwd;

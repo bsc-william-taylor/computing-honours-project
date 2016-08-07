@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 
-class Image : public V8_Object<Image>
+class Image : public JsObject<Image>
 {
 	static v8::Persistent<v8::Function> constructor;
 

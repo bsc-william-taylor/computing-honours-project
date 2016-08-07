@@ -1,13 +1,13 @@
 ﻿#pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 
 namespace raster {
 	void showMessageBox(const v8::FunctionCallbackInfo<v8::Value>& args);
 	void createWindow(const v8::FunctionCallbackInfo<v8::Value>& args);
 
-	class Window : public V8_Object<Window> {
+	class Window : public JsObject<Window> {
 		static v8::Persistent<v8::Function> constructor;
 		std::string windowTitle;
 		SDL_GLContext context;

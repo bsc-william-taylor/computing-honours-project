@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 
-class TextFile : public V8_Object<TextFile>
+class TextFile : public JsObject<TextFile>
 {
 	static v8::Persistent<v8::Function> constructor;
 	std::string filename;

@@ -1,5 +1,5 @@
 ﻿
-#include "JavaScriptSubsystem.h"
+#include "JsRuntime.h"
 #include "TimeModule.h"
 
 #define TIMEOUT_EVENT SDL_USEREVENT + 3

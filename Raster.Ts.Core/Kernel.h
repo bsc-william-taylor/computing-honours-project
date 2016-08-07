@@ -2,7 +2,7 @@
 #pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 #include "CL_Device.h"
 
 #include "CL_Context.h"
@@ -10,7 +10,7 @@
 
 namespace raster
 {
-	class CL_Kernel : public V8_Object<CL_Kernel> {
+	class CL_Kernel : public JsObject<CL_Kernel> {
 		static v8::Persistent<v8::Function> constructor;
 		cl::Kernel kernel;
 	public:

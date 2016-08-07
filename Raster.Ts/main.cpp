@@ -4,6 +4,9 @@
 
 #pragma comment(lib, "Winmm.lib")
 
+#pragma warning(disable : 4099)
+#pragma warning(disable : 4244)
+
 using namespace v8;
 
 int main(int argc, char* argv[]) 

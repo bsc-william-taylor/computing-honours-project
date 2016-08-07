@@ -2,7 +2,7 @@
 #pragma once
 
 #include "RasterCore.h"
-#include "V8_Object.h"
+#include "JsObject.h"
 #include "CL_Platform.h"
 #include "CL_Device.h"
 #include "CL_Context.h"

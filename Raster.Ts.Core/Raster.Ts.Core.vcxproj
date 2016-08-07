@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="ArgumentsSubsystem.cpp" />
     <ClCompile Include="CL_Buffer.cpp" />
     <ClCompile Include="CL_Context.cpp" />
     <ClCompile Include="CL_Device.cpp" />
@@ -28,7 +27,7 @@
     <ClCompile Include="CL_Program.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Computer.cpp" />
-    <ClCompile Include="JavaScriptSubsystem.cpp" />
+    <ClCompile Include="JsRuntime.cpp" />
     <ClCompile Include="Kernel.cpp" />
     <ClCompile Include="OpenCL.cpp" />
     <ClCompile Include="RasterCore.cpp" />
@@ -44,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="ArgumentsSubsystem.h" />
     <ClInclude Include="CL_Buffer.h" />
     <ClInclude Include="CL_Context.h" />
     <ClInclude Include="CL_Device.h" />
@@ -52,7 +50,8 @@
     <ClInclude Include="CL_Program.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Computer.h" />
-    <ClInclude Include="JavaScriptSubsystem.h" />
+    <ClInclude Include="JsArrayAllocater.h" />
+    <ClInclude Include="JsRuntime.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="ImageFile.h" />
     <ClInclude Include="Kernel.h" />
@@ -65,7 +64,7 @@
     <ClInclude Include="Fs.h" />
     <ClInclude Include="Modules.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="V8_Object.h" />
+    <ClInclude Include="JsObject.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

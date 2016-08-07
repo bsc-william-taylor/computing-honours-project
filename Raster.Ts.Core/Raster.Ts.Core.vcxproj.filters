@@ -32,15 +32,6 @@
     <Filter Include="Source Code\Modules\Time">
       <UniqueIdentifier>{18794fb5-d36c-40df-9988-956e3839cd70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Subsystems">
-      <UniqueIdentifier>{bdbe552b-ee78-4e90-a261-0d89941e5ce9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Subsystems\Arguments">
-      <UniqueIdentifier>{4f8844fc-f942-407e-85f2-38cb3c6934a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Subsystems\JavaScript">
-      <UniqueIdentifier>{1103f043-ba74-4bb5-a2cd-156d30b9668d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\OpenGL">
       <UniqueIdentifier>{0b816f25-2673-4bd6-be4f-0f88bca583ed}</UniqueIdentifier>
     </Filter>
@@ -49,9 +40,6 @@
     </Filter>
     <Filter Include="Source Code\Application">
       <UniqueIdentifier>{7d3451f7-02dc-4234-8d81-ec4fbe6c7fab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\V8">
-      <UniqueIdentifier>{b1de2429-0e43-4c9d-9dca-66fa9c2e8643}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Code\Modules\OpenCL">
       <UniqueIdentifier>{78672bbc-3ed4-44e0-abf5-8151abddae08}</UniqueIdentifier>
@@ -76,6 +64,15 @@
     </Filter>
     <Filter Include="Source Code\Modules\OpenCL\CommandQueue">
       <UniqueIdentifier>{df62a39f-5aca-4d04-8914-eed245c2362c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\JavaScript">
+      <UniqueIdentifier>{b1de2429-0e43-4c9d-9dca-66fa9c2e8643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\JavaScript\Object Wrapper">
+      <UniqueIdentifier>{d08d6940-3b6e-448a-9c42-2cd0f209f379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\JavaScript\Array Allocater">
+      <UniqueIdentifier>{d9097830-4687-4d71-a9ef-d863f94ceddd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,12 +99,6 @@
     </ClCompile>
     <ClCompile Include="TimeModule.cpp">
       <Filter>Source Code\Modules\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="ArgumentsSubsystem.cpp">
-      <Filter>Source Code\Subsystems\Arguments</Filter>
-    </ClCompile>
-    <ClCompile Include="JavaScriptSubsystem.cpp">
-      <Filter>Source Code\Subsystems\JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="OpenGL.cpp">
       <Filter>Source Code\Modules\OpenGL</Filter>
@@ -145,6 +136,9 @@
     <ClCompile Include="CommandQueue.cpp">
       <Filter>Source Code\Modules\OpenCL\CommandQueue</Filter>
     </ClCompile>
+    <ClCompile Include="JsRuntime.cpp">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -170,12 +164,6 @@
     </ClInclude>
     <ClInclude Include="TimeModule.h">
       <Filter>Source Code\Modules\Time</Filter>
-    </ClInclude>
-    <ClInclude Include="ArgumentsSubsystem.h">
-      <Filter>Source Code\Subsystems\Arguments</Filter>
-    </ClInclude>
-    <ClInclude Include="JavaScriptSubsystem.h">
-      <Filter>Source Code\Subsystems\JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL.h">
       <Filter>Source Code\Modules\OpenGL</Filter>
@@ -216,8 +204,14 @@
     <ClInclude Include="CommandQueue.h">
       <Filter>Source Code\Modules\OpenCL\CommandQueue</Filter>
     </ClInclude>
-    <ClInclude Include="V8_Object.h">
-      <Filter>Source Code\V8</Filter>
+    <ClInclude Include="JsRuntime.h">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClInclude>
+    <ClInclude Include="JsArrayAllocater.h">
+      <Filter>Source Code\JavaScript\Array Allocater</Filter>
+    </ClInclude>
+    <ClInclude Include="JsObject.h">
+      <Filter>Source Code\JavaScript\Object Wrapper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
