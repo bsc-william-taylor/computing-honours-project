@@ -1,0 +1,187 @@
+<html>
+<head>
+    <link rel="stylesheet" href="lib/styles/default.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="lib/highlight.js"></script>
+
+    <title>Raster.io</title>
+</head>
+<body>
+    <div class='container-fixed'>
+        <nav class="navbar navbar-default">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">Raster.js</a>
+            </div>
+            <div class="nav navbar-nav pull-right">
+              <a id="docButton" class="btn btn-large btn-primary" />Documentation</a>
+            </div>
+        </nav>
+
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+          </ol>
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="http://www.prodex.org.in/sliderimages/2.png" alt="...">
+              <div class="carousel-caption">
+              	<h3>Caption Text</h3>
+              </div>
+            </div>
+            <div class="item">
+              <img src="http://www.prodex.org.in/sliderimages/2.png" alt="...">
+              <div class="carousel-caption">
+              	<h3>Caption Text</h3>
+              </div>
+            </div>
+            <div class="item">
+              <img src="http://www.prodex.org.in/sliderimages/2.png" alt="...">
+              <div class="carousel-caption">
+              	<h3>Caption Text</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
+        </div> <!-- Carousel -->
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                  <h1>
+                      Raster.js
+                      <small style='margin-left: 20px;'>GPU playground for JavaScript/Typescript developers.</small>
+                  </h1>
+                </div>
+            </div>
+        </div>
+        <div class="row" style='margin-top: 50px;'>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <img src="https://s3.amazonaws.com/ionic-marketplace/typescript-starter/icon.png" class="img img-circle" height="140" width="140"/>
+                    <h3>Optional Type Safety</h3>
+                    <p>Better debugging and typesafety is available out of the box with no custom build system required.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <img src="http://st2.depositphotos.com/1537427/5943/v/110/depositphotos_59435859-Gpu-icon.jpg" class="img img-circle" height="140" width="140"/>
+                    <h3>Access GPU libraries</h3>
+                    <p>Access the latest and greatest OpenGL + OpenCL specs through raster</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <img src="http://i.stack.imgur.com/Mmww2.png" class="img img-circle" height="140" width="140"/>
+                    <h3>Write Vanilla JavaScript</h3>
+                    <p>Some random text which will explain something relating to the image</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" style='margin-top: 50px;'>
+            <h2>Basics</h2><hr/>
+            <div class='col-md-8'>
+                <p>
+                    Raster is a JavaScript runtime for GPU centric applications. Through raster
+                    you can access the latest OpenGL and OpenCL standards for a feature full playground
+                    to develop GPU techniques and or GPU based applications such as games.
+                </p>
+                <p>
+                    Raster has a fully featured standard library with utilities to handle windows,
+                    http requests, console, io and much more as well as native bindings to
+                    OpenCL 2.0 and OpenGL 3.3 &amp; 4.5
+                </p>
+                <p>
+                    What's more the entire runtime can be embeded into a C++ app allowing you to
+                    export your raster app as a standalone executable if you wish.
+                </p>
+                <br/>
+                <blockquote>
+                    Raster is currently in development.
+                </blockquote>
+            </div>
+            <div class='col-md-4'>
+                <img class='img-thumbnail' src='img/screenshot.png' />
+            </div>
+        </div>
+        <div class="row" style='margin-top: 50px;'>
+            <div class='col-md-12'>
+                <h2>Code Sample</h2><hr/>
+            </div>
+            <div class='col-md-6'>
+                <pre>
+                    <code class="javascript">
+                        function() {
+                            console.log('HelloWorld');
+                        }
+                    </code>
+                </pre>
+            </div>
+            <div class='col-md-6'>
+                <pre>
+                    <code class="javascript">
+                        function() {
+                            console.log('HelloWorld');
+                        }
+                    </code>
+                </pre>
+            </div>
+        </div>
+        <div class="row" style='margin-top: 50px;'>
+            <h2>Downloads</h2><hr/>
+            <div class='col-md-4 text-center'>
+                <img src="img/windows.png" class="img-rounded img-download" >
+                <h3>Windows</h3>
+                <p>You can download an installer below.</p>
+                <button class='btn btn-primary'>Download</button>
+            </div>
+            <div class='col-md-4 text-center disabled-link'>
+                <img src="img/linux.jpg" class="img-rounded img-download" ><br/>
+                <h3>Linux</h3>
+                <p>You can download an installer below.</p>
+                <button class='btn btn-primary disabled'>Download</button>
+            </div>
+            <div class='col-md-4 text-center disabled-link'>
+                <img src="img/macos.jpg" class="img-rounded img-download" >
+                <h3>Mac OS</h3>
+                <p>You can download an installer below.</p>
+                <button class='btn btn-primary disabled'>Download</button>
+            </div>
+        </div>
+    </div>
+
+    <footer id='footer'>
+        <div class="row">
+            <div class="col-md-12">
+                <p>Footer...</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+    $(document).ready(function() {
+        $('pre code').each(function(i, e) {
+            hljs.highlightBlock(e);
+        });
+    });
+    <script>
+</body>
+</html>

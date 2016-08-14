@@ -38,6 +38,5 @@
 # Folders
 Debug/
 Release/
-Raster.Ts.Libs/
-Raster.Ts.Website/
+Raster.Libs/
 .vs/
