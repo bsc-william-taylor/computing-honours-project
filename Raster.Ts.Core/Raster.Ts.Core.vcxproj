@@ -26,7 +26,8 @@
     <ClCompile Include="CL_Platform.cpp" />
     <ClCompile Include="CL_Program.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
-    <ClCompile Include="Computer.cpp" />
+    <ClCompile Include="System.cpp" />
+    <ClCompile Include="JsPlatform.cpp" />
     <ClCompile Include="JsRuntime.cpp" />
     <ClCompile Include="Kernel.cpp" />
     <ClCompile Include="OpenCL.cpp" />
@@ -35,10 +36,8 @@
     <ClCompile Include="ImageFile.cpp" />
     <ClCompile Include="Modules.cpp" />
     <ClCompile Include="OpenGL.cpp" />
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="TextFile.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TimeModule.cpp" />
+    <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -49,8 +48,9 @@
     <ClInclude Include="CL_Platform.h" />
     <ClInclude Include="CL_Program.h" />
     <ClInclude Include="CommandQueue.h" />
-    <ClInclude Include="Computer.h" />
+    <ClInclude Include="System.h" />
     <ClInclude Include="JsArrayAllocater.h" />
+    <ClInclude Include="JsPlatform.h" />
     <ClInclude Include="JsRuntime.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="ImageFile.h" />
@@ -58,12 +58,10 @@
     <ClInclude Include="OpenCL.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="TextFile.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="TimeModule.h" />
+    <ClInclude Include="DateTime.h" />
     <ClInclude Include="RasterCore.h" />
     <ClInclude Include="Fs.h" />
     <ClInclude Include="Modules.h" />
-    <ClInclude Include="Renderer.h" />
     <ClInclude Include="JsObject.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
@@ -71,6 +69,7 @@
     <ProjectGuid>{471C9745-166A-44E6-A66C-70F660C4ED19}</ProjectGuid>
     <RootNamespace>TypeGameCore</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>Raster.Core</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

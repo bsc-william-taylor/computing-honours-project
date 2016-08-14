@@ -74,7 +74,6 @@
 #pragma warning(disable : 4099)
 #pragma warning(disable : 4244)
 
-
 #define V8_Function(func) v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), func)->GetFunction()
 #define V8_Integer(data) v8::Integer::New(v8::Isolate::GetCurrent(), data)
 #define V8_String(data) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), data)

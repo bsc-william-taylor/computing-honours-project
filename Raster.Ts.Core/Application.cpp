@@ -1,5 +1,6 @@
 
 #include "Application.h"
+#include "JsRuntime.h"
 
 using namespace Poco::Util;
 using namespace raster;
@@ -8,7 +9,14 @@ using namespace raster;
 
 #undef main
 
+const int RasterMajorVersion = 0;
+const int RasterMinorVersion = 0;
+const int RasterRevVersion = 1;
+
 RasterApp::RasterApp() :
+    majorVersion(RasterMajorVersion),
+    minorVersion(RasterMinorVersion),
+    revVersion(RasterRevVersion),
     triggered(false)
 {
 }
@@ -29,7 +37,7 @@ void RasterApp::initialize(Application& self)
 	Application::initialize(self);
 }
 
-void RasterApp::defineOptions(Poco::Util::OptionSet& options)
+void RasterApp::defineOptions(OptionSet& options)
 {
     createOption(options, &RasterApp::handleVersion, "version", "v");
     createOption(options, &RasterApp::handleHelp, "help", "h");
@@ -49,22 +57,31 @@ void RasterApp::createOption(OptionSet& options, OptionCallback<RasterApp>::Call
 
 int RasterApp::main(const std::vector<std::string>& args)
 {
-    if (triggered)
-    {
+    if (triggered) {
         return EXIT_OK;
     }
 
-    Poco::Path filename(args.front());
-    filename.setExtension("js");
+    JsRuntime jsRuntime;
+    jsRuntime.initialise(const_cast<std::vector<std::string>&>(args));
 
-    if(filename.isFile())
+    if(!args.empty())
     {
-        std::cerr << "Starting process with file " << filename.toString() << std::endl;
+        Poco::Path filename(args.front());
+        filename.setExtension("js");
+
+        if (Poco::File(filename).exists())
+        {
+            jsRuntime.run(filename.toString());
+        }
+        else
+        {
+            std::cerr << "Error couldnt find file " << filename.toString() << std::endl;
+        }
     }
     else
     {
-        std::cerr << "Error couldnt find file " << filename.toString() << std::endl;
-    }       
+        jsRuntime.run();
+    }
 
     return EXIT_OK;
 }
@@ -80,10 +97,25 @@ void RasterApp::handleHelp(const std::string& name, const std::string& v)
 void RasterApp::handleVersion(const std::string& name, const std::string& v)
 {
     std::stringstream ss;
+
+    // Raster Version
     ss << "Raster version: ";
-    ss << 1 << ".";
-    ss << 0 << ".";
-    ss << 0;
+    ss << majorVersion << ".";
+    ss << minorVersion << ".";
+    ss << revVersion << std::endl;
+
+    // V8 version
+    ss << "V8 version: ";
+    ss << v8::V8::GetVersion() << std::endl;
+   
+    // SDL Version
+    SDL_version version;
+    SDL_GetVersion(&version);
+    ss << "SDL version: ";
+    ss << static_cast<int>(version.major) << ".";
+    ss << static_cast<int>(version.minor) << ".";
+    ss << static_cast<int>(version.patch);
+
     std::cout << std::endl << ss.str() << std::endl;
     triggered = true;
 }

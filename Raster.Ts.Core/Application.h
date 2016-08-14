@@ -9,7 +9,11 @@
 #undef main
 
 namespace raster {
-	class RasterApp : public Poco::Util::Application {
+	class RasterApp : public Poco::Util::Application 
+    {
+        int majorVersion;
+        int minorVersion;
+        int revVersion;
         bool triggered;
 	public:
 		RasterApp();
@@ -18,7 +22,6 @@ namespace raster {
 	protected:
 		void defineOptions(Poco::Util::OptionSet& options) override;
 		void initialize(Application& self) override;
-		//void uninitialize() override;
 
 		int main(const std::vector<std::string>& args) override;
     private:

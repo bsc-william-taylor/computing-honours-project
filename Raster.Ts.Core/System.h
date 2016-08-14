@@ -20,8 +20,7 @@ namespace raster {
 	void hasSSE41(const v8::FunctionCallbackInfo<v8::Value>& args);
 	void hasSSE42(const v8::FunctionCallbackInfo<v8::Value>& args);
 
-
-	static void setupComputerModule(v8::Isolate * isolate, v8::Local<v8::ObjectTemplate>& object) {
+	static void setupSystemModule(v8::Isolate * isolate, v8::Local<v8::ObjectTemplate>& object) {
 		object->Set(V8_String("cpuCacheLineSize"), v8::FunctionTemplate::New(isolate, cpuCacheLineSize));
 		object->Set(V8_String("cpuCount"), v8::FunctionTemplate::New(isolate, cpuCount));
 		object->Set(V8_String("systemRam"), v8::FunctionTemplate::New(isolate, systemRam));

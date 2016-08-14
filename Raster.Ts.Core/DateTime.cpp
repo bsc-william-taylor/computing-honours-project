@@ -1,6 +1,6 @@
 ﻿
 #include "JsRuntime.h"
-#include "TimeModule.h"
+#include "DateTime.h"
 
 #define TIMEOUT_EVENT SDL_USEREVENT + 3
 
@@ -18,7 +18,7 @@ void raster::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
 	
 	SDL_AddTimer(args[0]->ToInteger()->Value(), timerCallback, nullptr);
 
-	JavaScriptSubsystem::hookEventLoop([=](SDL_Event e) {
+    JsRuntime::GetPlatform().hookEventLoop([=](SDL_Event e) {
 		if(e.type == TIMEOUT_EVENT) {
 			auto javascriptHandler = callback.Get(v8::Isolate::GetCurrent());
 			javascriptHandler->Call(javascriptHandler, 0, nullptr);

@@ -8,7 +8,6 @@ v8::Local<v8::ObjectTemplate> raster::setupModuleSystem()
 	auto isolate = v8::Isolate::GetCurrent();
 
 	moduleTemplate->Set(V8_String("require"), v8::FunctionTemplate::New(isolate, require));
-    moduleTemplate->Set(V8_String("merge"), v8::FunctionTemplate::New(isolate, merge));
 	moduleTemplate->Set(V8_String("exports"), v8::ObjectTemplate::New(isolate));
 
 	return moduleTemplate;
@@ -84,30 +83,6 @@ raster::ModuleType raster::determineModuleType(const std::string& path)
 	}
 	
 	return ModuleType::Internal;
-}
-
-void raster::merge(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-    if (args.Length() == 0) {
-        args.GetReturnValue().SetUndefined();
-        return;
-    }
-
-    auto context = args.GetIsolate()->GetCurrentContext();
-    auto imports = args[0].As<v8::Object>();
-    auto global = context->Global();
-
-    auto properties = imports->GetPropertyNames();
-
-    for(auto i{0}; i < properties->Length(); ++i)
-    {
-        auto key = properties->Get(i);
-        auto value = imports->Get(key);
-
-        global->Set(key, value);
-    }
-
-    args.GetReturnValue().Set(imports);
 }
 
 void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args) {

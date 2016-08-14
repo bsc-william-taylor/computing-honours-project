@@ -8,9 +8,6 @@
     <Filter Include="Source Code\Modules">
       <UniqueIdentifier>{0e30dd41-7f62-435f-b9ed-67e26a0dc9e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Console">
-      <UniqueIdentifier>{adf80663-caac-411f-a541-a91699026b0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\Fs">
       <UniqueIdentifier>{ca44f343-6b9d-43f2-95d1-c817dc354d8d}</UniqueIdentifier>
     </Filter>
@@ -20,23 +17,11 @@
     <Filter Include="Source Code\Modules\Fs\ImageFile">
       <UniqueIdentifier>{ad461f41-6ad0-4cbe-b251-0bacbe94d2d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Graphics">
-      <UniqueIdentifier>{f01dc84e-ebda-4029-a479-e6322cc0ec88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\Display">
       <UniqueIdentifier>{ec291963-3cb0-4103-a914-8239d5df7aab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Graphics\Texture">
-      <UniqueIdentifier>{ca88a076-a706-4b4a-8f48-c9feb477d0bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Time">
-      <UniqueIdentifier>{18794fb5-d36c-40df-9988-956e3839cd70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\OpenGL">
       <UniqueIdentifier>{0b816f25-2673-4bd6-be4f-0f88bca583ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Computer">
-      <UniqueIdentifier>{d13d6177-b570-4da8-ba75-bbd3198e25e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Code\Application">
       <UniqueIdentifier>{7d3451f7-02dc-4234-8d81-ec4fbe6c7fab}</UniqueIdentifier>
@@ -68,10 +53,22 @@
     <Filter Include="Source Code\JavaScript">
       <UniqueIdentifier>{b1de2429-0e43-4c9d-9dca-66fa9c2e8643}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\JavaScript\Object Wrapper">
+    <Filter Include="Source Code\JavaScript\Platform">
+      <UniqueIdentifier>{42605286-fa54-4ca5-95cd-9019b5210640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Console">
+      <UniqueIdentifier>{adf80663-caac-411f-a541-a91699026b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\System">
+      <UniqueIdentifier>{d13d6177-b570-4da8-ba75-bbd3198e25e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Datetime">
+      <UniqueIdentifier>{18794fb5-d36c-40df-9988-956e3839cd70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\JavaScript\Object">
       <UniqueIdentifier>{d08d6940-3b6e-448a-9c42-2cd0f209f379}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\JavaScript\Array Allocater">
+    <Filter Include="Source Code\JavaScript\Allocater">
       <UniqueIdentifier>{d9097830-4687-4d71-a9ef-d863f94ceddd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -85,26 +82,14 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Code\Modules\Display</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Code\Modules\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="TextFile.cpp">
       <Filter>Source Code\Modules\Fs\TextFile</Filter>
     </ClCompile>
     <ClCompile Include="ImageFile.cpp">
       <Filter>Source Code\Modules\Fs\ImageFile</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Code\Modules\Graphics\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeModule.cpp">
-      <Filter>Source Code\Modules\Time</Filter>
-    </ClCompile>
     <ClCompile Include="OpenGL.cpp">
       <Filter>Source Code\Modules\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Computer.cpp">
-      <Filter>Source Code\Modules\Computer</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Code\Application</Filter>
@@ -139,6 +124,15 @@
     <ClCompile Include="JsRuntime.cpp">
       <Filter>Source Code\JavaScript</Filter>
     </ClCompile>
+    <ClCompile Include="JsPlatform.cpp">
+      <Filter>Source Code\JavaScript\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>Source Code\Modules\System</Filter>
+    </ClCompile>
+    <ClCompile Include="DateTime.cpp">
+      <Filter>Source Code\Modules\Datetime</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -146,9 +140,6 @@
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Source Code\Modules\Display</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Source Code\Modules\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Fs.h">
       <Filter>Source Code\Modules\Fs</Filter>
@@ -159,20 +150,11 @@
     <ClInclude Include="ImageFile.h">
       <Filter>Source Code\Modules\Fs\ImageFile</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Source Code\Modules\Graphics\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeModule.h">
-      <Filter>Source Code\Modules\Time</Filter>
-    </ClInclude>
     <ClInclude Include="OpenGL.h">
       <Filter>Source Code\Modules\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Modules.h">
       <Filter>Source Code\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Computer.h">
-      <Filter>Source Code\Modules\Computer</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Code\Application</Filter>
@@ -208,10 +190,19 @@
       <Filter>Source Code\JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="JsArrayAllocater.h">
-      <Filter>Source Code\JavaScript\Array Allocater</Filter>
+      <Filter>Source Code\JavaScript\Allocater</Filter>
     </ClInclude>
     <ClInclude Include="JsObject.h">
-      <Filter>Source Code\JavaScript\Object Wrapper</Filter>
+      <Filter>Source Code\JavaScript\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="JsPlatform.h">
+      <Filter>Source Code\JavaScript\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Source Code\Modules\System</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Source Code\Modules\Datetime</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

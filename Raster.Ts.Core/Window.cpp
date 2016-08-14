@@ -45,7 +45,7 @@ void raster::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 			callbackFunction->Call(callbackFunction, 1, parameters);
 		});
 
-		JavaScriptSubsystem::hookEventLoop([=](SDL_Event e) {
+		JsRuntime::GetPlatform().hookEventLoop([=](SDL_Event e) {
 			if (e.type == SDL_QUIT) {
 				auto windowJs = window.Get(v8::Isolate::GetCurrent());
 				auto wnd = Window::unwrap(windowJs);

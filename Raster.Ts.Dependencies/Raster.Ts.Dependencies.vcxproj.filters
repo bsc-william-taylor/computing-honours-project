@@ -6,9 +6,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Modules\computer.js">
-      <Filter>Modules</Filter>
-    </None>
     <None Include="Modules\console.js">
       <Filter>Modules</Filter>
     </None>
@@ -18,9 +15,6 @@
     <None Include="Modules\fs.js">
       <Filter>Modules</Filter>
     </None>
-    <None Include="Modules\graphics.js">
-      <Filter>Modules</Filter>
-    </None>
     <None Include="Modules\opengl.js">
       <Filter>Modules</Filter>
     </None>
@@ -28,6 +22,9 @@
       <Filter>Modules</Filter>
     </None>
     <None Include="Modules\opencl.js">
+      <Filter>Modules</Filter>
+    </None>
+    <None Include="Modules\system.js">
       <Filter>Modules</Filter>
     </None>
   </ItemGroup>

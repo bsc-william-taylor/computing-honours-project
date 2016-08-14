@@ -1,28 +1,23 @@
 ﻿#pragma once
 
 #include "RasterCore.h"
-
-#define EVENT_CALLBACK SDL_USEREVENT + 1
-#define TIMER_CHANGE SDL_USEREVENT + 2
+#include "JsPlatform.h"
 
 namespace raster {
-	class JavaScriptSubsystem : public Poco::Util::Subsystem 
-    {
+	class JsRuntime {
+        static JsPlatform platform;
 	public:
-		JavaScriptSubsystem();
-		virtual ~JavaScriptSubsystem();
+		JsRuntime();
+		virtual ~JsRuntime();
 
-		void initialize(Poco::Util::Application& app) override;
-		void uninitialize() override {}
+        void printException(const v8::TryCatch& exception);
+        void initialise(std::vector<std::string>& args);
 		void run(std::string script);
+        void run();
 
-		const char * name() const override;
-
-		static void beginMainEventLoop(const v8::FunctionCallbackInfo<v8::Value>&);
-		static void hookEventLoop(std::function<bool(SDL_Event)> callback) {
-			eventHooks.push_back(callback);
-		}
-	private:
-		static std::vector<std::function<bool(SDL_Event)>> eventHooks;
-	};
+        static JsPlatform& GetPlatform()
+        {
+            return platform;
+        }
+    }; 		
 }

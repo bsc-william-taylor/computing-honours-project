@@ -19,11 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Modules\computer.js" />
+    <None Include="Modules\system.js" />
     <None Include="Modules\console.js" />
     <None Include="Modules\display.js" />
     <None Include="Modules\fs.js" />
-    <None Include="Modules\graphics.js" />
     <None Include="Modules\opencl.js" />
     <None Include="Modules\opengl.js" />
     <None Include="Modules\time.js" />
@@ -32,7 +31,7 @@
     <ProjectGuid>{A16AA1EE-4543-4432-8D20-0E7D94415196}</ProjectGuid>
     <RootNamespace>RasterTsModules</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>Raster.Ts.Dependencies</ProjectName>
+    <ProjectName>Raster.Dependencies</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
