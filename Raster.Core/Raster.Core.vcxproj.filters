@@ -133,6 +133,9 @@
     <ClCompile Include="DateTime.cpp">
       <Filter>Source Code\Modules\Datetime</Filter>
     </ClCompile>
+    <ClCompile Include="fs.cpp">
+      <Filter>Source Code\Modules\Fs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">

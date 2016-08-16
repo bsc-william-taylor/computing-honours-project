@@ -8,23 +8,6 @@ using namespace raster;
 
 JsPlatform JsRuntime::platform;
 
-std::string readFile(const char * filename)
-{
-	std::ifstream file(filename);
-	std::string data;
-
-	if (file.is_open()) {
-		std::string temp;
-		while (getline(file, temp)) {
-			data += temp + "\n";
-		}
-
-		file.close();
-	}
-
-	return data;
-}
-
 JsRuntime::JsRuntime()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);

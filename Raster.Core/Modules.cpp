@@ -1,7 +1,6 @@
 
 #include "Modules.h"
 
-
 v8::Local<v8::ObjectTemplate> raster::setupModuleSystem()
 {
 	auto moduleTemplate = v8::ObjectTemplate::New();

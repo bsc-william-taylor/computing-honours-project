@@ -26,6 +26,7 @@
     <ClCompile Include="CL_Platform.cpp" />
     <ClCompile Include="CL_Program.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="fs.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="JsPlatform.cpp" />
     <ClCompile Include="JsRuntime.cpp" />
