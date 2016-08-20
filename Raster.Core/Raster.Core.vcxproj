@@ -27,6 +27,7 @@
     <ClCompile Include="CL_Program.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="fs.cpp" />
+    <ClCompile Include="JsPlatformTasks.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="JsPlatform.cpp" />
     <ClCompile Include="JsRuntime.cpp" />
@@ -49,6 +50,7 @@
     <ClInclude Include="CL_Platform.h" />
     <ClInclude Include="CL_Program.h" />
     <ClInclude Include="CommandQueue.h" />
+    <ClInclude Include="JsPlatformTasks.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="JsArrayAllocater.h" />
     <ClInclude Include="JsPlatform.h" />

@@ -26,6 +26,7 @@ namespace raster {
 		}};
 	}
 
+
 	v8::Local<v8::ObjectTemplate> setupModuleSystem();
 
 	void require(const v8::FunctionCallbackInfo<v8::Value>& args);

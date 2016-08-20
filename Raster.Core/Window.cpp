@@ -31,32 +31,29 @@ void raster::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 		v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
 		v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> window;
+        v8::Isolate * isolate = v8::Isolate::GetCurrent();
+
+		callback.Reset(isolate, windowCallback);
+		window.Reset(isolate, windowObject);
+
+        auto& platform = JsRuntime::GetPlatform();
+
+        platform.CallOnForegroundThread(isolate, new JsAsyncTask([=]() {
+            v8::Local<v8::Value> parameters[1] = { window.Get(v8::Isolate::GetCurrent()) };
+            auto callbackFunction = callback.Get(v8::Isolate::GetCurrent());
+            callbackFunction->Call(callbackFunction, 1, parameters);
+        }));
 		
-		callback.Reset(v8::Isolate::GetCurrent(), windowCallback);
-		window.Reset(v8::Isolate::GetCurrent(), windowObject);
+        platform.CallOnForegroundThread(isolate, new JsAwaitTask([=](SDL_Event& ev) {
+            if (ev.type == SDL_QUIT) {
+                auto windowJs = window.Get(v8::Isolate::GetCurrent());
+                auto wnd = Window::unwrap(windowJs);
+                SDL_DestroyWindow(wnd->getWindow());
+                return true;
+            }
 
-		SDL_Event e;
-		e.user.type = SDL_USEREVENT + 1;
-		e.user.data2 = Window::unwrap(windowObject);
-		e.user.data1 = new std::function<void()>([=]() {
-			auto isolate = v8::Isolate::GetCurrent();
-			v8::Local<v8::Value> parameters[1] = { window.Get(isolate) };
-			auto callbackFunction = callback.Get(isolate);
-			callbackFunction->Call(callbackFunction, 1, parameters);
-		});
-
-		JsRuntime::GetPlatform().hookEventLoop([=](SDL_Event e) {
-			if (e.type == SDL_QUIT) {
-				auto windowJs = window.Get(v8::Isolate::GetCurrent());
-				auto wnd = Window::unwrap(windowJs);
-				SDL_DestroyWindow(wnd->getWindow());
-				return true;
-			}
-
-			return false;
-		});
-
-		SDL_PushEvent(&e);
+            return false;
+        }));
 	}
 }
 
@@ -139,19 +136,16 @@ void Window::setPosition(const v8::FunctionCallbackInfo<v8::Value>& args) {
 void Window::onFrame(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
+    v8::Isolate * isolate = v8::Isolate::GetCurrent();
+
 	callback.Reset(v8::Isolate::GetCurrent(), args[1].As<v8::Function>());
 
 	auto fps = (args[0].As<v8::Integer>()->Value());
-
-	SDL_Event e;
-	e.type = SDL_USEREVENT + 2;
-	e.user.data2 = new int { static_cast<int>(fps) };
-	e.user.data1 = new std::function<void()>([=]() {
-		auto frameFunction = callback.Get(v8::Isolate::GetCurrent());
-		frameFunction->Call(frameFunction, 0, nullptr);
-	});
-
-	SDL_PushEvent(&e);
+    auto& platform = JsRuntime::GetPlatform();
+    platform.CallOnForegroundThread(v8::Isolate::GetCurrent(), new JsRepeatTask([=]() {
+        auto frameFunction = callback.Get(v8::Isolate::GetCurrent());
+        frameFunction->Call(frameFunction, 0, nullptr);
+    }));
 }
 
 void Window::swapBuffers(const v8::FunctionCallbackInfo<v8::Value>& args)

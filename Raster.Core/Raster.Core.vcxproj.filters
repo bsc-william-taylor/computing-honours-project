@@ -71,6 +71,9 @@
     <Filter Include="Source Code\JavaScript\Allocater">
       <UniqueIdentifier>{d9097830-4687-4d71-a9ef-d863f94ceddd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Code\JavaScript\Tasks">
+      <UniqueIdentifier>{8dec6a91-403c-4449-a2a5-1849b2e737b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules.cpp">
@@ -135,6 +138,9 @@
     </ClCompile>
     <ClCompile Include="fs.cpp">
       <Filter>Source Code\Modules\Fs</Filter>
+    </ClCompile>
+    <ClCompile Include="JsPlatformTasks.cpp">
+      <Filter>Source Code\JavaScript\Tasks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="DateTime.h">
       <Filter>Source Code\Modules\Datetime</Filter>
+    </ClInclude>
+    <ClInclude Include="JsPlatformTasks.h">
+      <Filter>Source Code\JavaScript\Tasks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,22 +1,22 @@
 
 #include "JsPlatform.h"
 
-std::vector<std::function<bool(SDL_Event)>> JsPlatform::eventHooks;
+std::vector<v8::Task*> JsPlatform::tasks;
 
 void JsPlatform::CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected_runtime)
 {
-
+    tasks.push_back(task);
 };
 
 void JsPlatform::CallOnForegroundThread(v8::Isolate* isolate, v8::Task* task)
 {
-
+    tasks.push_back(task);
 };
 
 
 void JsPlatform::CallDelayedOnForegroundThread(v8::Isolate* isolate, v8::Task* task, double delay_in_seconds)
 {
-
+    tasks.push_back(task);
 };
 
 double JsPlatform::MonotonicallyIncreasingTime()
@@ -25,36 +25,62 @@ double JsPlatform::MonotonicallyIncreasingTime()
 }
 
 bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
-{
-    static std::function<void()> renderMethod = []() {};  
+{  
+    std::vector<SDL_Event> events;
+
     SDL_Event e;
-    while (SDL_PollEvent(&e) != 0) {
-        for (auto i = 0; i < eventHooks.size(); i++) {
-            if (eventHooks[i](e)) {
-                eventHooks.erase(eventHooks.begin() + i);
+    while (SDL_PollEvent(&e) != 0) 
+    {
+        events.push_back(e);
+    }
+
+    for (auto i = 0; i < tasks.size(); ++i)
+    {
+        const auto task = static_cast<JsBaseTask *>(tasks[i]);
+
+        if(task != nullptr)
+        {
+            task->TakeEvents(events);
+            task->TakeTasks(tasks);
+            task->Run();
+
+            delete task;
+            tasks.erase(tasks.begin() + i);
+        }
+        /*
+        const auto repeatTask = dynamic_cast<JsRepeatTask *>(tasks[i]);
+        const auto awaitTask = dynamic_cast<JsAwaitTask *>(tasks[i]);
+        const auto asyncTask = dynamic_cast<JsAsyncTask *>(tasks[i]);
+
+        if(awaitTask != nullptr)
+        {
+            if((*awaitTask)(e))
+            {
+                delete awaitTask;
+                tasks.erase(tasks.begin() + i);
             }
         }
 
-        if (e.type == EVENT_CALLBACK) {
-            auto functionPointer = e.user.data1;
-            auto function = static_cast<std::function<void()> *>(functionPointer);
-            (*function)();
-            delete function;
+        if(asyncTask != nullptr)
+        {
+            asyncTask->Run();
+            delete asyncTask;
+            tasks.erase(tasks.begin() + i);
         }
 
-        if (e.type == TIMER_CHANGE)
+        if(repeatTask != nullptr)
         {
-            auto functionPointer = static_cast<std::function<void()> *>(e.user.data1);
-            renderMethod = *functionPointer;
-            //fps = 1.0e9 / *static_cast<int *>(e.user.data2);
-            delete functionPointer;
+            repeatTask->Run();
+
+            // Fix this later
+            if(tasks.size() == 1)
+            {
+                delete repeatTask;
+                tasks.erase(tasks.begin() + i);
+            }
         }
+        */
     }
 
-    renderMethod();
-    return eventHooks.size() != 0;
-}
-
-void JsPlatform::hookEventLoop(std::function<bool(SDL_Event)> callback) {
-    eventHooks.push_back(callback);
+    return tasks.size() != 0;
 }
