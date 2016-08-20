@@ -14,6 +14,8 @@ function getDefaultWindowArgs(givenArgs) {
 exports.openMessageBox = function (title, body, callback) {
     if (title && body && callback) {
         _cpp.showMessageBox(title, body, callback);
+    } else {
+        throw 'Expected 3 args to openMessageBox';
     }
 }
 

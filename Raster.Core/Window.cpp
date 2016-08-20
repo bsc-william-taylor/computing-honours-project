@@ -144,7 +144,7 @@ void Window::onFrame(const v8::FunctionCallbackInfo<v8::Value>& args)
     auto& platform = JsRuntime::GetPlatform();
     platform.CallOnForegroundThread(v8::Isolate::GetCurrent(), new JsRepeatTask([=]() {
         auto frameFunction = callback.Get(v8::Isolate::GetCurrent());
-        frameFunction->Call(frameFunction, 0, nullptr);
+        auto error = frameFunction->Call(frameFunction, 0, nullptr);   
     }));
 }
 

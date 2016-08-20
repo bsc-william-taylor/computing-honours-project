@@ -57,7 +57,7 @@ void JsRuntime::run()
         std::cout << *v8::String::Utf8Value(output->ToString()) << std::endl;
         std::cout << "> ";
 
-        while(JsPlatform::PumpMessageLoop(isolate));
+        while(platform.PumpMessageLoop(isolate));
     }
 
     clear();
@@ -69,7 +69,7 @@ void JsRuntime::printException(const v8::TryCatch& trycatch)
 {
     v8::String::Utf8Value exception_str(trycatch.Exception());
     const char * error = *exception_str;
-    std::cerr << error << std::endl;
+    std::cerr << "Exception thrown: " << error << std::endl;
 }
 
 void JsRuntime::run(std::string filename)
@@ -102,7 +102,7 @@ void JsRuntime::run(std::string filename)
         printException(trycatch);
     }
 
-    while (JsPlatform::PumpMessageLoop(isolate))
+    while (platform.PumpMessageLoop(isolate))
 
     clear();
 	isolate->RequestGarbageCollectionForTesting(v8::Isolate::kFullGarbageCollection);
@@ -128,47 +128,3 @@ void JsRuntime::initialise(std::vector<std::string>& args)
 
     delete[] argv;
 }
-
-/*
-void JsRuntime::beginMainEventLoop(const v8::FunctionCallbackInfo<v8::Value>& value)
-{
-	if(value.Length() == 0)
-	{
-		auto renderMethod = std::function<void()>([](){});
-		auto shutdown = false;
-
-		while (!shutdown) {
-			SDL_Event e;
-			while (SDL_PollEvent(&e) != 0) {
-				for (auto i = 0; i < eventHooks.size(); i++) {
-					if(eventHooks[i](e)) {
-						eventHooks.erase(eventHooks.begin() + i);
-					}
-				}
-
-				if(e.type == EVENT_CALLBACK) {
-					auto functionPointer = e.user.data1;
-					auto function = static_cast<std::function<void()> *>(functionPointer);
-					(*function)();
-					delete function;
-				}
-
-				if(e.type == TIMER_CHANGE)
-				{
-					auto functionPointer = static_cast<std::function<void()> *>(e.user.data1);
-					renderMethod = *functionPointer;
-					//fps = 1.0e9 / *static_cast<int *>(e.user.data2);
-					delete functionPointer;
-				}
-			}
-
-			
-			renderMethod();
-			
-			if (eventHooks.empty()) {
-				shutdown = true;
-			}
-		}
-	}
-}
-*/

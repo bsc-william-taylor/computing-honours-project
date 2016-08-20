@@ -1,6 +1,14 @@
 
 var _cpp = cpp;
 
+if (!exports) {
+    throw 'Error global exports not defined';
+}
+
+if (!cpp) {
+    throw 'Error global cpp not defined';
+}
+
 /** Exports for CommonJs modules  */
 exports.GL_COLOR_BUFFER_BIT = 16384;
 exports.GL_DEPTH_BUFFER_BIT = 256;
@@ -9,6 +17,14 @@ exports.GL_DEPTH_TEST = 2929;
 exports.GL_MODELVIEW = 5888;
 exports.GL_TRIANGLES = 4;
 exports.GL_QUADS = 7;
+
+exports.apply = function (caller) {
+    for (var exp in exports) {
+        if (!caller[exp]) {
+            caller[exp] = exports[exp];
+        }
+    }
+}
 
 exports.glBegin = function(type) {
     _cpp.glBegin(type);
@@ -60,11 +76,4 @@ exports.glLoadIdentity = function() {
 
 exports.glEnable = function(enable) {
     _cpp.glEnable(enable);
-}
-
-exports.default = {};
-for (var key in exports) {
-    if (key !== 'default') {
-        exports.default[key] = exports[key];
-    }
 }
