@@ -1,7 +1,8 @@
 
-import { setTimeout, setInterval, clearInterval } from 'time';
-import * as console from 'console';
+const console = require('console');
+const time = require('time');
 
+const { setTimeout, setInterval, clearInterval } = time;
 const ms = console.readNumber('Enter delay time: ');
 
 setTimeout(() => {
