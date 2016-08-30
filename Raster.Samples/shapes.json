@@ -1,6 +1,6 @@
 {
     "cube": {
-        "translate": { "x": 0.0, "y": 0, "z": -6.0 },
+        "translate": { "x": -0.0, "y": 0, "z": -6.0 },
         "faces": [
             {
                 "vertices": [

@@ -19,31 +19,34 @@ RasterApp::RasterApp() :
     revVersion(RasterRevVersion),
     triggered(false)
 {
+    setupExternalLirbaries();
+    setUnixOptions(true);
 }
 
 RasterApp::~RasterApp() 
 {
+    releaseExternalLirbaries();
 }
 
 void RasterApp::initialize(Application& self)
 {
+    Application::initialize(self);
+
     Poco::Path currentDirectory = commandPath();
     currentDirectory.setExtension("");
     currentDirectory.setFileName("");
     cwd = currentDirectory.toString();
 
 	loadConfiguration();
-
-	Application::initialize(self);
 }
 
 void RasterApp::defineOptions(OptionSet& options)
 {
+    Application::defineOptions(options);
+    
     createOption(options, &RasterApp::handleVersion, "version", "v");
     createOption(options, &RasterApp::handleHelp, "help", "h");
     createOption(options, &RasterApp::handleInfo, "info", "i");
-
-	Application::defineOptions(options);
 }
 
 void RasterApp::createOption(OptionSet& options, OptionCallback<RasterApp>::Callback handler, std::string arg, std::string shorthand)
@@ -55,32 +58,39 @@ void RasterApp::createOption(OptionSet& options, OptionCallback<RasterApp>::Call
     options.addOption(option);
 }
 
+Poco::File RasterApp::extractFilename(const std::vector<std::string>& args)
+{
+    Poco::Path filename(args.front());
+    filename.setExtension("js");
+    return Poco::File(filename);
+}
+
 int RasterApp::main(const std::vector<std::string>& args)
 {
-    if (triggered) {
+    if (triggered)
+    {
         return EXIT_OK;
     }
 
-    JsRuntime jsRuntime;
-    jsRuntime.initialise(const_cast<std::vector<std::string>&>(args));
+    auto mutableArgs = const_cast<std::vector<std::string>&>(args);
+    auto runtime = JsRuntime(mutableArgs);
 
-    if(!args.empty())
+    if(args.empty())
     {
-        Poco::Path filename(args.front());
-        filename.setExtension("js");
-
-        if (Poco::File(filename).exists())
-        {
-            jsRuntime.run(filename.toString());
-        }
-        else
-        {
-            std::cerr << "Error couldnt find file " << filename.toString() << std::endl;
-        }
+        runtime.start();
     }
     else
     {
-        jsRuntime.run();
+        auto script = extractFilename(args);
+
+        if (script.exists())
+        {
+            runtime.start(script.path());
+        }
+        else
+        {
+            std::cerr << "Error couldnt find file " << script.path() << std::endl;
+        }
     }
 
     return EXIT_OK;
@@ -126,6 +136,18 @@ void RasterApp::handleInfo(const std::string& name, const std::string& v)
     std::cout << "Raster is a platform for GPU centric JavaScript applications. ";
     std::cout << std::endl;
     triggered = true;
+}
+
+void RasterApp::releaseExternalLirbaries()
+{
+    IMG_Quit();
+    SDL_Quit();
+}
+
+void RasterApp::setupExternalLirbaries()
+{
+    SDL_Init(SDL_INIT_EVERYTHING);
+    IMG_Init(SDL_IMG_EVERYTHING);
 }
 
 #pragma pop_macro("main")

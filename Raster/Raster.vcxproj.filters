@@ -11,4 +11,9 @@
       <Filter>Source Code</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

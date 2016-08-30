@@ -8,19 +8,16 @@ using namespace raster;
 
 JsPlatform JsRuntime::platform;
 
-JsRuntime::JsRuntime()
+JsRuntime::JsRuntime(std::vector<std::string>& args)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	IMG_Init(SDL_IMG_EVERYTHING);
+    initialise(args);
 }
 
 JsRuntime::~JsRuntime()
 {
-	IMG_Quit();
-	SDL_Quit();
 }
 
-void JsRuntime::run()
+void JsRuntime::start()
 {
     ArrayBufferAllocator allocator;
     v8::Isolate::CreateParams createParams;
@@ -72,7 +69,7 @@ void JsRuntime::printException(const v8::TryCatch& trycatch)
     std::cerr << "Exception thrown: " << error << std::endl;
 }
 
-void JsRuntime::run(std::string filename)
+void JsRuntime::start(std::string filename)
 {
 	auto scriptSrc = readFile(filename.c_str());
 	

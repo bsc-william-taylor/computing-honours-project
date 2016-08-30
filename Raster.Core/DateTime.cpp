@@ -21,8 +21,17 @@ void raster::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
 
     JsRuntime::GetPlatform().CallOnForegroundThread(isolate, new JsAwaitTask([=](SDL_Event e) {
 		if(e.type == TIMEOUT_EVENT) {
-			auto javascriptHandler = callback.Get(v8::Isolate::GetCurrent());
-			javascriptHandler->Call(javascriptHandler, 0, nullptr);
+            v8::TryCatch trycatch(isolate);
+			auto function = callback.Get(isolate);
+			function->Call(function, 0, nullptr);
+
+            if(trycatch.HasCaught())
+            {
+                v8::String::Utf8Value exception_str(trycatch.Exception());
+                const char * error = *exception_str;
+                std::cerr << "Exception thrown: " << error << std::endl;
+            }
+            
 			return true;
 		} 
 

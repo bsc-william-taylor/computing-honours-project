@@ -35,6 +35,7 @@
 #include <Poco/PipeStream.h>
 #include <Poco/FileStream.h>
 #include <Poco/StreamCopier.h>
+#include <Poco/Util/OptionException.h>
 #include <Poco/Util/Application.h>
 #include <Poco/Util/Option.h>
 #include <Poco/File.h>
@@ -69,6 +70,7 @@
 #pragma comment(lib, "v8_libplatform.lib")
 #pragma comment(lib, "v8_nosnapshot.lib")
 #pragma comment(lib, "shlwapi.lib")
+#pragma comment(lib, "Winmm.lib")
 
 #pragma warning(disable : 4099)
 #pragma warning(disable : 4244)

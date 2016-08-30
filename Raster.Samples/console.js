@@ -1,5 +1,9 @@
 
 const console = require('console');
+const input = console.read();
 
-console.log('HelloWorld');
-console.err('HelloWorld');
+console.error('Error');
+console.warn('Warn');
+console.log('Log');
+
+console.log(`You inputed ${input}`);

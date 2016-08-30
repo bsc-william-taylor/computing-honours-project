@@ -53,9 +53,6 @@
     <Filter Include="Source Code\JavaScript">
       <UniqueIdentifier>{b1de2429-0e43-4c9d-9dca-66fa9c2e8643}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\JavaScript\Platform">
-      <UniqueIdentifier>{42605286-fa54-4ca5-95cd-9019b5210640}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\Console">
       <UniqueIdentifier>{adf80663-caac-411f-a541-a91699026b0e}</UniqueIdentifier>
     </Filter>
@@ -64,15 +61,6 @@
     </Filter>
     <Filter Include="Source Code\Modules\Datetime">
       <UniqueIdentifier>{18794fb5-d36c-40df-9988-956e3839cd70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\JavaScript\Object">
-      <UniqueIdentifier>{d08d6940-3b6e-448a-9c42-2cd0f209f379}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\JavaScript\Allocater">
-      <UniqueIdentifier>{d9097830-4687-4d71-a9ef-d863f94ceddd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\JavaScript\Tasks">
-      <UniqueIdentifier>{8dec6a91-403c-4449-a2a5-1849b2e737b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,9 +115,6 @@
     <ClCompile Include="JsRuntime.cpp">
       <Filter>Source Code\JavaScript</Filter>
     </ClCompile>
-    <ClCompile Include="JsPlatform.cpp">
-      <Filter>Source Code\JavaScript\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="System.cpp">
       <Filter>Source Code\Modules\System</Filter>
     </ClCompile>
@@ -139,8 +124,11 @@
     <ClCompile Include="fs.cpp">
       <Filter>Source Code\Modules\Fs</Filter>
     </ClCompile>
+    <ClCompile Include="JsPlatform.cpp">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClCompile>
     <ClCompile Include="JsPlatformTasks.cpp">
-      <Filter>Source Code\JavaScript\Tasks</Filter>
+      <Filter>Source Code\JavaScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,23 +186,23 @@
     <ClInclude Include="JsRuntime.h">
       <Filter>Source Code\JavaScript</Filter>
     </ClInclude>
-    <ClInclude Include="JsArrayAllocater.h">
-      <Filter>Source Code\JavaScript\Allocater</Filter>
-    </ClInclude>
-    <ClInclude Include="JsObject.h">
-      <Filter>Source Code\JavaScript\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="JsPlatform.h">
-      <Filter>Source Code\JavaScript\Platform</Filter>
-    </ClInclude>
     <ClInclude Include="System.h">
       <Filter>Source Code\Modules\System</Filter>
     </ClInclude>
     <ClInclude Include="DateTime.h">
       <Filter>Source Code\Modules\Datetime</Filter>
     </ClInclude>
+    <ClInclude Include="JsArrayAllocater.h">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClInclude>
+    <ClInclude Include="JsObject.h">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClInclude>
+    <ClInclude Include="JsPlatform.h">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClInclude>
     <ClInclude Include="JsPlatformTasks.h">
-      <Filter>Source Code\JavaScript\Tasks</Filter>
+      <Filter>Source Code\JavaScript</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

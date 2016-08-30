@@ -1,84 +1,67 @@
 ﻿
-var timerCounter = 0;
-var timers = {};
-var _cpp = cpp;
+// Replace with Date.now()
+let timerCounter = 0;
 
-function setTimeout(callback, ms, usedID) {
-    var returnValue = -1;
+const raster = cpp;
+const timers = {};
 
-    if (ms >= 0) {
-        var id = usedID || ++timerCounter;
-        if (!timers[id]) {
-            timers[id] = { callback: callback, cancel: false };
-        }
+function setTimeout(callback, ms, identifier) {
+    const id = identifier || ++timerCounter;
+    timers[id] = timers[id] || { callback: callback, cancel: false };
 
-        _cpp.timeout(ms, function () {
-            if (!timers[id].cancel) {
-                timers[id].callback();
-            }
-        });
+    const timer = timers[id];
+    raster.timeout(ms, () => {
+        if (!timer.cancel) {
+            timer.callback(id);
+         }
+    });
 
-        returnValue = id;
-    }
-
-    return returnValue;
+    return id;
 }
 
-function setInterval(callback, ms, usedID) {
-    var assignedID = setTimeout(function () {
-        callback();
-        setInterval(callback, ms, assignedID);
-    }, ms, usedID);
-    return assignedID;
-}
-
-function clearTimedCallback(timerID) {
-    if (timerID >= 0) {
-        timers[timerID].cancel = true;
+exports.clearInterval = function (uniqueIdentifier) {
+    if (uniqueIdentifier >= 0) {
+        timers[uniqueIdentifier].cancel = true;
         return true;
     }
 
     return false;
-}
-
-/** Exports for CommonJs modules eg: var time = require('time');  **/
-exports.clearInterval = clearTimedCallback;
-exports.clearTimeout = clearTimedCallback;
-exports.setInterval = function(callback, ms) {
-    return setInterval(callback, ms);
 };
 
-exports.setTimeout = function(callback, ms) {
-    return setTimeout(callback, ms);
+exports.clearTimeout = function (uniqueIdentifier) {
+    if (uniqueIdentifier >= 0) {
+        timers[uniqueIdentifier].cancel = true;
+        return true;
+    }
+
+    return false;
+};
+
+exports.setInterval = function (callback, ms) {
+    if (callback && ms >= 0) {
+        const reschedule = (identifier) => {
+            setInterval(callback, ms, identifier);
+            callback();
+        }
+
+        return setTimeout(reschedule, ms);
+    } else {
+        throw 'Error function takes 2 arguments';
+    }
+};
+
+exports.setTimeout = function (callback, ms) {
+    if (callback && ms >= 0) {
+        return setTimeout(() => callback(), ms);
+    } else {
+        throw 'Error function takes 2 arguments';
+    }
 };
 
 exports.pause = function (ms) {
     if (ms >= 0) {
-        _cpp.pause(ms);
+        raster.pause(ms);
+    } else {
+        throw 'Error function takes 1 argument, 0 provided';
     }
 };
-
-/** Exports for ES6 modules eg: import time from 'time' */
-exports.default = {
-    pause: function(ms) {
-        if (ms >= 0) {
-            _cpp.pause(ms);
-        }
-    },
-
-    clearInterval: function(timerID) {
-        clearTimedCallback(timerID);
-    },
-
-    clearTimeout: function(timerID) {
-        clearTimedCallback(timerID);
-    },
-
-    setTimeout: function(callback, ms) {
-        return setTimeout(callback, ms);
-    },
-
-    setInterval: function(callback, ms) {
-        return setInterval(callback, ms);
-    }
-}

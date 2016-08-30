@@ -1,65 +1,26 @@
 
-var _cpp = cpp;
+var raster = cpp;
 
-exports.cpuCacheLineSize = function() {
-    return _cpp.cpuCacheLineSize();
+exports.hardware = function() {
+    return {
+        'CPU Cache Line Size': raster.cpuCacheLineSize(),
+        'CPU count': raster.cpuCount(),
+        'RAM': raster.systemRam()
+    };
 }
 
-exports.cpuCount = function() {
-    return _cpp.cpuCount();
-}
-
-exports.systemRam = function() {
-    return _cpp.systemRam();
-}
-
-exports.has3DNow = function() {
-    return _cpp.has3DNow();
-}
-
-exports.hasAVX = function() {
-    return _cpp.hasAVX();
-}
-
-exports.hasAVX2 = function() {
-    return _cpp.hasAVX2();
-}
-
-exports.hasAltiVec = function() {
-    return _cpp.hasAltiVec();
-}
-
-exports.hasMMX = function() {
-    return _cpp.hasMMX();
-}
-
-exports.hasRDTSC = function() {
-    return _cpp.hasRDTSC();
-}
-
-exports.hasSSE = function() {
-    return _cpp.hasSSE();
-}
-
-exports.hasSSE2 = function() {
-    return _cpp.hasSSE2();
-}
-
-exports.hasSSE3 = function() {
-    return _cpp.hasSSE3();
-}
-
-exports.hasSSE41 = function () {
-    return _cpp.hasSSE41();
-}
-
-exports.hasSSE42 = function() {
-    return _cpp.hasSSE42();
-}
-
-exports.default = {};
-for (var key in exports) {
-    if (key !== 'default') {
-        exports.default[key] = exports[key];
-    }
+exports.instructions = function() {
+    return {
+        '3DNow': raster.has3DNow(),
+        'AVX': raster.hasAVX(),
+        'AVX2': raster.hasAVX2(),
+        'AltiVec': raster.hasAltiVec(),
+        'MMX': raster.hasMMX(),
+        'RDTSC': raster.hasRDTSC(),
+        'SSE': raster.hasSSE(),
+        'SSE2': raster.hasSSE2(),
+        'SSE3': raster.hasSSE3(),
+        'SSE41': raster.hasSSE41(),
+        'SSE42': raster.hasSSE42()
+    };
 }

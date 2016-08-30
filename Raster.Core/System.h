@@ -31,9 +31,9 @@ namespace raster {
 		object->Set(V8_String("hasMMX"), v8::FunctionTemplate::New(isolate, hasMMX));
 		object->Set(V8_String("hasRDTSC"), v8::FunctionTemplate::New(isolate, hasRDTSC));
 		object->Set(V8_String("hasSSE"), v8::FunctionTemplate::New(isolate, hasSSE));
-		object->Set(V8_String("hasSSE2"), v8::FunctionTemplate::New(isolate, cpuCacheLineSize));
-		object->Set(V8_String("hasSSE3"), v8::FunctionTemplate::New(isolate, cpuCacheLineSize));
-		object->Set(V8_String("hasSSE41"), v8::FunctionTemplate::New(isolate, cpuCacheLineSize));
-		object->Set(V8_String("hasSSE42"), v8::FunctionTemplate::New(isolate, cpuCacheLineSize));
+		object->Set(V8_String("hasSSE2"), v8::FunctionTemplate::New(isolate, hasSSE2));
+		object->Set(V8_String("hasSSE3"), v8::FunctionTemplate::New(isolate, hasSSE3));
+		object->Set(V8_String("hasSSE41"), v8::FunctionTemplate::New(isolate, hasSSE41));
+		object->Set(V8_String("hasSSE42"), v8::FunctionTemplate::New(isolate, hasSSE42));
 	}
 }
