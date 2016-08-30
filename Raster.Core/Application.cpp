@@ -32,10 +32,10 @@ void RasterApp::initialize(Application& self)
 {
     Application::initialize(self);
 
-    Poco::Path currentDirectory = commandPath();
-    currentDirectory.setExtension("");
-    currentDirectory.setFileName("");
-    cwd = currentDirectory.toString();
+    Poco::Path appPath = commandPath();
+    appPath.setExtension("");
+    appPath.setFileName("");
+    cwd = appPath.toString();
 
 	loadConfiguration();
 }
@@ -72,7 +72,13 @@ int RasterApp::main(const std::vector<std::string>& args)
         return EXIT_OK;
     }
 
+    Poco::Path applicationFile(commandPath());
+    applicationFile.setFileName("raster");
+    applicationFile.setExtension("exe");
+
     auto mutableArgs = const_cast<std::vector<std::string>&>(args);
+    mutableArgs.insert(mutableArgs.begin(), applicationFile.toString());
+
     auto runtime = JsRuntime(mutableArgs);
 
     if(args.empty())

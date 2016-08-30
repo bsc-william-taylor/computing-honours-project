@@ -117,7 +117,8 @@ void JsRuntime::initialise(std::vector<std::string>& args)
 
     const auto v8Flags = "--expose_gc";
 
-    v8::V8::InitializeICU();    
+    v8::V8::InitializeICUDefaultLocation(argv[0]);
+    v8::V8::InitializeExternalStartupData(argv[0]);
     v8::V8::InitializePlatform(&platform);
     v8::V8::SetFlagsFromString(v8Flags, strlen(v8Flags));
     v8::V8::SetFlagsFromCommandLine(&argc, argv, false);

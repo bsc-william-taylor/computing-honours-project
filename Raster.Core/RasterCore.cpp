@@ -1,4 +1,4 @@
 
 #include "RasterCore.h"
 
-std::string cwd = "";
+std::string cwd;

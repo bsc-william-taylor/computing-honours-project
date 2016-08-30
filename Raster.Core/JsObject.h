@@ -30,7 +30,7 @@ public:
         handle->SetAlignedPointerInInternalField(0, this);
 
         instance.Reset(v8::Isolate::GetCurrent(), handle);
-        instance.SetWeak(this, weakCallback);
+        instance.SetWeak(this, weakCallback, v8::WeakCallbackType::kParameter);
         instance.MarkIndependent();
     }
 
@@ -55,7 +55,7 @@ public:
         return unwrap(that);
     }
 
-    static void weakCallback(const v8::WeakCallbackData<v8::Object, JsObject>& data)
+    static void weakCallback(const v8::WeakCallbackInfo<JsObject>& data)
     {
         v8::HandleScope scope(data.GetIsolate());
         auto wrap = data.GetParameter();

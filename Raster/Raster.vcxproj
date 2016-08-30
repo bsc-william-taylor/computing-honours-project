@@ -73,13 +73,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)Raster.Libs\v8\v8\include;$(SolutionDir)Raster.Libs\v8\v8;$(SolutionDir)Raster.Core\;$(SolutionDir)Raster.Libs\poco\Foundation\include;$(SolutionDir)RasterLibs\poco\JSON\include;$(SolutionDir)Raster.Libs\poco\Net\include;$(SolutionDir)Raster.Libs\poco\Util\include;$(SolutionDir)Raster.Libs\poco\JSON\include;$(SolutionDir)Raster.Libs\poco\XML\include;$(SolutionDir)Raster.Libs\sdl\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Raster.Libs\v8\v8\build\Debug\lib;$(SolutionDir)Debug;$(SolutionDir)Raster.Libs\poco\lib;$(SolutionDir)Raster.Libs\sdl\lib\x86\;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>D:\Work\Raster\Raster\Raster.Libs\v8\v8\out\Default;$(SolutionDir)Debug;$(SolutionDir)Raster.Libs\poco\lib;$(SolutionDir)Raster.Libs\sdl\lib\x86\;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>raster</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\B0023\Desktop\Projects\PlayType\v8;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\B0023\Desktop\Projects\PlayType\v8\build\Debug\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Raster.Libs\v8\v8\include;$(SolutionDir)Raster.Libs\v8\v8;$(SolutionDir)Raster.Core\;$(SolutionDir)Raster.Libs\poco\Foundation\include;$(SolutionDir)RasterLibs\poco\JSON\include;$(SolutionDir)Raster.Libs\poco\Net\include;$(SolutionDir)Raster.Libs\poco\Util\include;$(SolutionDir)Raster.Libs\poco\JSON\include;$(SolutionDir)Raster.Libs\poco\XML\include;$(SolutionDir)Raster.Libs\sdl\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Work\Raster\Raster\Raster.Libs\v8\v8\out\Default;$(SolutionDir)Debug;$(SolutionDir)Raster.Libs\poco\lib;$(SolutionDir)Raster.Libs\sdl\lib\x86\;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

@@ -18,13 +18,12 @@ class Bootstrapper {
         openWindow(windowSettings, window => {
             window.setTitle('Basic OpenGL Triangle');
             window.show();
-            window.enableOpenGL();
 
-            this.setupOpenGL(gl);
+            //this.setupOpenGL(gl);
 
             window.onFrame(60, () => {
-                onRender(gl);
-                window.swapBuffers();
+                //onRender(gl);
+                //window.swapBuffers();
             });
         });
     }
@@ -53,7 +52,7 @@ function renderObject(gl, object, type) {
     gl.glEnd();
 }
 
-setInterval(() => renderData = fs.readJson('shapes.json'), 1000);
+//setInterval(() => renderData = fs.readJson('shapes.json'), 1000);
 
 const app = new Bootstrapper();
 app.bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {

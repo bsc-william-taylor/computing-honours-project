@@ -40,13 +40,14 @@ std::string getInternalModuleFilename(std::string name)
 	path.append("/modules/");
 	path.append(name);
 	path.setExtension("js");
-	return path.toString();
+
+    auto str = path.toString();
+	return str;
 }
 
 std::string getExternalModuleFilename(std::string name)
 {
-	auto path = Poco::Path(cwd);
-	path.append("/compiler/output/");
+	auto path = Poco::Path(Poco::Path::current());
 	path.append(name);
 	path.setExtension("js");
 	return path.toString();

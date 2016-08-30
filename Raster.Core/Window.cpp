@@ -71,9 +71,10 @@ void Window::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
 	auto templateObject = newTemplate(newInstance, "Window");
     auto prototype = templateObject->PrototypeTemplate();
 
-    prototype->Set(isolate, "enableOpenGL", v8::Function::New(isolate, enableOpenGL));
 
-    prototype->Set(V8_String("swapBuffers"), v8::FunctionTemplate::New(isolate, swapBuffers)->GetFunction());
+    // FIGURE THIS OUT !!!!
+    prototype->Set(isolate, "enableOpenGL", v8::Function::New(isolate, enableOpenGL));
+    prototype->Set(isolate, "swapBuffers", v8::FunctionTemplate::New(isolate, swapBuffers)->GetFunction());
     prototype->Set(V8_String("onFrame"), v8::FunctionTemplate::New(isolate, onFrame)->GetFunction());
     prototype->Set(V8_String("setPosition"), v8::FunctionTemplate::New(isolate, setPosition)->GetFunction());
     prototype->Set(V8_String("setTitle"), v8::FunctionTemplate::New(isolate, setTitle)->GetFunction());
