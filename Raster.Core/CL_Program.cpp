@@ -54,10 +54,10 @@ void CL_Program::build(const v8::FunctionCallbackInfo<v8::Value>& args)
 }
 
 void CL_Program::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{
+{/*
 	auto templateObject = newTemplate(newInstance, "CL_Program");
 
 	templateObject->PrototypeTemplate()->Set(V8_String("build"), v8::FunctionTemplate::New(isolate, build)->GetFunction());
 
-	makeConstructor(cpp, templateObject, constructor, "CL_Program");
+	makeConstructor(cpp, templateObject, constructor, "CL_Program");*/
 }

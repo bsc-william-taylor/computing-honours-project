@@ -13,15 +13,15 @@ TextFile::~TextFile()
 
 void TextFile::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
 {
-	auto templateObject = newTemplate(newInstance, "TextFile");
+	//auto templateObject = newTemplate(newInstance, "TextFile");
 
-	templateObject->PrototypeTemplate()->Set(V8_String("read"), v8::FunctionTemplate::New(isolate, read)->GetFunction());
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("contents"), getContents, setContents);
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("filename"), getFilename, setFilename);
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("path"), getPath, setPath);
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("ext"), getExt, setExt);
+	//templateObject->PrototypeTemplate()->Set(V8_String("read"), v8::FunctionTemplate::New(isolate, read)->GetFunction());
+	//templateObject->InstanceTemplate()->SetAccessor(V8_String("contents"), getContents, setContents);
+	//templateObject->InstanceTemplate()->SetAccessor(V8_String("filename"), getFilename, setFilename);
+	//templateObject->InstanceTemplate()->SetAccessor(V8_String("path"), getPath, setPath);
+	//templateObject->InstanceTemplate()->SetAccessor(V8_String("ext"), getExt, setExt);
 
-	makeConstructor(cpp, templateObject, constructor, "TextFile");
+	//makeConstructor(cpp, templateObject, constructor, "TextFile");
 }
 
 void TextFile::setExt(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)

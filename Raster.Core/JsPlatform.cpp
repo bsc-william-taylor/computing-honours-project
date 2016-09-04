@@ -3,27 +3,29 @@
 
 void JsPlatform::CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected_runtime)
 {
-    platformTasks.push_back(task);
+    // Move to background thread later.
+    task->Run();
+    delete task;
 };
 
 void JsPlatform::CallOnForegroundThread(v8::Isolate* isolate, v8::Task* task)
 {
-    platformTasks.push_back(task);
+    buffer.push_back({ task, false });
 };
 
 void JsPlatform::CallDelayedOnForegroundThread(v8::Isolate* isolate, v8::Task* task, double delay_in_seconds)
 {
-    platformTasks.push_back(task);
+    buffer.push_back({ task, false });
 };
 
 double JsPlatform::MonotonicallyIncreasingTime()
 { 
-    return SDL_GetTicks(); 
+    return SDL_GetTicks();
 }
 
-void JsPlatform::ReinsertTask(std::pair<v8::Task*, bool> task)
+void JsPlatform::CallOnForegroundThread(std::pair<v8::Task*, bool> task)
 {
-    tasksToInsert.push_back(task);
+    buffer.push_back(task);
 }
 
 bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
@@ -34,22 +36,18 @@ bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
         events.push_back(e);
     }
 
-    for (auto i = 0; i < platformTasks.size(); ++i)
-    {
-        platformTasks[i]->Run();
-        platformTasks.erase(platformTasks.begin() + i);
-    }
+    auto tasks = move(buffer);
 
-    auto newEvents{ platformTasks.size() };
-
-    for(auto& newTask : tasksToInsert)
+    for(auto& task : tasks)
     {
-        platformTasks.push_back(newTask.first);
-        newEvents += newTask.second ? 1 : 0;
+        task.first->Run();
+        delete task.first;
     }
-    
-    tasksToInsert.clear();
+   
     events.clear();
 
-    return newEvents > 0;
+    const auto& start = buffer.begin();
+    const auto& end = buffer.end();
+
+    return std::find_if(start, end, [](auto& t) { return t.second; }) != end;
 }

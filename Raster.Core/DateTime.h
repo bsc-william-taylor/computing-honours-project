@@ -3,12 +3,13 @@
 #include "RasterCore.h"
 #include "JsObject.h"
 
-namespace raster {
-	void timeout(const v8::FunctionCallbackInfo<v8::Value>& args);
-	void pause(const v8::FunctionCallbackInfo<v8::Value>& args);
+namespace raster 
+{
+    namespace datetime 
+    {
+	    void timeout(const v8::FunctionCallbackInfo<v8::Value>& args);
+	    void pause(const v8::FunctionCallbackInfo<v8::Value>& args);
+    }
 
-	static void setupDateTimeModule(v8::Isolate * isolate, v8::Local<v8::ObjectTemplate>& object) {
-		object->Set(V8_String("timeout"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), timeout));
-		object->Set(V8_String("pause"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), pause));
-	}
+	void registerDateTime(v8::Local<v8::Object>& object);
 }

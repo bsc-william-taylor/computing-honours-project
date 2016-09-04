@@ -36,12 +36,12 @@ void CL_Device::setDevice(cl::Device device)
 }
 
 void CL_Device::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{
+{/*
 	auto templateObject = newTemplate(newInstance, "CL_Device");
 
 	templateObject->PrototypeTemplate()->Set(V8_String("getInfo"), v8::FunctionTemplate::New(isolate, getInfo)->GetFunction());
 
-	makeConstructor(cpp, templateObject, constructor, "CL_Device");
+	makeConstructor(cpp, templateObject, constructor, "CL_Device");*/
 }
 
 void CL_Device::getInfo(const v8::FunctionCallbackInfo<v8::Value>& args)

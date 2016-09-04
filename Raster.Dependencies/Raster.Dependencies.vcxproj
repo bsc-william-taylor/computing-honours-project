@@ -25,7 +25,7 @@
     <None Include="Modules\fs.js" />
     <None Include="Modules\opencl.js" />
     <None Include="Modules\opengl.js" />
-    <None Include="Modules\time.js" />
+    <None Include="Modules\datetime.js" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A16AA1EE-4543-4432-8D20-0E7D94415196}</ProjectGuid>

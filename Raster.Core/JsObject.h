@@ -3,18 +3,24 @@
 #include "RasterCore.h"
 
 template<typename T>
-class JsObject {
-    v8::Persistent<v8::Object> instance;
+class JsObject 
+{
+    v8::Global<v8::Object> instance;
 public:
-    virtual ~JsObject(){}
+    virtual ~JsObject() = default;
 
-    static v8::Local<v8::FunctionTemplate> newTemplate(v8::FunctionCallback New, const char * name)
+    static v8::Local<v8::Object> newTemplate(v8::Global<v8::ObjectTemplate>& templ)
     {
-        auto isolate = v8::Isolate::GetCurrent();
-        auto templateObject = v8::FunctionTemplate::New(isolate, New);
-        templateObject->SetClassName(v8::String::NewFromUtf8(isolate, name));
-        templateObject->InstanceTemplate()->SetInternalFieldCount(1);
-        return templateObject;
+        const auto currentIsolate = v8::Isolate::GetCurrent();
+
+        if(templ.IsEmpty())
+        {
+            auto objectTemplate = v8::ObjectTemplate::New(currentIsolate);
+            objectTemplate->SetInternalFieldCount(1);
+            templ.Reset(currentIsolate, objectTemplate);
+        }
+
+        return templ.Get(currentIsolate)->NewInstance();
     }
 
     static void makeConstructor(v8::Local<v8::ObjectTemplate>& cpp, v8::Local<v8::FunctionTemplate>& templ, v8::Persistent<v8::Function>& constructor, const char * name)

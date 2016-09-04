@@ -20,8 +20,8 @@ namespace raster {
 	void end(const v8::FunctionCallbackInfo<v8::Value>& args);
 
 
-	static void setupOpenglModule(v8::Isolate * isolate, v8::Local<v8::ObjectTemplate>& object) {
-		object->Set(V8_String("gluPerspective"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), perspective));
+	static void setupOpenglModule(v8::Isolate * isolate, v8::Local<v8::Object>& object) {
+		/*object->Set(V8_String("gluPerspective"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), perspective));
 		object->Set(V8_String("glEnable"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), enable));
 		object->Set(V8_String("glMatrixMode"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), matrixMode));
 		object->Set(V8_String("glLoadIdentity"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), loadIdentity));
@@ -33,6 +33,6 @@ namespace raster {
 		object->Set(V8_String("glColor3f"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), color3f));
 		object->Set(V8_String("glClear"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), clear));
 		object->Set(V8_String("glBegin"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), begin));
-		object->Set(V8_String("glEnd"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), end));
+		object->Set(V8_String("glEnd"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), end));*/
 	}
 }

@@ -18,16 +18,16 @@ Image::~Image()
 
 void Image::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
 {
-	auto templateObject = newTemplate(newInstance, "Image");
-	templateObject->PrototypeTemplate()->Set(V8_String("read"), v8::FunctionTemplate::New(isolate, read)->GetFunction());
+	//auto templateObject = newTemplate(newInstance, "Image");
+	/*templateObject->PrototypeTemplate()->Set(V8_String("read"), v8::FunctionTemplate::New(isolate, read)->GetFunction());
 	templateObject->InstanceTemplate()->SetAccessor(V8_String("height"), getHeight, setHeight);
 	templateObject->InstanceTemplate()->SetAccessor(V8_String("width"), getWidth, setWidth);
 
 	templateObject->InstanceTemplate()->SetAccessor(V8_String("filename"), getFilename, setFilename);
 	templateObject->InstanceTemplate()->SetAccessor(V8_String("path"), getPath, setPath);
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("ext"), getExt, setExt);
+	templateObject->InstanceTemplate()->SetAccessor(V8_String("ext"), getExt, setExt);*/
 
-	makeConstructor(cpp, templateObject, constructor, "Image");
+	//makeConstructor(cpp, templateObject, constructor, "Image");
 }
 
 void Image::read(const v8::FunctionCallbackInfo<v8::Value>& args)

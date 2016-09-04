@@ -29,9 +29,9 @@ void CL_Buffer::newInstance(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 void CL_Buffer::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
 {
-	auto templateObject = newTemplate(newInstance, "CL_Buffer");
+	//auto templateObject = newTemplate(newInstance, "CL_Buffer");
 
 	//templateObject->PrototypeTemplate()->Set(V8_String("getInfo"), v8::FunctionTemplate::New(isolate, getInfo)->GetFunction());
 
-	makeConstructor(cpp, templateObject, constructor, "CL_Buffer");
+	//makeConstructor(cpp, templateObject, constructor, "CL_Buffer");
 }

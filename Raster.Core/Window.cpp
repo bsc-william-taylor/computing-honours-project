@@ -4,7 +4,8 @@
 
 using namespace raster;
 
-v8::Persistent<v8::Function> Window::constructor;
+v8::Global<v8::ObjectTemplate> Window::objectTemplate;
+v8::Global<v8::Function> Window::constructor;
 
 void raster::showMessageBox(const v8::FunctionCallbackInfo<v8::Value>& args) {
 	if (args.Length() == 3) {
@@ -57,8 +58,9 @@ void raster::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 	}
 }
 
-Window::Window()
-	: context(nullptr), window(nullptr)
+Window::Window() : 
+    context(nullptr), 
+    window(nullptr)
 {
 }
 
@@ -66,30 +68,30 @@ Window::~Window()
 {
 }
 
-void Window::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
+void Window::create(v8::Local<v8::Object>& raster, v8::Isolate * isolate)
 {
-	auto templateObject = newTemplate(newInstance, "Window");
-    auto prototype = templateObject->PrototypeTemplate();
+    if(constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newWindow));
+    }
 
-
-    // FIGURE THIS OUT !!!!
-    prototype->Set(isolate, "enableOpenGL", v8::Function::New(isolate, enableOpenGL));
-    prototype->Set(isolate, "swapBuffers", v8::FunctionTemplate::New(isolate, swapBuffers)->GetFunction());
-    prototype->Set(V8_String("onFrame"), v8::FunctionTemplate::New(isolate, onFrame)->GetFunction());
-    prototype->Set(V8_String("setPosition"), v8::FunctionTemplate::New(isolate, setPosition)->GetFunction());
-    prototype->Set(V8_String("setTitle"), v8::FunctionTemplate::New(isolate, setTitle)->GetFunction());
-    prototype->Set(V8_String("setSize"), v8::FunctionTemplate::New(isolate, setSize)->GetFunction());
-    prototype->Set(V8_String("show"), v8::FunctionTemplate::New(isolate, show)->GetFunction());
-    prototype->Set(V8_String("hide"), v8::FunctionTemplate::New(isolate, hide)->GetFunction());
-
-	makeConstructor(cpp, templateObject, constructor, "Window");
+    raster->Set(v8::String::NewFromUtf8(isolate, "Window"), constructor.Get(isolate));
 }
 
-void Window::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
+void Window::newWindow(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
-	v8::HandleScope scope(info.GetIsolate());
-	
-	auto that = info.This();
+    auto isolate = info.GetIsolate();    
+	auto object = newTemplate(objectTemplate);
+
+    object->Set(V8_String("enableOpenGL"), v8::Function::New(isolate, enableOpenGL));
+    object->Set(V8_String("swapBuffers"), v8::FunctionTemplate::New(isolate, swapBuffers)->GetFunction());
+    object->Set(V8_String("onFrame"), v8::FunctionTemplate::New(isolate, onFrame)->GetFunction());
+    object->Set(V8_String("setPosition"), v8::FunctionTemplate::New(isolate, setPosition)->GetFunction());
+    object->Set(V8_String("setTitle"), v8::FunctionTemplate::New(isolate, setTitle)->GetFunction());
+    object->Set(V8_String("setSize"), v8::FunctionTemplate::New(isolate, setSize)->GetFunction());
+    object->Set(V8_String("show"), v8::FunctionTemplate::New(isolate, show)->GetFunction());
+    object->Set(V8_String("hide"), v8::FunctionTemplate::New(isolate, hide)->GetFunction());
+
 	auto window = new Window();
 	auto args = info[0].As<v8::Object>();
 	auto t = args->Get(V8_String("title"));
@@ -103,9 +105,9 @@ void Window::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
 	window->rect.y = y->Int32Value();
 	window->rect.w = w->Int32Value();
 	window->rect.h = h->Int32Value();
-	window->wrap(that);
+	window->wrap(object);
 
-	info.GetReturnValue().Set(that);
+	info.GetReturnValue().Set(object);
 }
 
 void Window::setSize(const v8::FunctionCallbackInfo<v8::Value>& args) {

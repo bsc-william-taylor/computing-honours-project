@@ -37,11 +37,11 @@ void CL_Kernel::newInstance(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 void CL_Kernel::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
 {
-	auto templateObject = newTemplate(newInstance, "CL_Kernel");
+	//auto templateObject = newTemplate(newInstance, "CL_Kernel");
 
-	templateObject->PrototypeTemplate()->Set(V8_String("setArg"), v8::FunctionTemplate::New(isolate, setArg)->GetFunction());
+	//templateObject->PrototypeTemplate()->Set(V8_String("setArg"), v8::FunctionTemplate::New(isolate, setArg)->GetFunction());
 
-	makeConstructor(cpp, templateObject, constructor, "CL_Kernel");
+	//makeConstructor(cpp, templateObject, constructor, "CL_Kernel");
 }
 
 // Member functions

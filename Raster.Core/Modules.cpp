@@ -1,88 +1,107 @@
 
 #include "Modules.h"
+#include "System.h"
+#include "DateTime.h"
+#include "Console.h"
+#include "Window.h"
+#include "OpenGL.h"
+#include "OpenCL.h"
+#include "Fs.h"
 
-v8::Local<v8::ObjectTemplate> raster::setupModuleSystem()
+std::string readScript(const std::string& filename)
 {
-	auto moduleTemplate = v8::ObjectTemplate::New();
-	auto isolate = v8::Isolate::GetCurrent();
+    std::ifstream file(filename);
+    std::string data;
+
+    if (file.is_open())
+    {
+        std::string temp;
+        while (getline(file, temp))
+        {
+            data += temp + "\n";
+        }
+
+        file.close();
+    }
+
+    return data;
+}
+
+std::string parseInternalModulePath(std::string name)
+{
+    auto path = Poco::Path(cwd);
+    path.append("/modules/");
+    path.append(name);
+    path.setExtension("js");
+    return path.toString();
+}
+
+std::string parseExternalModulePath(std::string name)
+{
+    auto path = Poco::Path(Poco::Path::current());
+    path.append(name);
+    path.setExtension("js");
+    return path.toString();
+}
+
+std::map<std::string, raster::JsModule> raster::modules::moduleCache = {};
+
+std::map<std::string, raster::JsModuleRegisterCallback> raster::modules::moduleBindings = 
+{{
+    { "datetime", [](v8::Local<v8::Object>&object) { raster::registerDateTime(object); } },
+    { "console", [](v8::Local<v8::Object>& object) { raster::registerConsole(object); } },
+    { "system", [](v8::Local<v8::Object>&object) { raster::registerSystem(object); } },
+    //{ "display", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupDisplayModule(isolate, object); } },
+    //{ "opencl", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupOpenclModule(isolate, object); } },
+    //{ "opengl", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupOpenglModule(isolate, object); } },
+    //{ "fs", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupFsModule(isolate, object); } }
+}};
+
+v8::Local<v8::ObjectTemplate> raster::registerCommonJsModules()
+{
+    auto isolate = v8::Isolate::GetCurrent();
+	auto moduleTemplate = v8::ObjectTemplate::New(isolate);
 
 	moduleTemplate->Set(V8_String("require"), v8::FunctionTemplate::New(isolate, require));
 	moduleTemplate->Set(V8_String("exports"), v8::ObjectTemplate::New(isolate));
+    moduleTemplate->Set(V8_String("cpp"), v8::ObjectTemplate::New(isolate));
 
 	return moduleTemplate;
 }
 
-void raster::clear()
+void raster::clearCommonJsModules()
 {
 	modules::moduleCache.clear();
 }
 
-std::string getScript(const char * filename)
+raster::ModuleType moduleType(const std::string& path)
 {
-	std::ifstream file(filename);
-	std::string data;
-	
-	if (file.is_open()) {
-		std::string temp;
-		while (getline(file, temp)) {
-			data += temp + "\n";
-		}
+    if (path.find(".") != std::string::npos || path.find("/") != std::string::npos)
+    {
+        return raster::ModuleType::External;
+    }
 
-		file.close();
-	}
-
-	return data;
-}
-
-std::string getInternalModuleFilename(std::string name)
-{
-	auto path = Poco::Path(cwd);
-	path.append("/modules/");
-	path.append(name);
-	path.setExtension("js");
-
-    auto str = path.toString();
-	return str;
-}
-
-std::string getExternalModuleFilename(std::string name)
-{
-	auto path = Poco::Path(Poco::Path::current());
-	path.append(name);
-	path.setExtension("js");
-	return path.toString();
+    return raster::ModuleType::Internal;
 }
 
 v8::Local<v8::String> createScript(v8::Isolate * isolate, v8::String::Utf8Value& module)
 {
-	auto type = raster::determineModuleType(*module);
-	std::string filename {""};
-	std::string script {""};
+	std::string filename;
 
-	if(type == raster::ModuleType::Internal)
+	if(moduleType(*module) == raster::ModuleType::Internal)
 	{
-		filename = getInternalModuleFilename(*module);
+		filename = parseInternalModulePath(*module);
 	}
 	else
 	{
-		filename = getExternalModuleFilename(*module);
+		filename = parseExternalModulePath(*module);
 	}
 
-	script = getScript(filename.c_str());
-	script.insert(0, "(function(){");
-	script.append("})();");
+	auto script = readScript(filename.c_str());
+	script.insert(0, "(function(raster){");
+	script.append("})(cpp);");
 
 	return v8::String::NewFromUtf8(isolate, script.c_str(), v8::NewStringType::kNormal).ToLocalChecked();
-}
-
-raster::ModuleType raster::determineModuleType(const std::string& path)
-{
-	if(path.find(".") != std::string::npos || path.find("/") != std::string::npos)
-	{
-		return ModuleType::External;
-	}
-	
-	return ModuleType::Internal;
 }
 
 void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args) {
@@ -107,18 +126,18 @@ void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args) {
 		auto currentCpp = global->Get(v8::String::NewFromUtf8(isolate, "cpp"));
 		auto exports = v8::ObjectTemplate::New()->NewInstance();
 		auto module = v8::ObjectTemplate::New()->NewInstance();
-		auto cpp = v8::ObjectTemplate::New();
+		auto raster = v8::Object::New(isolate);
 
 		auto script = createScript(isolate, moduleName);
 		
 		if (modules::moduleBindings.find(*moduleName) != modules::moduleBindings.end())
         {
-			modules::moduleBindings[*moduleName](isolate, cpp);
+			modules::moduleBindings[*moduleName](raster);
         }
 
 		module->Set(v8::String::NewFromUtf8(isolate, "exports"), exports);
-
-		global->Set(v8::String::NewFromUtf8(isolate, "cpp"), cpp->NewInstance());
+        module->Set(v8::String::NewFromUtf8(isolate, "name"), v8::String::NewFromUtf8(isolate, *moduleName));
+		global->Set(v8::String::NewFromUtf8(isolate, "cpp"), raster);
 		global->Set(v8::String::NewFromUtf8(isolate, "module"), module);
 		global->Set(v8::String::NewFromUtf8(isolate, "exports"), exports);
 

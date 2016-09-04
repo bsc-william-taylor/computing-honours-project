@@ -1,8 +1,11 @@
 
-const raster = cpp;
-const module = this;
+//const raster = raster;
 
 function argumentsToString(functionArgs) {
+    if (functionArgs.length === 0) {
+        throw 'Invalid Arguments: No arguments given';
+    }
+
     let combinedString = "";
 
     for (let i = 0; i < functionArgs.length; ++i) {

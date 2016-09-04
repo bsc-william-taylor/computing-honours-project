@@ -35,7 +35,7 @@ void CL_CommandQueue::newInstance(const v8::FunctionCallbackInfo<v8::Value>& arg
 }
 
 void CL_CommandQueue::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{
+{/*
 	auto templateObject = newTemplate(newInstance, "CL_CommandQueue");
 	auto proto = templateObject->PrototypeTemplate();
 
@@ -44,7 +44,7 @@ void CL_CommandQueue::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * i
 	proto->Set(V8_String("enqueueReadBuffer"), V8_Function(enqueueReadBuffer));
 	proto->Set(V8_String("finish"), V8_Function(finish));
 
-	makeConstructor(cpp, templateObject, constructor, "CL_CommandQueue");
+	makeConstructor(cpp, templateObject, constructor, "CL_CommandQueue");*/
 }
 
 void CL_CommandQueue::enqueueWriteBuffer(const v8::FunctionCallbackInfo<v8::Value>& args)

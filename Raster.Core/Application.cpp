@@ -65,6 +65,7 @@ Poco::File RasterApp::extractFilename(const std::vector<std::string>& args)
     return Poco::File(filename);
 }
 
+
 int RasterApp::main(const std::vector<std::string>& args)
 {
     if (triggered)

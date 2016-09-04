@@ -1,5 +1,5 @@
 
-var raster = cpp;
+//const raster = raster;
 
 exports.hardware = function() {
     return {

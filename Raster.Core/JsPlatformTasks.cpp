@@ -9,6 +9,11 @@ JsAwaitTask::JsAwaitTask(std::function<bool(SDL_Event&e)> callback) :
 {
 }
 
+JsAwaitTask::JsAwaitTask(const JsAwaitTask& copy)
+    : JsAwaitTask(copy.action)
+{
+}
+
 JsAwaitTask::~JsAwaitTask()
 {
 }
@@ -23,12 +28,13 @@ void JsAwaitTask::Run()
         if (action(e))
         {
             insert = false;
+            break;
         }
     }
 
     if(insert)
     {
-        platform.ReinsertTask({ this, true });
+        platform.CallOnForegroundThread({ new JsAwaitTask(*this), true });
     }
 }
 
@@ -55,6 +61,11 @@ JsRepeatTask::JsRepeatTask(std::function<void()> action) :
 {
 }
 
+JsRepeatTask::JsRepeatTask(const JsRepeatTask& copy)
+    : JsRepeatTask(copy.task)
+{
+}
+
 JsRepeatTask::~JsRepeatTask()
 {
 }
@@ -62,9 +73,10 @@ JsRepeatTask::~JsRepeatTask()
 void JsRepeatTask::Run()
 {
     auto& platform = JsRuntime::GetPlatform();
+
     if (task != nullptr)
     {
-        platform.ReinsertTask({ this, false });
+        platform.CallOnForegroundThread({ new JsRepeatTask(*this), false });
         task();
     }
 }

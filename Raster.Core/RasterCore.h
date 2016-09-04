@@ -47,7 +47,6 @@
 #include <Poco/SimpleFileChannel.h>
 
 #include "include/libplatform/libplatform.h"
-#include "include/v8-debug.h"
 #include "include/v8.h"
 
 #include <SDL.h>
@@ -63,12 +62,7 @@
 #pragma comment(lib, "icui18n.dll.lib")
 #pragma comment(lib, "icuuc.dll.lib")
 #pragma comment(lib, "v8.dll.lib")
-//#pragma comment(lib, "v8_base_1.lib")
-//#pragma comment(lib, "v8_base_2.lib")
-//#pragma comment(lib, "v8_base_3.lib")
-//#pragma comment(lib, "v8_libbase.lib")
-//#pragma comment(lib, "v8_libplatform.lib")
-//#pragma comment(lib, "v8_nosnapshot.lib")
+#pragma comment(lib, "mksnapshot.lib")
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "Winmm.lib")
 

@@ -10,5 +10,5 @@
 namespace raster {
     std::string readFile(const char * filename);
 
-	void setupFsModule(v8::Isolate * isolate, v8::Local<v8::ObjectTemplate>& object);
+	void setupFsModule(v8::Isolate * isolate, v8::Local<v8::Object>& object);
 }

@@ -8,7 +8,9 @@ namespace raster {
 	void createWindow(const v8::FunctionCallbackInfo<v8::Value>& args);
 
 	class Window : public JsObject<Window> {
-		static v8::Persistent<v8::Function> constructor;
+        static v8::Global<v8::ObjectTemplate> objectTemplate;
+		static v8::Global<v8::Function> constructor;
+
 		std::string windowTitle;
 		SDL_GLContext context;
 		SDL_Window * window;
@@ -17,9 +19,10 @@ namespace raster {
 		Window();
 		~Window();
 
+        static void create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate);
+
 		static void enableOpenGL(const v8::FunctionCallbackInfo<v8::Value>& args);
-		static void create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate);
-		static void newInstance(const v8::FunctionCallbackInfo<v8::Value>& info);
+		static void newWindow(const v8::FunctionCallbackInfo<v8::Value>& info);
 		static void swapBuffers(const v8::FunctionCallbackInfo<v8::Value>& info);
 		static void setPosition(const v8::FunctionCallbackInfo<v8::Value>& args);
 		static void setTitle(const v8::FunctionCallbackInfo<v8::Value>& args);
@@ -33,29 +36,10 @@ namespace raster {
 		}
 	};
 
-	static void setupDisplayModule(v8::Isolate * isolate, v8::Local<v8::ObjectTemplate>& object) {
-		object->Set(V8_String("showMessageBox"), v8::FunctionTemplate::New(isolate, showMessageBox));
-		object->Set(V8_String("createWindow"), v8::FunctionTemplate::New(isolate, createWindow));
+	static void setupDisplayModule(v8::Isolate * isolate, v8::Local<v8::Object>& object) {
+		object->Set(V8_String("showMessageBox"), v8::Function::New(isolate, showMessageBox));
+		object->Set(V8_String("createWindow"), v8::Function::New(isolate, createWindow));
 
 		Window::create(object, isolate);
 	}
 }
-
-/*
-// Properties
-//templateObject->InstanceTemplate()->SetAccessor(V8_String("name"), get, set);
-
-static void get(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info) {
-auto that = info.This();
-const Window * obj = unwrap(that);
-auto isolate = v8::Isolate::GetCurrent();
-auto value = v8::String::NewFromUtf8(isolate, obj->name.c_str());
-info.GetReturnValue().Set(value);
-}
-
-static void set(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info) {
-auto that = info.This();
-auto obj = unwrap(that);
-v8::String::Utf8Value newValue(value);
-obj->name = std::string(*newValue);
-}*/

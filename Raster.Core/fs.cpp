@@ -18,7 +18,7 @@ std::string raster::readFile(const char * filename)
     return data;
 }
 
-void raster::setupFsModule(v8::Isolate * isolate, v8::Local<v8::ObjectTemplate>& object) {
-    TextFile::create(object, isolate);
-    Image::create(object, isolate);
+void raster::setupFsModule(v8::Isolate * isolate, v8::Local<v8::Object>& object) {
+    //TextFile::create(object, isolate);
+    //Image::create(object, isolate);
 }

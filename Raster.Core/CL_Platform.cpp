@@ -76,11 +76,11 @@ void CL_Platform::getDevices(const v8::FunctionCallbackInfo<v8::Value>& args)
 }
 
 void CL_Platform::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{
+{/*
 	auto templateObject = newTemplate(newInstance, "CL_Platform");
 	
 	templateObject->PrototypeTemplate()->Set(V8_String("getDevices"), v8::FunctionTemplate::New(isolate, getDevices)->GetFunction());
 	templateObject->PrototypeTemplate()->Set(V8_String("getInfo"), v8::FunctionTemplate::New(isolate, getInfo)->GetFunction());
 
-	makeConstructor(cpp, templateObject, constructor, "CL_Platform");
+	makeConstructor(cpp, templateObject, constructor, "CL_Platform");*/
 }

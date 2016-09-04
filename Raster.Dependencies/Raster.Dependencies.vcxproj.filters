@@ -18,13 +18,13 @@
     <None Include="Modules\opengl.js">
       <Filter>Modules</Filter>
     </None>
-    <None Include="Modules\time.js">
-      <Filter>Modules</Filter>
-    </None>
     <None Include="Modules\opencl.js">
       <Filter>Modules</Filter>
     </None>
     <None Include="Modules\system.js">
+      <Filter>Modules</Filter>
+    </None>
+    <None Include="Modules\datetime.js">
       <Filter>Modules</Filter>
     </None>
   </ItemGroup>

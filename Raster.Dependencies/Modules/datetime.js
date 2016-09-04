@@ -1,22 +1,23 @@
 ﻿
-// Replace with Date.now()
-let timerCounter = 0;
+let counter = 0;
+let timers = {};
 
-const raster = cpp;
-const timers = {};
+function beginTimer(callback, ms, repeat, identifier) {
+    const uniqueIdentifier = identifier || ++counter;
+    timers[uniqueIdentifier] = timers[uniqueIdentifier] || { callback, cancel: false, repeat };
 
-function setTimeout(callback, ms, identifier) {
-    const id = identifier || ++timerCounter;
-    timers[id] = timers[id] || { callback: callback, cancel: false };
-
-    const timer = timers[id];
-    raster.timeout(ms, () => {
+    const timer = timers[uniqueIdentifier];
+    const invoke = () => {
         if (!timer.cancel) {
-            timer.callback(id);
-         }
-    });
+            timer.callback(uniqueIdentifier);
+            if (timer.repeat) {
+                beginTimer(callback, ms, true, uniqueIdentifier);
+            }
+        }
+    };
 
-    return id;
+    raster.timeout(uniqueIdentifier, ms, invoke);
+    return uniqueIdentifier;
 }
 
 exports.clearInterval = function (uniqueIdentifier) {
@@ -39,12 +40,7 @@ exports.clearTimeout = function (uniqueIdentifier) {
 
 exports.setInterval = function (callback, ms) {
     if (callback && ms >= 0) {
-        const reschedule = (identifier) => {
-            setInterval(callback, ms, identifier);
-            callback();
-        }
-
-        return setTimeout(reschedule, ms);
+        return beginTimer(() => callback(), ms, true);
     } else {
         throw 'Error function takes 2 arguments';
     }
@@ -52,7 +48,7 @@ exports.setInterval = function (callback, ms) {
 
 exports.setTimeout = function (callback, ms) {
     if (callback && ms >= 0) {
-        return setTimeout(() => callback(), ms);
+        return beginTimer(() => callback(), ms, false);
     } else {
         throw 'Error function takes 2 arguments';
     }

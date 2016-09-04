@@ -1,4 +1,5 @@
 
+/*
 const { setInterval } = require('time');
 const { openWindow } = require('display');
 
@@ -29,8 +30,8 @@ class Bootstrapper {
     }
 }
 
-let renderData = fs.readJson('shapes.json');
-let rotation = 0.0;
+//let renderData = fs.readJson('shapes.json');
+//let rotation = 0.0;
 
 function renderObject(gl, object, type) {
     const { x, y, z } = object.translate;
@@ -64,3 +65,16 @@ app.bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {
 
     rotation += 0.5;
 });
+
+*/
+
+const { openWindow } = require('display');
+
+openWindow({ x: 100, y: 100, w: 720, h: 500 }, window => {
+    window.setTitle('HelloWorld');
+    window.show();
+    window.enableOpenGL();
+    window.onFrame(60, () => {
+        window.swapBuffers();
+    });
+})
