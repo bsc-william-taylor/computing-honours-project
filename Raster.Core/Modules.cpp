@@ -48,13 +48,13 @@ std::map<std::string, raster::JsModule> raster::modules::moduleCache = {};
 
 std::map<std::string, raster::JsModuleRegisterCallback> raster::modules::moduleBindings = 
 {{
-    { "datetime", [](v8::Local<v8::Object>&object) { raster::registerDateTime(object); } },
+    { "datetime", [](v8::Local<v8::Object>& object) { raster::registerDateTime(object); } },
+    { "display", []( v8::Local<v8::Object>& object) { raster::registerDisplay(object); } },
     { "console", [](v8::Local<v8::Object>& object) { raster::registerConsole(object); } },
-    { "system", [](v8::Local<v8::Object>&object) { raster::registerSystem(object); } },
-    //{ "display", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupDisplayModule(isolate, object); } },
-    //{ "opencl", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupOpenclModule(isolate, object); } },
-    //{ "opengl", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupOpenglModule(isolate, object); } },
-    //{ "fs", [](v8::Isolate * isolate, v8::Local<v8::Object>&object) { setupFsModule(isolate, object); } }
+    { "system", [](v8::Local<v8::Object>& object) { raster::registerSystem(object); } },
+    { "opencl", [](v8::Local<v8::Object>& object) { raster::registerOpenCL(object); } },
+    { "opengl", [](v8::Local<v8::Object>& object) { raster::registerOpenGL(object); } },
+    { "fs", [](v8::Local<v8::Object>& object) { raster::registerFs(object); } }
 }};
 
 v8::Local<v8::ObjectTemplate> raster::registerCommonJsModules()

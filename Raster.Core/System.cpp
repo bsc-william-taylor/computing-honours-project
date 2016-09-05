@@ -74,8 +74,6 @@ void raster::system::hasSSE42(const v8::FunctionCallbackInfo<v8::Value>& args)
 	args.GetReturnValue().Set(SDL_HasSSE42() ? true : false);
 }
 
-
-
 void raster::registerSystem(v8::Local<v8::Object>& object) 
 {
     const auto isolate = v8::Isolate::GetCurrent();

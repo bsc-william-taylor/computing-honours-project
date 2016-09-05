@@ -36,10 +36,10 @@ namespace raster {
 		}
 	};
 
-	static void setupDisplayModule(v8::Isolate * isolate, v8::Local<v8::Object>& object) {
-		object->Set(V8_String("showMessageBox"), v8::Function::New(isolate, showMessageBox));
-		object->Set(V8_String("createWindow"), v8::Function::New(isolate, createWindow));
+	static void registerDisplay(v8::Local<v8::Object>& object) {
+		//object->Set(V8_String("showMessageBox"), v8::Function::New(isolate, showMessageBox));
+		//object->Set(V8_String("createWindow"), v8::Function::New(isolate, createWindow));
 
-		Window::create(object, isolate);
+		//Window::create(object, isolate);
 	}
 }

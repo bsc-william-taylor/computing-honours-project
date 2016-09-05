@@ -1,7 +1,7 @@
 
-import opencl, { CL_Context, CL_Program, CL_Buffer, CL_Kernel, CL_CommandQueue } from 'opencl';
-import * as helpers from './opencl-helpers';
-import console from 'console';
+const opencl, { CL_Context, CL_Program, CL_Buffer, CL_Kernel, CL_CommandQueue } = require('opencl');
+const helpers = require('opencl-helpers');
+const console = require('console');
 
 const A = helpers.randomArray(100);
 const B = helpers.randomArray(100);
@@ -13,7 +13,6 @@ function bootstrap(device, platform) {
     const context = new CL_Context(device);
     const program = new CL_Program(context, kernals);
 
-    // Build Program
     if (program.build(device) == opencl.CL_BUILD_SUCCESS) {
         const bufferSize = A.length;
         const bufferBytes = 4 * A.length;
@@ -38,7 +37,7 @@ function bootstrap(device, platform) {
     }
 }
 
-const chosenPlatform = helpers.getPlatform();
-const chosenDevice = helpers.getDevices(chosenPlatform);
+const platform = helpers.getPlatform();
+const device = helpers.getDevices(platform);
 
-bootstrap(chosenDevice, chosenPlatform);
+bootstrap(device, platform);

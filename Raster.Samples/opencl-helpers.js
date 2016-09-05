@@ -1,9 +1,9 @@
 
-import opencl, { Platform } from 'opencl';
-import console from 'console';
-import fs from 'fs';
+const opencl, { Platform } = require('opencl');
+const console = require('opencl');
+const fs = require('opencl');
 
-export function getPlatform() : Platform {
+export function getPlatform() {
     console.log('\n');
     const platforms = opencl.Platform.get();
     platforms.forEach((platform, index) => {
@@ -18,7 +18,7 @@ export function getPlatform() : Platform {
     return platforms[index];
 }
 
-export function randomArray(size) : number[] {
+exports.randomArray = function(size){
     const randomValueArray = [];
     for(let i = 0; i < size; ++i) {
         randomValueArray.push(Math.floor((Math.random() * 100) + 1));
@@ -26,8 +26,7 @@ export function randomArray(size) : number[] {
     return randomValueArray;
 }
 
-// Get kernel source code
-export function getKernelSource(filename: string) {
+exports.getKernelSource = function(filename) {
     const kernelCode = fs.readFile(filename);
 
     if(kernelCode.contents.length > 0) {
@@ -37,8 +36,7 @@ export function getKernelSource(filename: string) {
     }
 }
 
-// Get Devices/Hardware
-export function getDevices(chosenPlatform: Platform) {
+exports.getDevices = function(chosenPlatform) {
     const devices = chosenPlatform.getDevices();
     devices.forEach((device, index) => {
         console.log(`${index}. Device Name: ${device.getInfo(opencl.CL_DEVICE_NAME)}`);

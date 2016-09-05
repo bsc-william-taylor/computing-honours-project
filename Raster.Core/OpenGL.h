@@ -20,7 +20,7 @@ namespace raster {
 	void end(const v8::FunctionCallbackInfo<v8::Value>& args);
 
 
-	static void setupOpenglModule(v8::Isolate * isolate, v8::Local<v8::Object>& object) {
+	static void registerOpenGL(v8::Local<v8::Object>& object) {
 		/*object->Set(V8_String("gluPerspective"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), perspective));
 		object->Set(V8_String("glEnable"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), enable));
 		object->Set(V8_String("glMatrixMode"), v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), matrixMode));

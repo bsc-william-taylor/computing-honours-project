@@ -14,7 +14,7 @@
 namespace raster {
 	void getPlatforms(const v8::FunctionCallbackInfo<v8::Value>& args);
 
-	static void setupOpenclModule(v8::Isolate * isolate, v8::Local<v8::Object>& object) {
+	static void registerOpenCL(v8::Local<v8::Object>& object) {
 		//object->Set(V8_String("getPlatforms"), v8::FunctionTemplate::New(isolate, getPlatforms));
 
 		//CL_CommandQueue::create(object, isolate);
