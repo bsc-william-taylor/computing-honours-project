@@ -1,6 +1,4 @@
 
-var _cpp = cpp;
-
 function getDefaultWindowArgs(givenArgs) {
     var args = {};
     args.title = givenArgs.title || "";
@@ -11,11 +9,11 @@ function getDefaultWindowArgs(givenArgs) {
     return args;
 }
 
-exports.openMessageBox = function (title, body, callback) {
+exports.openMessage = function (title, body, callback) {
     if (title && body && callback) {
-        _cpp.showMessageBox(title, body, callback);
+        raster.showMessageBox(title, body, callback);
     } else {
-        throw 'Expected 3 args to openMessageBox';
+        throw 'Expected 3 args to openMessage';
     }
 }
 
@@ -26,6 +24,6 @@ exports.openFullscreenWindow = function(callback) {
 exports.openWindow = function (args, callback) {
     if (args && callback) {
         var windowSettings = getDefaultWindowArgs(args);
-        _cpp.createWindow(new _cpp.Window(windowSettings), callback);
+        raster.createWindow(new raster.Window(windowSettings), callback);
     }
 }

@@ -1,6 +1,4 @@
 
-//const raster = raster;
-
 function argumentsToString(functionArgs) {
     if (functionArgs.length === 0) {
         throw 'Invalid Arguments: No arguments given';
@@ -12,7 +10,7 @@ function argumentsToString(functionArgs) {
         const arg = functionArgs[i];
 
         if (typeof (arg) === "object") {
-            combinedString += JSON.stringify(arg);
+            combinedString += JSON.stringify(arg, null, 2);
         } else {
             combinedString += arg;
         }

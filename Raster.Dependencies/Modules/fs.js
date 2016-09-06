@@ -1,20 +1,18 @@
 
-var Cpp = cpp;
-
-exports.readFile = function(path) {
-    var file = new Cpp.TextFile();
+exports.readFile = function (path) {
+    const file = new raster.TextFile();
     file.read(path);
     return file;
 }
 
 exports.readImage = function (path) {
-    var file = new Cpp.Image();
+    const file = new raster.Image();
     file.read(path);
     return file;
 }
 
 exports.readJson = function (path) {
-    var file = new Cpp.TextFile();
+    const file = new raster.TextFile();
     file.read(path);
     return JSON.parse(file.contents);
 }

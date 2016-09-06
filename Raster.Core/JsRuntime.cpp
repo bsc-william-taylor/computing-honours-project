@@ -7,7 +7,7 @@
 
 using namespace raster;
 
-JsPlatform * JsRuntime::platform = new JsPlatform();
+JsPlatform JsRuntime::platform;
 
 JsRuntime::JsRuntime(std::vector<std::string>& args)
 {
@@ -40,7 +40,7 @@ void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> c
         printException(trycatch);
     }
 
-    while (platform->PumpMessageLoop(isolate));
+    while (platform.PumpMessageLoop(isolate));
 }
 
 void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> context)
@@ -67,7 +67,7 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
         std::cout << *v8::String::Utf8Value(output->ToString()) << std::endl;
         std::cout << "> ";
 
-        while (platform->PumpMessageLoop(isolate));
+        while (platform.PumpMessageLoop(isolate));
     }
 }
 
@@ -116,7 +116,7 @@ void JsRuntime::initialise(std::vector<std::string>& args)
     v8::V8::InitializeExternalStartupData(argv[0]);
     v8::V8::SetFlagsFromString(v8Flags, strlen(v8Flags));
     v8::V8::SetFlagsFromCommandLine(&argc, argv, false);
-    v8::V8::InitializePlatform(platform);
+    v8::V8::InitializePlatform(&platform);
     v8::V8::Initialize();
 
     delete[] argv;

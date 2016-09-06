@@ -1,21 +1,15 @@
 
-var _cpp = cpp;
+exports.CommandQueue = raster.CommandQueue;
+exports.Context = raster.Context;
+exports.Program = raster.Program;
+exports.Buffer = raster.Buffer;
+exports.Kernel = raster.Kernel;
 
-exports.CL_CommandQueue = _cpp.CL_CommandQueue;
-exports.CL_Context = _cpp.CL_Context;
-exports.CL_Program = _cpp.CL_Program;
-exports.CL_Buffer = _cpp.CL_Buffer;
-exports.CL_Kernel = _cpp.CL_Kernel;
+exports.CL_BUILD_SUCCESS = 0;
+exports.CL_DEVICE_NAME = 0;
+exports.CL_PLATFORM_NAME = 0;
+exports.CL_PLATFORM_VERSION = 1;
 
-exports.default = {
-    Platform: {
-        get: function () {
-            return _cpp.getPlatforms();
-        }
-    },
-
-    CL_BUILD_SUCCESS: 0,
-    CL_DEVICE_NAME: 0,
-    CL_PLATFORM_NAME: 0,
-    CL_PLATFORM_VERSION: 1
+exports.Platform =  {
+    get: () => raster.getPlatforms()
 }

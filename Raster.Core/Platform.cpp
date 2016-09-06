@@ -1,9 +1,10 @@
 ﻿
-#include "CL_Platform.h"
-#include "CL_Device.h"
+#include "Platform.h"
+#include "Device.h"
 
 using namespace raster;
 
+v8::Persistent<v8::ObjectTemplate> CL_Platform::objectTemplate;
 v8::Persistent<v8::Function> CL_Platform::constructor;
 
 CL_Platform::CL_Platform()
@@ -18,11 +19,15 @@ CL_Platform::~CL_Platform()
 
 void CL_Platform::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
-	v8::HandleScope scope(info.GetIsolate());
-	auto that = info.This();
+    auto isolate = v8::Isolate::GetCurrent();
+    auto object = newTemplate(objectTemplate);
+
+    object->Set(V8_String("getDevices"), v8::FunctionTemplate::New(isolate, getDevices)->GetFunction());
+    object->Set(V8_String("getInfo"), v8::FunctionTemplate::New(isolate, getInfo)->GetFunction());
+
 	auto platform = new CL_Platform();
-	platform->wrap(that);
-	info.GetReturnValue().Set(that);
+	platform->wrap(object);
+	info.GetReturnValue().Set(object);
 }
 
 v8::Handle<v8::Object> CL_Platform::newInstance()
@@ -75,12 +80,12 @@ void CL_Platform::getDevices(const v8::FunctionCallbackInfo<v8::Value>& args)
 	args.GetReturnValue().Set(deviceArray);
 }
 
-void CL_Platform::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{/*
-	auto templateObject = newTemplate(newInstance, "CL_Platform");
-	
-	templateObject->PrototypeTemplate()->Set(V8_String("getDevices"), v8::FunctionTemplate::New(isolate, getDevices)->GetFunction());
-	templateObject->PrototypeTemplate()->Set(V8_String("getInfo"), v8::FunctionTemplate::New(isolate, getInfo)->GetFunction());
+void CL_Platform::create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate)
+{
+    if (constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newInstance));
+    }
 
-	makeConstructor(cpp, templateObject, constructor, "CL_Platform");*/
+    cpp->Set(v8::String::NewFromUtf8(isolate, "Platform"), constructor.Get(isolate));
 }

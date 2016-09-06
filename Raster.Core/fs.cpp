@@ -19,6 +19,8 @@ std::string raster::readFile(const char * filename)
 }
 
 void raster::registerFs(v8::Local<v8::Object>& object) {
-    //TextFile::create(object, isolate);
+    const auto isolate = v8::Isolate::GetCurrent();
+
+    TextFile::create(object, isolate);
     //Image::create(object, isolate);
 }

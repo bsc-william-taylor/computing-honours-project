@@ -5,6 +5,7 @@
 
 class Image : public JsObject<Image>
 {
+    static v8::Persistent<v8::ObjectTemplate> objectTemplate;
 	static v8::Persistent<v8::Function> constructor;
 
 	SDL_Surface * surface;
@@ -20,7 +21,7 @@ public:
 		return surface;
 	}
 
-	static void create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate);
+	static void create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate);
 	static void newInstance(const v8::FunctionCallbackInfo<v8::Value>& args);
 	static void read(const v8::FunctionCallbackInfo<v8::Value>& args);
 

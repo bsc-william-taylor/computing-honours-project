@@ -1,6 +1,7 @@
 ﻿
 #include "JsRuntime.h"
 #include "DateTime.h"
+#include "JsExtensions.h"
 
 const auto TimeoutEvent = SDL_USEREVENT + 3;
 
@@ -27,16 +28,11 @@ void raster::datetime::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
 
     std::pair<v8::Task*, bool> pair(new JsAwaitTask([=](SDL_Event e) {
         if (e.user.type == TimeoutEvent && e.user.code == uniqueID) {
-            v8::TryCatch trycatch(isolate);
             auto function = callback.Get(isolate);
-            function->Call(function, 0, nullptr);
 
-            if (trycatch.HasCaught())
-            {
-                v8::String::Utf8Value exception_str(trycatch.Exception());
-                const char * error = *exception_str;
-                std::cerr << "Exception thrown: " << error << std::endl;
-            }
+            v8::TryCatch trycatch(isolate);
+            function->Call(function, 0, nullptr);
+            CatchExceptions(trycatch);
 
             return true;
         }

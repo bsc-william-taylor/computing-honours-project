@@ -1,11 +1,12 @@
 
-/*
-const { setInterval } = require('time');
-const { openWindow } = require('display');
-
+const { openWindow, openMessageBox } = require('display');
+const { setInterval } = require('datetime');
 const console = require('console');
 const gl = require('opengl');
 const fs = require('fs');
+
+let renderData = fs.readJson('shapes.json');
+let rotation = 0.0;
 
 class Bootstrapper {
     setupOpenGL({ glEnable, glMatrixMode, glLoadIdentity, gluPerspective }) {
@@ -19,19 +20,17 @@ class Bootstrapper {
         openWindow(windowSettings, window => {
             window.setTitle('Basic OpenGL Triangle');
             window.show();
+            window.enableOpenGL();
 
-            //this.setupOpenGL(gl);
+            this.setupOpenGL(gl);
 
             window.onFrame(60, () => {
-                //onRender(gl);
-                //window.swapBuffers();
+                onRender(gl);
+                window.swapBuffers();
             });
         });
     }
 }
-
-//let renderData = fs.readJson('shapes.json');
-//let rotation = 0.0;
 
 function renderObject(gl, object, type) {
     const { x, y, z } = object.translate;
@@ -43,17 +42,17 @@ function renderObject(gl, object, type) {
     gl.glBegin(type);
 
     object.faces.forEach((face, index) => {
-        const colour = object.colours[index];
-        gl.glColor3f(colour.r, colour.g, colour.b);
-        face.vertices.forEach(vertex => {
-            gl.glVertex3f(vertex.x, vertex.y, vertex.z);
+        const { r, g, b } = object.colours[index];
+        gl.glColor3f(r, g, b);
+        face.vertices.forEach(({ x, y, z }) => {
+            gl.glVertex3f(x, y, z);
         });
     });
 
     gl.glEnd();
 }
 
-//setInterval(() => renderData = fs.readJson('shapes.json'), 1000);
+setInterval(() => renderData = fs.readJson('shapes.json'), 1000);
 
 const app = new Bootstrapper();
 app.bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {
@@ -63,18 +62,5 @@ app.bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {
     renderObject(gl, renderData.pyramid, gl.GL_TRIANGLES);
     renderObject(gl, renderData.cube, gl.GL_QUADS);
 
-    rotation += 0.5;
+    rotation += renderData.speed;
 });
-
-*/
-
-const { openWindow } = require('display');
-
-openWindow({ x: 100, y: 100, w: 720, h: 500 }, window => {
-    window.setTitle('HelloWorld');
-    window.show();
-    window.enableOpenGL();
-    window.onFrame(60, () => {
-        window.swapBuffers();
-    });
-})

@@ -1,6 +1,8 @@
 ﻿
 #include "ImageFile.h"
 
+
+v8::Persistent<v8::ObjectTemplate> Image::objectTemplate;
 v8::Persistent<v8::Function> Image::constructor;
 
 Image::Image()
@@ -16,18 +18,14 @@ Image::~Image()
 	}
 }
 
-void Image::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
+void Image::create(v8::Local<v8::Object>& raster, v8::Isolate * isolate)
 {
-	//auto templateObject = newTemplate(newInstance, "Image");
-	/*templateObject->PrototypeTemplate()->Set(V8_String("read"), v8::FunctionTemplate::New(isolate, read)->GetFunction());
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("height"), getHeight, setHeight);
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("width"), getWidth, setWidth);
+    if (constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newInstance));
+    }
 
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("filename"), getFilename, setFilename);
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("path"), getPath, setPath);
-	templateObject->InstanceTemplate()->SetAccessor(V8_String("ext"), getExt, setExt);*/
-
-	//makeConstructor(cpp, templateObject, constructor, "Image");
+    raster->Set(v8::String::NewFromUtf8(isolate, "Image"), constructor.Get(isolate));
 }
 
 void Image::read(const v8::FunctionCallbackInfo<v8::Value>& args)
@@ -43,7 +41,6 @@ void Image::read(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 void Image::setWidth(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	
 }
 
 void Image::getWidth(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info)
@@ -114,6 +111,17 @@ void Image::getPath(v8::Local<v8::String> property, const v8::PropertyCallbackIn
 
 void Image::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
+    //auto templateObject = newTemplate(newInstance, "Image");
+    /*templateObject->PrototypeTemplate()->Set(V8_String("read"), v8::FunctionTemplate::New(isolate, read)->GetFunction());
+    templateObject->InstanceTemplate()->SetAccessor(V8_String("height"), getHeight, setHeight);
+    templateObject->InstanceTemplate()->SetAccessor(V8_String("width"), getWidth, setWidth);
+
+    templateObject->InstanceTemplate()->SetAccessor(V8_String("filename"), getFilename, setFilename);
+    templateObject->InstanceTemplate()->SetAccessor(V8_String("path"), getPath, setPath);
+    templateObject->InstanceTemplate()->SetAccessor(V8_String("ext"), getExt, setExt);*/
+
+    //makeConstructor(cpp, templateObject, constructor, "Image");
+
 	v8::HandleScope scope(info.GetIsolate());
 	auto obj = new Image();
 	auto that = info.This();

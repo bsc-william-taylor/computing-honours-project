@@ -1,9 +1,10 @@
 ﻿#include "CommandQueue.h"
-#include "CL_Buffer.h"
+#include "Buffer.h"
 #include "Kernel.h"
 
 using namespace raster;
 
+v8::Persistent<v8::ObjectTemplate> CL_CommandQueue::objectTemplate;
 v8::Persistent<v8::Function> CL_CommandQueue::constructor;
 
 CL_CommandQueue::CL_CommandQueue(CL_Context * context, CL_Device * device)
@@ -22,11 +23,16 @@ void CL_CommandQueue::newInstance(const v8::FunctionCallbackInfo<v8::Value>& arg
 	{
 		auto context = CL_Context::unwrap(args[0].As<v8::Object>());
 		auto device = CL_Device::unwrap(args[1].As<v8::Object>());
-		v8::HandleScope scope(args.GetIsolate());
-		auto that = args.This();
+		auto object = newTemplate(objectTemplate);
+
+        object->Set(V8_String("enqueueWriteBuffer"), V8_Function(enqueueWriteBuffer));
+        object->Set(V8_String("enqueueNDRangeKernel"), V8_Function(enqueueNDRangeKernel));
+        object->Set(V8_String("enqueueReadBuffer"), V8_Function(enqueueReadBuffer));
+        object->Set(V8_String("finish"), V8_Function(finish));
+
 		auto queue = new CL_CommandQueue(context, device);
-		queue->wrap(that);
-		args.GetReturnValue().Set(that);
+		queue->wrap(object);
+		args.GetReturnValue().Set(object);
 	}
 	else
 	{
@@ -34,16 +40,19 @@ void CL_CommandQueue::newInstance(const v8::FunctionCallbackInfo<v8::Value>& arg
 	}
 }
 
-void CL_CommandQueue::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{/*
+void CL_CommandQueue::create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate)
+{
+    if (constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newInstance));
+    }
+
+    cpp->Set(v8::String::NewFromUtf8(isolate, "CommandQueue"), constructor.Get(isolate));
+/*
 	auto templateObject = newTemplate(newInstance, "CL_CommandQueue");
 	auto proto = templateObject->PrototypeTemplate();
 
-	proto->Set(V8_String("enqueueWriteBuffer"), V8_Function(enqueueWriteBuffer));
-	proto->Set(V8_String("enqueueNDRangeKernel"), V8_Function(enqueueNDRangeKernel));
-	proto->Set(V8_String("enqueueReadBuffer"), V8_Function(enqueueReadBuffer));
-	proto->Set(V8_String("finish"), V8_Function(finish));
-
+	
 	makeConstructor(cpp, templateObject, constructor, "CL_CommandQueue");*/
 }
 

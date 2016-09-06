@@ -1,8 +1,10 @@
 
-#include "CL_Device.h"
+#include "Device.h"
 
 using namespace raster;
 
+
+v8::Persistent<v8::ObjectTemplate> CL_Device::objectTemplate;
 v8::Persistent<v8::Function> CL_Device::constructor;
 
 CL_Device::CL_Device()
@@ -23,9 +25,11 @@ v8::Handle<v8::Object> CL_Device::newInstance()
 
 void CL_Device::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
-	v8::HandleScope scope(info.GetIsolate());
-	auto that = info.This();
+    auto that = newTemplate(objectTemplate);
 	auto device = new CL_Device();
+
+    that->Set(V8_String("getInfo"), v8::Function::New(info.GetIsolate(), getInfo));
+
 	device->wrap(that);
 	info.GetReturnValue().Set(that);
 }
@@ -35,13 +39,14 @@ void CL_Device::setDevice(cl::Device device)
 	this->device = device;
 }
 
-void CL_Device::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{/*
-	auto templateObject = newTemplate(newInstance, "CL_Device");
+void CL_Device::create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate)
+{
+    if (constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newInstance));
+    }
 
-	templateObject->PrototypeTemplate()->Set(V8_String("getInfo"), v8::FunctionTemplate::New(isolate, getInfo)->GetFunction());
-
-	makeConstructor(cpp, templateObject, constructor, "CL_Device");*/
+    cpp->Set(v8::String::NewFromUtf8(isolate, "Device"), constructor.Get(isolate));
 }
 
 void CL_Device::getInfo(const v8::FunctionCallbackInfo<v8::Value>& args)

@@ -1,6 +1,8 @@
 
 #include "Application.h"
 #include "JsRuntime.h"
+#include "gl/GLU.h"
+#include "gl/gl.h"
 
 using namespace Poco::Util;
 using namespace raster;
@@ -105,7 +107,6 @@ int RasterApp::main(const std::vector<std::string>& args)
 
 void RasterApp::handleHelp(const std::string& name, const std::string& v)
 {
-    std::cout << std::endl;
     std::cout << "For help, contact William Taylor at B00235610@studentmail.uws.ac.uk.";
     std::cout << std::endl;
     triggered = true;
@@ -131,15 +132,22 @@ void RasterApp::handleVersion(const std::string& name, const std::string& v)
     ss << "SDL version: ";
     ss << static_cast<int>(version.major) << ".";
     ss << static_cast<int>(version.minor) << ".";
-    ss << static_cast<int>(version.patch);
+    ss << static_cast<int>(version.patch) << std::endl;
 
-    std::cout << std::endl << ss.str() << std::endl;
+    // OpenGL Version
+    ss << "OpenGL Version: ";
+    ss << "N/A" << std::endl;
+
+    // OpenCL Version
+    ss << "OpenCL Version: ";
+    ss << CL_DRIVER_VERSION << std::endl;
+
+    std::cout << ss.str() << std::endl;
     triggered = true;
 }
 
 void RasterApp::handleInfo(const std::string& name, const std::string& v)
 {
-    std::cout << std::endl;
     std::cout << "Raster is a platform for GPU centric JavaScript applications. ";
     std::cout << std::endl;
     triggered = true;

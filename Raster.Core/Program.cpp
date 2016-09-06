@@ -1,7 +1,8 @@
-﻿#include "CL_Program.h"
+﻿#include "Program.h"
 
 using namespace raster;
 
+v8::Persistent<v8::ObjectTemplate> CL_Program::objectTemplate;
 v8::Persistent<v8::Function> CL_Program::constructor;
 
 CL_Program::CL_Program(CL_Context * device, std::string source)
@@ -17,14 +18,16 @@ void CL_Program::newInstance(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	if (args.Length() == 2)
 	{
+        auto isolate = v8::Isolate::GetCurrent();
 		auto context = CL_Context::unwrap(args[0].As<v8::Object>());
-		v8::String::Utf8Value source(args[1]);
+        auto templateObject = newTemplate(objectTemplate);
 
-		v8::HandleScope scope(args.GetIsolate());
-		auto that = args.This();
+        templateObject->Set(V8_String("build"), v8::Function::New(isolate, build));
+
+		v8::String::Utf8Value source(args[1]);
 		auto device = new CL_Program(context, *source);
-		device->wrap(that);
-		args.GetReturnValue().Set(that);
+		device->wrap(templateObject);
+		args.GetReturnValue().Set(templateObject);
 	}
 	else
 	{
@@ -53,11 +56,12 @@ void CL_Program::build(const v8::FunctionCallbackInfo<v8::Value>& args)
 	}
 }
 
-void CL_Program::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
-{/*
-	auto templateObject = newTemplate(newInstance, "CL_Program");
+void CL_Program::create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate)
+{
+    if (constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newInstance));
+    }
 
-	templateObject->PrototypeTemplate()->Set(V8_String("build"), v8::FunctionTemplate::New(isolate, build)->GetFunction());
-
-	makeConstructor(cpp, templateObject, constructor, "CL_Program");*/
+    cpp->Set(v8::String::NewFromUtf8(isolate, "Program"), constructor.Get(isolate));
 }

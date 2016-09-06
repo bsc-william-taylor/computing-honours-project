@@ -20,13 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="CL_Buffer.cpp" />
-    <ClCompile Include="CL_Context.cpp" />
-    <ClCompile Include="CL_Device.cpp" />
-    <ClCompile Include="CL_Platform.cpp" />
-    <ClCompile Include="CL_Program.cpp" />
+    <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Context.cpp" />
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Program.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="fs.cpp" />
+    <ClCompile Include="JsExtensions.cpp" />
     <ClCompile Include="JsPlatformTasks.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="JsPlatform.cpp" />
@@ -44,12 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="CL_Buffer.h" />
-    <ClInclude Include="CL_Context.h" />
-    <ClInclude Include="CL_Device.h" />
-    <ClInclude Include="CL_Platform.h" />
-    <ClInclude Include="CL_Program.h" />
+    <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Context.h" />
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="Platform.h" />
+    <ClInclude Include="Program.h" />
     <ClInclude Include="CommandQueue.h" />
+    <ClInclude Include="JsExtensions.h" />
     <ClInclude Include="JsPlatformTasks.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="JsArrayAllocater.h" />

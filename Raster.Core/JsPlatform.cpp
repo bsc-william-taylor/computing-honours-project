@@ -3,7 +3,6 @@
 
 void JsPlatform::CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected_runtime)
 {
-    // Move to background thread later.
     task->Run();
     delete task;
 };

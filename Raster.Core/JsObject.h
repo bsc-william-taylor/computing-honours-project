@@ -9,7 +9,7 @@ class JsObject
 public:
     virtual ~JsObject() = default;
 
-    static v8::Local<v8::Object> newTemplate(v8::Global<v8::ObjectTemplate>& templ)
+    static v8::Local<v8::Object> newTemplate(v8::Persistent<v8::ObjectTemplate>& templ)
     {
         const auto currentIsolate = v8::Isolate::GetCurrent();
 

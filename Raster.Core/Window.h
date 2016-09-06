@@ -8,8 +8,8 @@ namespace raster {
 	void createWindow(const v8::FunctionCallbackInfo<v8::Value>& args);
 
 	class Window : public JsObject<Window> {
-        static v8::Global<v8::ObjectTemplate> objectTemplate;
-		static v8::Global<v8::Function> constructor;
+        static v8::Persistent<v8::ObjectTemplate> objectTemplate;
+		static v8::Persistent<v8::Function> constructor;
 
 		std::string windowTitle;
 		SDL_GLContext context;
@@ -36,10 +36,5 @@ namespace raster {
 		}
 	};
 
-	static void registerDisplay(v8::Local<v8::Object>& object) {
-		//object->Set(V8_String("showMessageBox"), v8::Function::New(isolate, showMessageBox));
-		//object->Set(V8_String("createWindow"), v8::Function::New(isolate, createWindow));
-
-		//Window::create(object, isolate);
-	}
+	void registerDisplay(v8::Local<v8::Object>& object);
 }

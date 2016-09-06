@@ -1,9 +1,10 @@
 
 #include "Kernel.h"
-#include "CL_Buffer.h"
+#include "Buffer.h"
 
 using namespace raster;
 
+v8::Persistent<v8::ObjectTemplate> CL_Kernel::objectTemplate;
 v8::Persistent<v8::Function> CL_Kernel::constructor;
 
 CL_Kernel::CL_Kernel(CL_Program * program, std::string kernelName)
@@ -23,9 +24,11 @@ void CL_Kernel::newInstance(const v8::FunctionCallbackInfo<v8::Value>& args)
 		auto programWrapper = CL_Program::unwrap(args[0].As<v8::Object>());
 		v8::String::Utf8Value source(args[1]);
 
-		v8::HandleScope scope(args.GetIsolate());
-		auto that = args.This();
+		auto that = newTemplate(objectTemplate);
 		auto device = new CL_Kernel(programWrapper, *source);
+
+        that->Set(V8_String("setArg"), v8::Function::New(args.GetIsolate(), setArg));
+
 		device->wrap(that);
 		args.GetReturnValue().Set(that);
 	}
@@ -35,13 +38,14 @@ void CL_Kernel::newInstance(const v8::FunctionCallbackInfo<v8::Value>& args)
 	}
 }
 
-void CL_Kernel::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
+void CL_Kernel::create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate)
 {
-	//auto templateObject = newTemplate(newInstance, "CL_Kernel");
+    if (constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newInstance));
+    }
 
-	//templateObject->PrototypeTemplate()->Set(V8_String("setArg"), v8::FunctionTemplate::New(isolate, setArg)->GetFunction());
-
-	//makeConstructor(cpp, templateObject, constructor, "CL_Kernel");
+    cpp->Set(v8::String::NewFromUtf8(isolate, "Kernel"), constructor.Get(isolate));
 }
 
 // Member functions

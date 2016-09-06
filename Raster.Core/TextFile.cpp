@@ -1,6 +1,7 @@
 ﻿
 #include "TextFile.h"
 
+v8::Persistent<v8::ObjectTemplate> TextFile::objectTemplate;
 v8::Persistent<v8::Function> TextFile::constructor;
 
 TextFile::TextFile()
@@ -11,17 +12,14 @@ TextFile::~TextFile()
 {
 }
 
-void TextFile::create(v8::Local<v8::ObjectTemplate>& cpp, v8::Isolate * isolate)
+void TextFile::create(v8::Local<v8::Object>& raster, v8::Isolate * isolate)
 {
-	//auto templateObject = newTemplate(newInstance, "TextFile");
+    if (constructor.IsEmpty())
+    {
+        constructor.Reset(isolate, v8::Function::New(isolate, newInstance));
+    }
 
-	//templateObject->PrototypeTemplate()->Set(V8_String("read"), v8::FunctionTemplate::New(isolate, read)->GetFunction());
-	//templateObject->InstanceTemplate()->SetAccessor(V8_String("contents"), getContents, setContents);
-	//templateObject->InstanceTemplate()->SetAccessor(V8_String("filename"), getFilename, setFilename);
-	//templateObject->InstanceTemplate()->SetAccessor(V8_String("path"), getPath, setPath);
-	//templateObject->InstanceTemplate()->SetAccessor(V8_String("ext"), getExt, setExt);
-
-	//makeConstructor(cpp, templateObject, constructor, "TextFile");
+    raster->Set(v8::String::NewFromUtf8(isolate, "TextFile"), constructor.Get(isolate));
 }
 
 void TextFile::setExt(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
@@ -107,9 +105,17 @@ void TextFile::read(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 void TextFile::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
-	v8::HandleScope scope(info.GetIsolate());
-	auto obj = new TextFile();
-	auto that = info.This();
-	obj->wrap(that);
-	info.GetReturnValue().Set(that);
+    auto isolate = v8::Isolate::GetCurrent();
+    auto object = newTemplate(objectTemplate);
+    auto file = new TextFile();
+
+    object->Set(V8_String("read"), v8::Function::New(isolate, read));
+    object->SetAccessor(V8_String("contents"), getContents, setContents);
+    object->SetAccessor(V8_String("filename"), getFilename, setFilename);
+    object->SetAccessor(V8_String("path"), getPath, setPath);
+    object->SetAccessor(V8_String("ext"), getExt, setExt);
+
+    file->wrap(object);
+
+	info.GetReturnValue().Set(object);
 }

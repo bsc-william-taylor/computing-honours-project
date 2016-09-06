@@ -5,8 +5,6 @@
 #include "RasterCore.h"
 #include "JsPlatformTasks.h"
 
-
-
 class JsPlatform : public v8::Platform
 {
     std::vector<std::pair<v8::Task*, bool>> buffer;

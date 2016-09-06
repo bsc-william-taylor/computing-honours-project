@@ -1,11 +1,12 @@
 ﻿
 #include "Window.h"
 #include "JsRuntime.h"
+#include "JsExtensions.h"
 
 using namespace raster;
 
-v8::Global<v8::ObjectTemplate> Window::objectTemplate;
-v8::Global<v8::Function> Window::constructor;
+v8::Persistent<v8::ObjectTemplate> Window::objectTemplate;
+v8::Persistent<v8::Function> Window::constructor;
 
 void raster::showMessageBox(const v8::FunctionCallbackInfo<v8::Value>& args) {
 	if (args.Length() == 3) {
@@ -84,13 +85,13 @@ void Window::newWindow(const v8::FunctionCallbackInfo<v8::Value>& info)
 	auto object = newTemplate(objectTemplate);
 
     object->Set(V8_String("enableOpenGL"), v8::Function::New(isolate, enableOpenGL));
-    object->Set(V8_String("swapBuffers"), v8::FunctionTemplate::New(isolate, swapBuffers)->GetFunction());
-    object->Set(V8_String("onFrame"), v8::FunctionTemplate::New(isolate, onFrame)->GetFunction());
-    object->Set(V8_String("setPosition"), v8::FunctionTemplate::New(isolate, setPosition)->GetFunction());
-    object->Set(V8_String("setTitle"), v8::FunctionTemplate::New(isolate, setTitle)->GetFunction());
-    object->Set(V8_String("setSize"), v8::FunctionTemplate::New(isolate, setSize)->GetFunction());
-    object->Set(V8_String("show"), v8::FunctionTemplate::New(isolate, show)->GetFunction());
-    object->Set(V8_String("hide"), v8::FunctionTemplate::New(isolate, hide)->GetFunction());
+    object->Set(V8_String("swapBuffers"), v8::Function::New(isolate, swapBuffers));
+    object->Set(V8_String("setPosition"), v8::Function::New(isolate, setPosition));
+    object->Set(V8_String("setTitle"), v8::Function::New(isolate, setTitle));
+    object->Set(V8_String("onFrame"), v8::Function::New(isolate, onFrame));
+    object->Set(V8_String("setSize"), v8::Function::New(isolate, setSize));
+    object->Set(V8_String("show"), v8::Function::New(isolate, show));
+    object->Set(V8_String("hide"), v8::Function::New(isolate, hide));
 
 	auto window = new Window();
 	auto args = info[0].As<v8::Object>();
@@ -139,15 +140,22 @@ void Window::setPosition(const v8::FunctionCallbackInfo<v8::Value>& args) {
 void Window::onFrame(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
-    v8::Isolate * isolate = v8::Isolate::GetCurrent();
-
 	callback.Reset(v8::Isolate::GetCurrent(), args[1].As<v8::Function>());
 
-	auto fps = (args[0].As<v8::Integer>()->Value());
+    v8::Isolate * isolate = v8::Isolate::GetCurrent();
+  
+    auto object = args.This();
+	auto fps = args[0].As<v8::Integer>()->Value();
     auto& platform = JsRuntime::GetPlatform();
+
     platform.CallOnForegroundThread(v8::Isolate::GetCurrent(), new JsRepeatTask([=]() {
         auto frameFunction = callback.Get(v8::Isolate::GetCurrent());
-        auto error = frameFunction->Call(frameFunction, 0, nullptr);   
+        v8::Local<v8::Value> callbackArgs[1];
+        callbackArgs[0] =  v8::String::NewFromUtf8(isolate, "Hiya");
+
+        v8::TryCatch trycatch(isolate);
+        frameFunction->Call(object, 1, callbackArgs);
+        CatchExceptions(trycatch);
     }));
 }
 
@@ -212,4 +220,13 @@ void Window::setTitle(const v8::FunctionCallbackInfo<v8::Value>& args) {
 	{
 		SDL_SetWindowTitle(that->window, that->windowTitle.c_str());
 	}
+}
+
+void raster::registerDisplay(v8::Local<v8::Object>& object) {
+    const auto isolate = v8::Isolate::GetCurrent();
+
+    object->Set(V8_String("showMessageBox"), v8::Function::New(isolate, showMessageBox));
+    object->Set(V8_String("createWindow"), v8::Function::New(isolate, createWindow));
+
+    Window::create(object, isolate);
 }
