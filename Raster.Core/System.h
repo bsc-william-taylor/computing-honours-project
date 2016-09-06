@@ -8,10 +8,9 @@ namespace raster
 {
     namespace system
     {
-        void cpuCacheLineSize(const v8::FunctionCallbackInfo<v8::Value>& args);
-        void systemRam(const v8::FunctionCallbackInfo<v8::Value>& args);
-        void cpuCount(const v8::FunctionCallbackInfo<v8::Value>& args);
-        
+        void battery(const v8::FunctionCallbackInfo<v8::Value>& args);
+        void exit(const v8::FunctionCallbackInfo<v8::Value>& args);
+
         void hasAltiVec(const v8::FunctionCallbackInfo<v8::Value>& args);
         void has3DNow(const v8::FunctionCallbackInfo<v8::Value>& args);
         void hasRDTSC(const v8::FunctionCallbackInfo<v8::Value>& args);

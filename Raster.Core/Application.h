@@ -16,7 +16,7 @@ namespace raster
         int minorVersion;
         int revVersion;
 
-        bool triggered;
+        bool skip;
 	public:
 		RasterApp();
 		virtual ~RasterApp();
@@ -28,15 +28,17 @@ namespace raster
     private:
         Poco::File extractFilename(const std::vector<std::string>& args);
 
+        void createOption(Poco::Util::OptionSet& options, Poco::Util::OptionCallback<RasterApp>::Callback handler, std::string arg, std::string shorthand);
         void handleVersion(const std::string& name, const std::string& v);
         void handleInfo(const std::string& name, const std::string& v);
         void handleHelp(const std::string& name, const std::string& v);
 
+        std::string getOpenGLVersion();
+        std::string getOpenCLVersion();
+
         void releaseExternalLirbaries();
         void setupExternalLirbaries();
-
-        void createOption(Poco::Util::OptionSet& options, Poco::Util::OptionCallback<RasterApp>::Callback handler, std::string arg, std::string shorthand);
-	};
+    };
 }
 
 #pragma pop_macro("main")

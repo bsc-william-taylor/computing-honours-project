@@ -27,6 +27,7 @@
 #define SDL_IMG_EVERYTHING IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 
+#include <glew.h>
 #include <CL/CL.hpp>
 
 #include <Poco/Message.h>
@@ -53,6 +54,7 @@
 #include <SDL_image.h>
 #include <functional>
 
+#pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "opencl.lib")
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")

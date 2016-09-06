@@ -38,7 +38,7 @@ const A = randomArray(100);
 const B = randomArray(100);
 const C = [];
 
-const kernals = fs.readFile('kernels.cl').contents;
+const kernals = fs.readFile('assets/kernels.cl').contents;
 const platform = getPlatform();
 const device = getDevices(platform);
 

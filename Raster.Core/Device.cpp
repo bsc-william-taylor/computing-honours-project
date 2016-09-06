@@ -58,15 +58,7 @@ void CL_Device::getInfo(const v8::FunctionCallbackInfo<v8::Value>& args)
 		auto device = deviceWrapper->device;
 
 		cl::STRING_CLASS info;
-
-		switch(type)
-		{
-			case 0: info = deviceWrapper->device.getInfo<CL_DEVICE_NAME>(); break;
-			
-			default: 
-				break;
-		}
-
+        deviceWrapper->device.getInfo(type, &info);
 		args.GetReturnValue().Set(V8_String(info.c_str()));
 	}
 }

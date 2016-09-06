@@ -1,6 +1,7 @@
 
 #include "Application.h"
 #include "JsRuntime.h"
+#include "glew.h"
 #include "gl/GLU.h"
 #include "gl/gl.h"
 
@@ -19,7 +20,7 @@ RasterApp::RasterApp() :
     majorVersion(RasterMajorVersion),
     minorVersion(RasterMinorVersion),
     revVersion(RasterRevVersion),
-    triggered(false)
+    skip(false)
 {
     setupExternalLirbaries();
     setUnixOptions(true);
@@ -70,7 +71,7 @@ Poco::File RasterApp::extractFilename(const std::vector<std::string>& args)
 
 int RasterApp::main(const std::vector<std::string>& args)
 {
-    if (triggered)
+    if (skip)
     {
         return EXIT_OK;
     }
@@ -108,13 +109,13 @@ int RasterApp::main(const std::vector<std::string>& args)
 void RasterApp::handleHelp(const std::string& name, const std::string& v)
 {
     std::cout << "For help, contact William Taylor at B00235610@studentmail.uws.ac.uk.";
-    std::cout << std::endl;
-    triggered = true;
+    skip = true;
 }
 
 void RasterApp::handleVersion(const std::string& name, const std::string& v)
 {
     std::stringstream ss;
+    skip = true;
 
     // Raster Version
     ss << "Raster version: ";
@@ -134,23 +135,19 @@ void RasterApp::handleVersion(const std::string& name, const std::string& v)
     ss << static_cast<int>(version.minor) << ".";
     ss << static_cast<int>(version.patch) << std::endl;
 
-    // OpenGL Version
+    // OpenGL/OpenCL Version
     ss << "OpenGL Version: ";
-    ss << "N/A" << std::endl;
-
-    // OpenCL Version
+    ss << getOpenGLVersion() << std::endl;
     ss << "OpenCL Version: ";
-    ss << CL_DRIVER_VERSION << std::endl;
+    ss << getOpenCLVersion();
 
-    std::cout << ss.str() << std::endl;
-    triggered = true;
+    std::cout << ss.str();
 }
 
 void RasterApp::handleInfo(const std::string& name, const std::string& v)
 {
     std::cout << "Raster is a platform for GPU centric JavaScript applications. ";
-    std::cout << std::endl;
-    triggered = true;
+    skip = true;
 }
 
 void RasterApp::releaseExternalLirbaries()
@@ -163,6 +160,50 @@ void RasterApp::setupExternalLirbaries()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(SDL_IMG_EVERYTHING);
+}
+
+std::string RasterApp::getOpenGLVersion()
+{
+    const auto flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
+    const auto window = SDL_CreateWindow("", 0, 0, 100, 100, flags);
+    const auto context = SDL_GL_CreateContext(window);
+
+    GLint major, minor;
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+    SDL_GL_DeleteContext(context);
+    SDL_DestroyWindow(window);
+
+    std::stringstream ss;
+    ss << major << "." << minor;
+    return ss.str();    
+}
+
+std::string RasterApp::getOpenCLVersion()
+{
+    auto numericChars = [](char c) { return isalpha(c) || c == ' '; };
+    auto allPlatforms = std::vector<cl::Platform>();
+    auto version{ 0.0 };
+
+    cl::Platform::get(&allPlatforms);
+    for(auto& platform : allPlatforms)
+    {
+        auto versionString = platform.getInfo<CL_PLATFORM_VERSION>();
+        auto begin = versionString.begin();
+        auto end = versionString.end();
+
+        versionString.erase(std::remove_if(begin, end, numericChars), end);
+
+        auto pv = atoi(versionString.c_str());
+        version = pv > version ? pv : version;
+    }
+
+    std::stringstream ss;
+    ss << std::fixed;
+    ss << std::setprecision(2);
+    ss << version;
+    return ss.str();
 }
 
 #pragma pop_macro("main")

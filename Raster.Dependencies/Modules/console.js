@@ -22,17 +22,18 @@ function argumentsToString(functionArgs) {
 };
 
 exports.error = function () {
-    raster.print(argumentsToString(arguments));
+    raster.printLine(argumentsToString(arguments));
 }
 
 exports.warn = function() {
-    raster.print(argumentsToString(arguments));
+    raster.printLine(argumentsToString(arguments));
 }
 
 exports.log = function() {
-    raster.print(argumentsToString(arguments));
+    raster.printLine(argumentsToString(arguments));
 }
 
-exports.read = function() {
+exports.read = function () {
+    raster.print(argumentsToString(arguments));
     return raster.read();
 }

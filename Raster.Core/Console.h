@@ -7,6 +7,7 @@ namespace raster
 {
 	namespace console 
     {
+        void printLine(const v8::FunctionCallbackInfo<v8::Value>& args);
 		void print(const v8::FunctionCallbackInfo<v8::Value>& args);
 		void read(const v8::FunctionCallbackInfo<v8::Value>& args);
 	}

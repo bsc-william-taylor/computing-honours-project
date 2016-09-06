@@ -47,16 +47,7 @@ void CL_Platform::getInfo(const v8::FunctionCallbackInfo<v8::Value>& info)
 		auto infoID = info[0].As<v8::Integer>()->Value();
 		auto platform = unwrap(info);
 		cl::STRING_CLASS platformInfo("");
-
-		switch(infoID)
-		{
-			case 0: platformInfo = platform->platform.getInfo<CL_PLATFORM_NAME>(); break;
-			case 1: platformInfo = platform->platform.getInfo<CL_PLATFORM_VERSION>(); break;
-			default: 
-				break;
-		}
-
-
+        platform->platform.getInfo(infoID, &platformInfo);
 		info.GetReturnValue().Set(V8_String(platformInfo.c_str()));
 	}
 	
