@@ -40,7 +40,7 @@ void raster::datetime::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
         return false;
     }), true);
 
-    JsRuntime::GetPlatform().CallOnForegroundThread(pair);
+    JsRuntime::getPlatform().CallOnForegroundThread(pair);
 }
 
 void raster::datetime::pause(const v8::FunctionCallbackInfo<v8::Value>& args)

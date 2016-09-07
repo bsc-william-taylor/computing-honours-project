@@ -6,7 +6,8 @@
 
 namespace raster
 {
-	class CL_Platform : public JsObject<CL_Platform> {
+	class CL_Platform : public JsObject<CL_Platform> 
+    {
         static v8::Persistent<v8::ObjectTemplate> objectTemplate;
 		static v8::Persistent<v8::Function> constructor;
 		cl::Platform platform;

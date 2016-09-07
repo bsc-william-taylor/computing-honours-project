@@ -3,6 +3,8 @@
 
 #include "RasterCore.h"
 
+class JsPlatform;
+
 class JsAwaitTask : public v8::Task
 {
     std::function<bool(SDL_Event&)> action;
@@ -27,10 +29,20 @@ public:
     void Run() override;
 };
 
+using AsyncCallbackWithPlatform = std::function<void(JsPlatform& platform)>;
+using AsyncCallback = std::function<void()>;
+
+enum JsAsyncType
+{
+    Multi
+};
+
 class JsAsyncTask : public v8::Task
 {
+    std::function<void(JsPlatform& platform)> taskWithPlatform;
     std::function<void()> task;
 public:
+    explicit JsAsyncTask(JsAsyncType type, std::function<void(JsPlatform& platform)> action);
     explicit JsAsyncTask(std::function<void()> action);
     
     virtual ~JsAsyncTask();

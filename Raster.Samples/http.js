@@ -1,7 +1,10 @@
 
+const { setInterval} = require('datetime');
 const console = require('console');
 const http = require('http');
 
-const html = JSON.parse(http.get('localhost', '/', 3000));
+http.get('www.williamsamtaylor.co.uk', '/apps/mgd/index.html', 80, () => {
+    console.log('Got response');
+});
 
-console.log(html);
+setInterval(() => {}, 10000);

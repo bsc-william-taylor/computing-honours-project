@@ -1,6 +1,7 @@
 
 #include "JsPlatformTasks.h"
 #include "JsRuntime.h"
+#include "JsPlatform.h"
 
 using namespace raster;
 
@@ -20,7 +21,7 @@ JsAwaitTask::~JsAwaitTask()
 
 void JsAwaitTask::Run()
 {
-    auto& platform = JsRuntime::GetPlatform();
+    auto& platform = JsRuntime::getPlatform();
     auto insert = true;
 
     for (auto& e : platform.GetSystemEvents())
@@ -40,7 +41,12 @@ void JsAwaitTask::Run()
 
 
 JsAsyncTask::JsAsyncTask(std::function<void()> action) : 
-    task(action)
+    task(action), taskWithPlatform(nullptr)
+{
+}
+
+JsAsyncTask::JsAsyncTask(JsAsyncType type, std::function<void(JsPlatform& platform)> action) :
+    task(nullptr), taskWithPlatform(action)
 {
 }
 
@@ -53,6 +59,11 @@ void JsAsyncTask::Run()
     if (task != nullptr)
     {
         task();
+    }
+
+    if (taskWithPlatform != nullptr)
+    {
+        taskWithPlatform(JsRuntime::getPlatform());
     }
 }
 
@@ -72,7 +83,7 @@ JsRepeatTask::~JsRepeatTask()
 
 void JsRepeatTask::Run()
 {
-    auto& platform = JsRuntime::GetPlatform();
+    auto& platform = JsRuntime::getPlatform();
 
     if (task != nullptr)
     {

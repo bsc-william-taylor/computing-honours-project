@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <concurrent_queue.h>
+#include <concurrent_vector.h>
+#include <thread>
 #include <future>
 #include <mutex>
 #include <stdio.h>

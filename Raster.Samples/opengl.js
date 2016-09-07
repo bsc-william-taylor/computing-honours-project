@@ -19,13 +19,13 @@ class Bootstrapper {
 
     bootstrap(windowSettings, onRender) {
         openWindow(windowSettings, window => {
-            window.setTitle('Basic OpenGL Triangle');
+            window.setTitle('OpenGL Example');
             window.show();
             window.enableOpenGL();
 
             this.setupOpenGL(gl);
 
-            window.onFrame(60, () => {
+            window.onFrame(() => {
                 onRender(gl);
                 window.swapBuffers();
             });

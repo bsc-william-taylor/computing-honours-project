@@ -15,7 +15,7 @@ namespace raster {
         void initialise(std::vector<std::string>& args);
 		void start(std::string script = "");
 
-        static JsPlatform& GetPlatform()
+        static JsPlatform& getPlatform()
         {
            return platform;
         }

@@ -5,14 +5,22 @@
 #include "RasterCore.h"
 #include "JsPlatformTasks.h"
 
+using Concurrency::concurrent_vector;
+using Concurrency::concurrent_queue;
+
 class JsPlatform : public v8::Platform
 {
-    std::vector<std::pair<v8::Task*, bool>> buffer;
     std::vector<std::pair<v8::Task*, bool>> tasks;
     std::vector<SDL_Event> events;
+    
+    std::atomic<bool> disposeBackgroundThread;
+    std::thread backgroundThread;
+
+    concurrent_vector<std::pair<v8::Task*, bool>> buffer;
+    concurrent_queue<v8::Task*> queue;
 public:
-    JsPlatform() = default;
-    ~JsPlatform() = default;
+    JsPlatform();
+    ~JsPlatform();
 
     std::vector<SDL_Event>& GetSystemEvents() { return events; }
     

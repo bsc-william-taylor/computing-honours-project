@@ -38,7 +38,7 @@ void raster::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 		callback.Reset(isolate, windowCallback);
 		window.Reset(isolate, windowObject);
 
-        auto& platform = JsRuntime::GetPlatform();
+        auto& platform = JsRuntime::getPlatform();
 
         platform.CallOnForegroundThread(isolate, new JsAsyncTask([=]() {
             v8::Local<v8::Value> parameters[1] = { window.Get(v8::Isolate::GetCurrent()) };
@@ -139,22 +139,16 @@ void Window::setPosition(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
 void Window::onFrame(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-	v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
-	callback.Reset(v8::Isolate::GetCurrent(), args[1].As<v8::Function>());
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
+	callback.Reset(v8::Isolate::GetCurrent(), args[0].As<v8::Function>());
 
-    v8::Isolate * isolate = v8::Isolate::GetCurrent();
-  
-    auto object = args.This();
-	auto fps = args[0].As<v8::Integer>()->Value();
-    auto& platform = JsRuntime::GetPlatform();
+    auto& platform = JsRuntime::getPlatform();
+    auto isolate = v8::Isolate::GetCurrent();
 
-    platform.CallOnForegroundThread(v8::Isolate::GetCurrent(), new JsRepeatTask([=]() {
-        auto frameFunction = callback.Get(v8::Isolate::GetCurrent());
-        v8::Local<v8::Value> callbackArgs[1];
-        callbackArgs[0] =  v8::String::NewFromUtf8(isolate, "Hiya");
-
+    platform.CallOnForegroundThread(isolate, new JsRepeatTask([=]() {
+        auto function = callback.Get(isolate);
         v8::TryCatch trycatch(isolate);
-        frameFunction->Call(object, 1, callbackArgs);
+        function->Call(function, 0, nullptr);
         CatchExceptions(trycatch);
     }));
 }

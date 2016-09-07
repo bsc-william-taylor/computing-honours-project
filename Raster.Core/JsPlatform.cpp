@@ -1,10 +1,32 @@
 
 #include "JsPlatform.h"
 
+JsPlatform::JsPlatform() :
+    disposeBackgroundThread(false)
+{
+    backgroundThread = std::thread([this]()
+    {
+        while (!queue.empty() || !disposeBackgroundThread)
+        {
+            v8::Task* task = nullptr;
+            if (queue.try_pop(task))
+            {
+                task->Run();
+                delete task;
+            }
+        }
+    });
+}
+
+JsPlatform::~JsPlatform()
+{
+    disposeBackgroundThread = true;
+    backgroundThread.join();
+}
+
 void JsPlatform::CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected_runtime)
 {
-    task->Run();
-    delete task;
+    queue.push(task);
 };
 
 void JsPlatform::CallOnForegroundThread(v8::Isolate* isolate, v8::Task* task)
@@ -47,6 +69,6 @@ bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
 
     const auto& start = buffer.begin();
     const auto& end = buffer.end();
-
+   
     return std::find_if(start, end, [](auto& t) { return t.second; }) != end;
 }
