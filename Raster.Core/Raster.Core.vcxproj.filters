@@ -121,6 +121,9 @@
     <ClCompile Include="CommandQueue.cpp">
       <Filter>Source Code\Modules\Apis\OpenCL</Filter>
     </ClCompile>
+    <ClCompile Include="Http.cpp">
+      <Filter>Source Code\Modules\Core\Http</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="Buffer.h">
       <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+    </ClInclude>
+    <ClInclude Include="Http.h">
+      <Filter>Source Code\Modules\Core\Http</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

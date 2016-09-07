@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <Windows.h>
-#include <Shlwapi.h>  
 #include <future>
 #include <mutex>
 #include <stdio.h>
@@ -24,7 +22,6 @@
 #include <locale>
 #include <map> 
 
-#define SDL_IMG_EVERYTHING IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 
 #include <glew.h>
@@ -46,6 +43,9 @@
 #include <Poco/Notification.h>
 #include <Poco/NotificationQueue.h>
 #include <Poco/SimpleFileChannel.h>
+#include <Poco/Net/HttpRequest.h>
+#include <Poco/Net/HttpClientSession.h>
+#include <Poco/Net/HttpResponse.h>
 
 #include "include/libplatform/libplatform.h"
 #include "include/v8.h"

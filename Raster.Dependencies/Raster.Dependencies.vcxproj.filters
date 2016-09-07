@@ -27,5 +27,8 @@
     <None Include="Modules\datetime.js">
       <Filter>Modules</Filter>
     </None>
+    <None Include="Modules\http.js">
+      <Filter>Modules</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,63 +1,7 @@
 
 #include "System.h"
 
-
 using namespace raster::system;
-
-void raster::system::has3DNow(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_Has3DNow() ? true : false);
-}
-
-void raster::system::hasAVX(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasAVX() ? true : false);
-}
-
-void raster::system::hasAVX2(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasAVX2() ? true : false);
-}
-
-void raster::system::hasAltiVec(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasAltiVec() ? true : false);
-}
-
-void raster::system::hasMMX(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasMMX() ? true : false);
-}
-
-void raster::system::hasRDTSC(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasRDTSC() ? true : false);
-}
-
-void raster::system::hasSSE(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasSSE() ? true : false);
-}
-
-void raster::system::hasSSE2(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasSSE2() ? true : false);
-}
-
-void raster::system::hasSSE3(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasSSE3() ? true : false);
-}
-
-void raster::system::hasSSE41(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasSSE41() ? true : false);
-}
-
-void raster::system::hasSSE42(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-	args.GetReturnValue().Set(SDL_HasSSE42() ? true : false);
-}
 
 void raster::system::battery(const v8::FunctionCallbackInfo<v8::Value>& args)
 {

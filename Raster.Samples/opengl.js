@@ -2,10 +2,11 @@
 const { openWindow, openMessageBox } = require('display');
 const { setInterval } = require('datetime');
 const console = require('console');
+const http = require('http');
 const gl = require('opengl');
 const fs = require('fs');
 
-let renderData = fs.readJson('shapes.json');
+let renderData = JSON.parse(http.get('www.williamsamtaylor.co.uk', '/shapes', 3010));
 let rotation = 0.0;
 
 class Bootstrapper {
@@ -52,7 +53,7 @@ function renderObject(gl, object, type) {
     gl.glEnd();
 }
 
-setInterval(() => renderData = fs.readJson('shapes.json'), 1000);
+setInterval(() => renderData = JSON.parse(http.get('www.williamsamtaylor.co.uk', '/shapes', 3010)), 1000);
 
 const app = new Bootstrapper();
 app.bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {

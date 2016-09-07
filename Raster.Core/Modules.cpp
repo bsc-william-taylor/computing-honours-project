@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "OpenGL.h"
 #include "OpenCL.h"
+#include "Http.h"
 #include "Fs.h"
 
 std::string readScript(const std::string& filename)
@@ -54,6 +55,7 @@ std::map<std::string, raster::JsModuleRegisterCallback> raster::modules::moduleB
     { "system", [](v8::Local<v8::Object>& object) { raster::registerSystem(object); } },
     { "opencl", [](v8::Local<v8::Object>& object) { raster::registerOpenCL(object); } },
     { "opengl", [](v8::Local<v8::Object>& object) { raster::registerOpenGL(object); } },
+    { "http", [](v8::Local<v8::Object>& object) { raster::registerHttp(object); } },
     { "fs", [](v8::Local<v8::Object>& object) { raster::registerFs(object); } }
 }};
 

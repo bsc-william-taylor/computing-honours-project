@@ -1,5 +1,6 @@
 
 const console = require('console');
+const http = require('http');
 const cl = require('opencl');
 const fs = require('fs');
 
@@ -38,7 +39,7 @@ const A = randomArray(100);
 const B = randomArray(100);
 const C = [];
 
-const kernals = fs.readFile('assets/kernels.cl').contents;
+const kernals = JSON.parse(http.get('localhost', '/kernels', 3000)).text;
 const platform = getPlatform();
 const device = getDevices(platform);
 

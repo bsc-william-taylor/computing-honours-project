@@ -159,7 +159,7 @@ void RasterApp::releaseExternalLirbaries()
 void RasterApp::setupExternalLirbaries()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
-    IMG_Init(SDL_IMG_EVERYTHING);
+    IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
 }
 
 std::string RasterApp::getOpenGLVersion()
