@@ -25,7 +25,7 @@ void v8::AttachBoolean(Local<Object>& object, std::string name, SDL_bool value)
     auto isolate = Isolate::GetCurrent();
     auto key = String::NewFromUtf8(isolate, name.c_str());
 
-    object->Set(key, Boolean::New(isolate, value));
+    object->Set(key, Boolean::New(isolate, value ? true : false));
 }
 
 void v8::AttachNumber(Local<Object>& object, std::string name, int number)
@@ -49,7 +49,7 @@ void v8::Throw(const FunctionCallbackInfo<Value>& args, std::string msg)
     const auto isolate = args.GetIsolate();
     const auto error = String::NewFromUtf8(isolate, msg.c_str());
 
-    if(isolate && msg.length() >= 0)
+    if (isolate && msg.length() >= 0)
     {
         isolate->ThrowException(error);
     }

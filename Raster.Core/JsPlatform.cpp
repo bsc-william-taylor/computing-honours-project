@@ -45,7 +45,7 @@ void JsPlatform::CallDelayedOnForegroundThread(v8::Isolate* isolate, v8::Task* t
 };
 
 double JsPlatform::MonotonicallyIncreasingTime()
-{ 
+{
     return SDL_GetTicks();
 }
 
@@ -55,25 +55,25 @@ void JsPlatform::CallOnForegroundThread(std::pair<v8::Task*, bool> task)
 }
 
 bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
-{  
+{
     SDL_Event e;
-    while (SDL_PollEvent(&e) != 0) 
+    while (SDL_PollEvent(&e) != 0)
     {
         events.push_back(e);
     }
 
     auto tasks = move(buffer);
 
-    for(auto& task : tasks)
+    for (auto& task : tasks)
     {
         task.first->Run();
         delete task.first;
     }
-   
+
     events.clear();
 
     const auto& start = buffer.begin();
     const auto& end = buffer.end();
-   
+
     return std::find_if(start, end, [](auto& t) { return t.second; }) != end;
 }

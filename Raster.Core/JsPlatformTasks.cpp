@@ -5,7 +5,7 @@
 
 using namespace raster;
 
-JsAwaitTask::JsAwaitTask(std::function<bool(SDL_Event&e)> callback) : 
+JsAwaitTask::JsAwaitTask(std::function<bool(SDL_Event&e)> callback) :
     action(callback)
 {
 }
@@ -33,14 +33,14 @@ void JsAwaitTask::Run()
         }
     }
 
-    if(insert)
+    if (insert)
     {
         platform.CallOnForegroundThread({ new JsAwaitTask(*this), true });
     }
 }
 
 
-JsAsyncTask::JsAsyncTask(std::function<void()> action) : 
+JsAsyncTask::JsAsyncTask(std::function<void()> action) :
     task(action), taskWithPlatform(nullptr)
 {
 }

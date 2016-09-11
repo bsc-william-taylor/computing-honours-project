@@ -12,7 +12,7 @@
 #include "CommandQueue.h"
 
 namespace raster {
-	void getPlatforms(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void getPlatforms(const v8::FunctionCallbackInfo<v8::Value>& args);
 
-	void registerOpenCL(v8::Local<v8::Object>& object);
+    void registerOpenCL(v8::Local<v8::Object>& object);
 }

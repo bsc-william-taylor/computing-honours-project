@@ -5,9 +5,9 @@
 #include "JsObject.h"
 #include "TextFile.h"
 
-namespace raster 
+namespace raster
 {
     std::string readFile(const char * filename);
 
-	void registerFs(v8::Local<v8::Object>& object);
+    void registerFs(v8::Local<v8::Object>& object);
 }

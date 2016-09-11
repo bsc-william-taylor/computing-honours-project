@@ -7,10 +7,10 @@ std::string raster::readFile(const char * filename)
     std::ifstream file(filename);
     std::string data;
 
-    if (file.is_open()) 
+    if (file.is_open())
     {
         std::string temp;
-        while (getline(file, temp)) 
+        while (getline(file, temp))
         {
             data += temp + "\n";
         }
@@ -20,7 +20,7 @@ std::string raster::readFile(const char * filename)
     return data;
 }
 
-void raster::registerFs(v8::Local<v8::Object>& object) 
+void raster::registerFs(v8::Local<v8::Object>& object)
 {
     TextFile::create(object, v8::Isolate::GetCurrent());
 }

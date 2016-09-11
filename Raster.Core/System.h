@@ -3,7 +3,7 @@
 
 #include "RasterCore.h"
 
-namespace raster 
+namespace raster
 {
     namespace system
     {
@@ -11,5 +11,5 @@ namespace raster
         void exit(const v8::FunctionCallbackInfo<v8::Value>& args);
     }
 
-	void registerSystem(v8::Local<v8::Object>& object);
+    void registerSystem(v8::Local<v8::Object>& object);
 }

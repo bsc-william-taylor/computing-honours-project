@@ -36,7 +36,7 @@ std::pair<bool, std::string> argumentsOkay(const v8::FunctionCallbackInfo<v8::Va
 
 SDL_TimerCallback createTimeoutFunction()
 {
-    return [](Uint32, void *p) -> Uint32 
+    return [](Uint32, void *p) -> Uint32
     {
         SDL_Event e;
         e.user.type = TimeoutEvent;
@@ -48,27 +48,27 @@ SDL_TimerCallback createTimeoutFunction()
 }
 
 void raster::datetime::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
-{   
+{
     v8::Isolate * isolate = args.GetIsolate();
     std::string msg;
     bool okay;
 
     tie(okay, msg) = argumentsOkay(args);
-    
-    if(!okay)
+
+    if (!okay)
     {
         v8::Throw(args, msg);
         return;
     }
-    
-	v8::PersistentCopyable callback;
+
+    v8::PersistentCopyable callback;
     callback.Reset(isolate, args[2].As<v8::Function>());
 
     const auto timerCallback = createTimeoutFunction();
     const auto uniqueID = args[0]->ToInteger()->Value();
     const auto ms = args[1]->ToInteger()->Value();
 
-	SDL_AddTimer(ms, timerCallback, new long long{uniqueID});
+    SDL_AddTimer(ms, timerCallback, new long long{ uniqueID });
 
     std::pair<v8::Task*, bool> pair(new JsAwaitTask([=](SDL_Event e) {
         if (e.user.type == TimeoutEvent && e.user.code == uniqueID) {
@@ -87,7 +87,7 @@ void raster::datetime::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 void raster::datetime::pause(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    if(args.Length() == 1 && args[0]->IsNumber())
+    if (args.Length() == 1 && args[0]->IsNumber())
     {
         SDL_Delay(args[0]->ToInteger()->Value());
     }
@@ -97,7 +97,7 @@ void raster::datetime::pause(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::registerDateTime(v8::Local<v8::Object>& object) 
+void raster::registerDateTime(v8::Local<v8::Object>& object)
 {
     AttachFunction(object, "timeout", datetime::timeout);
     AttachFunction(object, "pause", datetime::pause);

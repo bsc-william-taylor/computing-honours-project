@@ -13,7 +13,7 @@ public:
     JsAwaitTask(const JsAwaitTask& copy);
 
     virtual ~JsAwaitTask();
- 
+
     void Run() override;
 };
 
@@ -44,7 +44,7 @@ class JsAsyncTask : public v8::Task
 public:
     explicit JsAsyncTask(JsAsyncType type, std::function<void(JsPlatform& platform)> action);
     explicit JsAsyncTask(std::function<void()> action);
-    
+
     virtual ~JsAsyncTask();
 
     void Run() override;

@@ -11,7 +11,7 @@ std::string httpRequest(const std::string& method, std::string domain, std::stri
     HTTPClientSession session(domain);
     HTTPRequest request(method, route);
     HTTPResponse response;
-   
+
     session.setPort(port);
     session.sendRequest(request);
 
@@ -31,9 +31,9 @@ void raster::http::httpGet(const v8::FunctionCallbackInfo<v8::Value>& args)
     v8::String::Utf8Value routeUtf(args[1].As<v8::String>());
 
     auto port = args[2].As<v8::Number>()->Value();
-    auto isolate = v8::Isolate::GetCurrent();    
+    auto isolate = v8::Isolate::GetCurrent();
     auto result = httpRequest(HTTPRequest::HTTP_GET, *domainUtf, *routeUtf, port);
-   
+
     args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, result.c_str()));
 }
 

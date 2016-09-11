@@ -24,83 +24,83 @@ void TextFile::create(v8::Local<v8::Object>& raster, v8::Isolate * isolate)
 
 void TextFile::setExt(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	obj->ext = *v8::String::Utf8Value(value);
+    auto that = info.This();
+    auto obj = unwrap(that);
+    obj->ext = *v8::String::Utf8Value(value);
 }
 
 void TextFile::getExt(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	info.GetReturnValue().Set(V8_String(obj->ext.c_str()));
+    auto that = info.This();
+    auto obj = unwrap(that);
+    info.GetReturnValue().Set(V8_String(obj->ext.c_str()));
 }
 
 void TextFile::setContents(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	obj->contents = *v8::String::Utf8Value(value);
+    auto that = info.This();
+    auto obj = unwrap(that);
+    obj->contents = *v8::String::Utf8Value(value);
 }
 
 void TextFile::getContents(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	info.GetReturnValue().Set(V8_String(obj->contents.c_str()));
+    auto that = info.This();
+    auto obj = unwrap(that);
+    info.GetReturnValue().Set(V8_String(obj->contents.c_str()));
 }
 
 void TextFile::setFilename(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	obj->filename = *v8::String::Utf8Value(value);
+    auto that = info.This();
+    auto obj = unwrap(that);
+    obj->filename = *v8::String::Utf8Value(value);
 }
 
 void TextFile::getFilename(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	info.GetReturnValue().Set(V8_String(obj->filename.c_str()));
+    auto that = info.This();
+    auto obj = unwrap(that);
+    info.GetReturnValue().Set(V8_String(obj->filename.c_str()));
 }
 
 void TextFile::setPath(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	obj->path = *v8::String::Utf8Value(value);
+    auto that = info.This();
+    auto obj = unwrap(that);
+    obj->path = *v8::String::Utf8Value(value);
 }
 
 void TextFile::getPath(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
-	auto that = info.This();
-	auto obj = unwrap(that);
-	info.GetReturnValue().Set(V8_String(obj->path.c_str()));
+    auto that = info.This();
+    auto obj = unwrap(that);
+    info.GetReturnValue().Set(V8_String(obj->path.c_str()));
 }
 
 void TextFile::read(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-	auto that = unwrap(args);
-	v8::String::Utf8Value path(args[0]);
+    auto that = unwrap(args);
+    v8::String::Utf8Value path(args[0]);
 
-	auto filePath = Poco::Path(Poco::Path::current());
-	filePath.append(*path);
-	std::ifstream file(filePath.toString());
-	std::string data;
+    auto filePath = Poco::Path(Poco::Path::current());
+    filePath.append(*path);
+    std::ifstream file(filePath.toString());
+    std::string data;
 
-	if (file.is_open()) {
-		std::string temp;
-		while (getline(file, temp)) {
-			data += temp + "\n";
-		}
+    if (file.is_open()) {
+        std::string temp;
+        while (getline(file, temp)) {
+            data += temp + "\n";
+        }
 
-		file.close();
-	}
+        file.close();
+    }
 
-	that->filename = filePath.getBaseName();
-	that->path = filePath.absolute().toString();
-	that->ext = filePath.getExtension();
-	that->contents = data;
+    that->filename = filePath.getBaseName();
+    that->path = filePath.absolute().toString();
+    that->ext = filePath.getExtension();
+    that->contents = data;
 }
 
 void TextFile::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
@@ -117,5 +117,5 @@ void TextFile::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
 
     file->wrap(object);
 
-	info.GetReturnValue().Set(object);
+    info.GetReturnValue().Set(object);
 }

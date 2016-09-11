@@ -26,7 +26,7 @@ RasterApp::RasterApp() :
     setUnixOptions(true);
 }
 
-RasterApp::~RasterApp() 
+RasterApp::~RasterApp()
 {
     releaseExternalLirbaries();
 }
@@ -40,13 +40,13 @@ void RasterApp::initialize(Application& self)
     appPath.setFileName("");
     cwd = appPath.toString();
 
-	loadConfiguration();
+    loadConfiguration();
 }
 
 void RasterApp::defineOptions(OptionSet& options)
 {
     Application::defineOptions(options);
-    
+
     createOption(options, &RasterApp::handleVersion, "version", "v");
     createOption(options, &RasterApp::handleHelp, "help", "h");
     createOption(options, &RasterApp::handleInfo, "info", "i");
@@ -84,7 +84,7 @@ int RasterApp::main(const std::vector<std::string>& args)
 
     auto runtime = JsRuntime(mutableArgs);
 
-    if(args.empty())
+    if (args.empty())
     {
         runtime.start();
     }
@@ -125,7 +125,7 @@ void RasterApp::handleVersion(const std::string& name, const std::string& v)
     // V8 version
     ss << "V8 version: ";
     ss << v8::V8::GetVersion() << std::endl;
-   
+
     // SDL Version
     SDL_version version;
     SDL_GetVersion(&version);
@@ -176,7 +176,7 @@ std::string RasterApp::getOpenGLVersion()
 
     std::stringstream ss;
     ss << major << "." << minor;
-    return ss.str();    
+    return ss.str();
 }
 
 std::string RasterApp::getOpenCLVersion()
@@ -186,7 +186,7 @@ std::string RasterApp::getOpenCLVersion()
     auto version{ 0.0 };
 
     cl::Platform::get(&allPlatforms);
-    for(auto& platform : allPlatforms)
+    for (auto& platform : allPlatforms)
     {
         auto versionString = platform.getInfo<CL_PLATFORM_VERSION>();
         auto begin = versionString.begin();

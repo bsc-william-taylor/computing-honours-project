@@ -6,7 +6,7 @@ using namespace raster::system;
 
 void raster::system::battery(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    auto secs{0}, pct{0};
+    auto secs{ 0 }, pct{ 0 };
     auto status = SDL_GetPowerInfo(&secs, &pct);
     auto object = v8::Object::New(args.GetIsolate());
 
@@ -19,15 +19,15 @@ void raster::system::battery(const v8::FunctionCallbackInfo<v8::Value>& args)
 
 void raster::system::exit(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    if(args.Length() == 1 && args[0]->IsNumber())
+    if (args.Length() == 1 && args[0]->IsNumber())
     {
         ::exit(args[0].As<v8::Number>()->Value());
     }
 
-    ::exit(0);    
+    ::exit(0);
 }
 
-void raster::registerSystem(v8::Local<v8::Object>& object) 
+void raster::registerSystem(v8::Local<v8::Object>& object)
 {
     AttachString(object, "osArchitecture", Poco::Environment::osArchitecture());
     AttachString(object, "osVersion", Poco::Environment::osVersion());

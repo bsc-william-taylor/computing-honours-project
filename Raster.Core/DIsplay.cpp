@@ -6,34 +6,34 @@
 using namespace raster;
 
 void display::showMessageBox(const v8::FunctionCallbackInfo<v8::Value>& args) {
-	if (args.Length() == 3) {
-		v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
-		callback.Reset(v8::Isolate::GetCurrent(), args[2].As<v8::Function>());
-		v8::String::Utf8Value title(args[0]);
-		v8::String::Utf8Value body(args[1]);
-		
-		auto strTitle = std::string(*title);
-		auto strBody = std::string(*body);
+    if (args.Length() == 3) {
+        v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
+        callback.Reset(v8::Isolate::GetCurrent(), args[2].As<v8::Function>());
+        v8::String::Utf8Value title(args[0]);
+        v8::String::Utf8Value body(args[1]);
 
-		SDL_ShowSimpleMessageBox(NULL, strTitle.c_str(), strBody.c_str(), nullptr);
-		auto function = callback.Get(v8::Isolate::GetCurrent());
-		function->Call(function, 0, nullptr);
-	}
+        auto strTitle = std::string(*title);
+        auto strBody = std::string(*body);
+
+        SDL_ShowSimpleMessageBox(NULL, strTitle.c_str(), strBody.c_str(), nullptr);
+        auto function = callback.Get(v8::Isolate::GetCurrent());
+        function->Call(function, 0, nullptr);
+    }
 }
 
 void display::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-	if (args.Length() == 2)
-	{
-		auto windowCallback = args[1].As<v8::Function>();
-		auto windowObject = args[0].As<v8::Object>();	
+    if (args.Length() == 2)
+    {
+        auto windowCallback = args[1].As<v8::Function>();
+        auto windowObject = args[0].As<v8::Object>();
 
-		v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
-		v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> window;
+        v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
+        v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> window;
         v8::Isolate * isolate = v8::Isolate::GetCurrent();
 
-		callback.Reset(isolate, windowCallback);
-		window.Reset(isolate, windowObject);
+        callback.Reset(isolate, windowCallback);
+        window.Reset(isolate, windowObject);
 
         auto& platform = JsRuntime::getPlatform();
 
@@ -42,7 +42,7 @@ void display::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
             auto callbackFunction = callback.Get(v8::Isolate::GetCurrent());
             callbackFunction->Call(callbackFunction, 1, parameters);
         }));
-		
+
         platform.CallOnForegroundThread(isolate, new JsAwaitTask([=](SDL_Event& ev) {
             if (ev.type == SDL_QUIT) {
                 auto windowJs = window.Get(v8::Isolate::GetCurrent());
@@ -53,10 +53,10 @@ void display::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 
             return false;
         }));
-	}
+    }
 }
 
-void raster::registerDisplay(v8::Local<v8::Object>& object) 
+void raster::registerDisplay(v8::Local<v8::Object>& object)
 {
     AttachFunction(object, "showMessageBox", display::showMessageBox);
     AttachFunction(object, "createWindow", display::createWindow);

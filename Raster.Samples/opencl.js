@@ -39,7 +39,7 @@ const A = randomArray(100);
 const B = randomArray(100);
 const C = [];
 
-const kernals = JSON.parse(http.get('localhost', '/kernels', 3000)).text;
+const kernals = JSON.parse(http.get('www.williamsamtaylor.co.uk', '/kernels', 3010)).text;
 const platform = getPlatform();
 const device = getDevices(platform);
 

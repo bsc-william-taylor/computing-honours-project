@@ -31,11 +31,11 @@ void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> c
     v8::Local<v8::Script> script;
     v8::Local<v8::Value> output;
 
-    if (!v8::Script::Compile(context, source).ToLocal(&script)) 
+    if (!v8::Script::Compile(context, source).ToLocal(&script))
     {
         printException(trycatch);
     }
-    else if (!script->Run(context).ToLocal(&output)) 
+    else if (!script->Run(context).ToLocal(&output))
     {
         printException(trycatch);
     }
@@ -73,13 +73,13 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
 
 void JsRuntime::start(std::string filename)
 {
-	auto scriptSrc = readFile(filename.c_str());
-	
+    auto scriptSrc = readFile(filename.c_str());
+
     ArrayBufferAllocator allocator;
     v8::Isolate::CreateParams createParams;
     createParams.array_buffer_allocator = &allocator;
     auto isolate = v8::Isolate::New(createParams);
-	{
+    {
         v8::Isolate::Scope isolateScope(isolate);
         v8::HandleScope handleScope(isolate);
 
@@ -90,9 +90,9 @@ void JsRuntime::start(std::string filename)
         const auto src = v8::String::NewFromUtf8(isolate, scriptSrc.c_str());
         filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
         clearCommonJsModules();
-	}
+    }
 
-	isolate->RequestGarbageCollectionForTesting(v8::Isolate::kFullGarbageCollection);
+    isolate->RequestGarbageCollectionForTesting(v8::Isolate::kFullGarbageCollection);
     isolate->Dispose();
 
     v8::V8::Dispose();
@@ -101,10 +101,10 @@ void JsRuntime::start(std::string filename)
 
 void JsRuntime::initialise(std::vector<std::string>& args)
 {
-    auto argc { static_cast<int>(args.size()) };
-    auto argv { new char *[argc] };
+    auto argc{ static_cast<int>(args.size()) };
+    auto argv{ new char *[argc] };
 
-    for(auto i{0}; i < argc; ++i)
+    for (auto i{ 0 }; i < argc; ++i)
     {
         argv[i] = const_cast<char *>(args[i].c_str());
     }

@@ -11,7 +11,7 @@ class JsPlatform : public v8::Platform
 {
     std::vector<std::pair<v8::Task*, bool>> tasks;
     std::vector<SDL_Event> events;
-    
+
     std::atomic<bool> disposeBackgroundThread;
     std::thread backgroundThread;
 
@@ -22,7 +22,7 @@ public:
     ~JsPlatform();
 
     std::vector<SDL_Event>& GetSystemEvents();
-    
+
     void CallDelayedOnForegroundThread(v8::Isolate* isolate, v8::Task* task, double delay_in_seconds) override;
     void CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected_runtime) override;
     void CallOnForegroundThread(v8::Isolate* isolate, v8::Task* task) override;

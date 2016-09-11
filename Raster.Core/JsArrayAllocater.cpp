@@ -12,7 +12,7 @@ void * ArrayBufferAllocator::AllocateUninitialized(size_t length)
     return malloc(length);
 }
 
-void ArrayBufferAllocator::Free(void* data, size_t) 
+void ArrayBufferAllocator::Free(void* data, size_t)
 {
     free(data);
 }

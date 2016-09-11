@@ -3,7 +3,7 @@
 #include "RasterCore.h"
 
 template<typename T>
-class JsObject 
+class JsObject
 {
     v8::Global<v8::Object> instance;
 public:
@@ -13,7 +13,7 @@ public:
     {
         const auto currentIsolate = v8::Isolate::GetCurrent();
 
-        if(templ.IsEmpty())
+        if (templ.IsEmpty())
         {
             auto objectTemplate = v8::ObjectTemplate::New(currentIsolate);
             objectTemplate->SetInternalFieldCount(1);

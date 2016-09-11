@@ -3,7 +3,8 @@
 #include "RasterCore.h"
 #include "JsObject.h"
 
-class Window : public JsObject<Window> {
+class Window : public JsObject<Window> 
+{
     static v8::Persistent<v8::ObjectTemplate> objectTemplate;
     static v8::Persistent<v8::Function> constructor;
 

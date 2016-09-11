@@ -7,10 +7,10 @@
 #pragma push_macro("main")
 
 #undef main
-namespace raster 
+namespace raster
 {
-    
-	class RasterApp : public Poco::Util::Application 
+
+    class RasterApp : public Poco::Util::Application
     {
         using OptionsCallback = Poco::Util::OptionCallback<RasterApp>::Callback;
         using OptionSet = Poco::Util::OptionSet;
@@ -18,14 +18,14 @@ namespace raster
         int majorVersion, minorVersion, revVersion;
 
         bool skip;
-	public:
-		RasterApp();
-		virtual ~RasterApp();
-	protected:
-		void defineOptions(Poco::Util::OptionSet& options) override;
-		void initialize(Application& self) override;
+    public:
+        RasterApp();
+        virtual ~RasterApp();
+    protected:
+        void defineOptions(Poco::Util::OptionSet& options) override;
+        void initialize(Application& self) override;
 
-		int main(const std::vector<std::string>& args) override;
+        int main(const std::vector<std::string>& args) override;
     private:
         Poco::File extractFilename(const std::vector<std::string>& args);
 

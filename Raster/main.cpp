@@ -3,7 +3,7 @@
 
 using namespace raster;
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
     try
     {
@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
         rasterApp.init(argc, argv);
         rasterApp.run();
     }
-    catch(OptionException& exception)
+    catch (OptionException& exception)
     {
         std::cerr << "Unknown argument -" << exception.message();
     }

@@ -5,7 +5,7 @@
 
 class ArrayBufferAllocator : public v8::ArrayBuffer::Allocator
 {
-public:    
+public:
     ArrayBufferAllocator() = default;
     ~ArrayBufferAllocator() = default;
 
