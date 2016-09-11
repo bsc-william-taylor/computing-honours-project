@@ -1,7 +1,6 @@
 
 #pragma once
 
-
 #include "RasterCore.h"
 #include "JsPlatformTasks.h"
 
@@ -22,7 +21,7 @@ public:
     JsPlatform();
     ~JsPlatform();
 
-    std::vector<SDL_Event>& GetSystemEvents() { return events; }
+    std::vector<SDL_Event>& GetSystemEvents();
     
     void CallDelayedOnForegroundThread(v8::Isolate* isolate, v8::Task* task, double delay_in_seconds) override;
     void CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected_runtime) override;

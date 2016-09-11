@@ -1,5 +1,5 @@
-const PowerStateNoBattery = 1;
-const PowerStateOnBattery = 2;
+const PowerStateNoBattery = 2;
+const PowerStateOnBattery = 1;
 const PowerStateCharging = 3;
 const PowerStateCharged = 4;
 const PowerStateUnknown = 0;

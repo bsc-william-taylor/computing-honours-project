@@ -29,6 +29,11 @@ void JsPlatform::CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected
     queue.push(task);
 };
 
+std::vector<SDL_Event>& JsPlatform::GetSystemEvents()
+{
+    return events;
+}
+
 void JsPlatform::CallOnForegroundThread(v8::Isolate* isolate, v8::Task* task)
 {
     buffer.push_back({ task, false });

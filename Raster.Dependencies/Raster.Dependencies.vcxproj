@@ -32,7 +32,7 @@
     <ProjectGuid>{A16AA1EE-4543-4432-8D20-0E7D94415196}</ProjectGuid>
     <RootNamespace>RasterTsModules</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>Raster.Dependencies</ProjectName>
+    <ProjectName>Raster.Modules</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

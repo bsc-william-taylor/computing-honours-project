@@ -7,14 +7,15 @@
 #pragma push_macro("main")
 
 #undef main
-
 namespace raster 
 {
+    
 	class RasterApp : public Poco::Util::Application 
     {
-        int majorVersion;
-        int minorVersion;
-        int revVersion;
+        using OptionsCallback = Poco::Util::OptionCallback<RasterApp>::Callback;
+        using OptionSet = Poco::Util::OptionSet;
+
+        int majorVersion, minorVersion, revVersion;
 
         bool skip;
 	public:
@@ -28,7 +29,7 @@ namespace raster
     private:
         Poco::File extractFilename(const std::vector<std::string>& args);
 
-        void createOption(Poco::Util::OptionSet& options, Poco::Util::OptionCallback<RasterApp>::Callback handler, std::string arg, std::string shorthand);
+        void createOption(OptionSet& options, OptionsCallback handler, std::string arg, std::string sh);
         void handleVersion(const std::string& name, const std::string& v);
         void handleInfo(const std::string& name, const std::string& v);
         void handleHelp(const std::string& name, const std::string& v);

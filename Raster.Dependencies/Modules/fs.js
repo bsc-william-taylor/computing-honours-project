@@ -5,12 +5,6 @@ exports.readFile = function (path) {
     return file;
 }
 
-exports.readImage = function (path) {
-    const file = new raster.Image();
-    file.read(path);
-    return file;
-}
-
 exports.readJson = function (path) {
     const file = new raster.TextFile();
     file.read(path);

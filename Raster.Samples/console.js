@@ -7,3 +7,5 @@ console.warn('Warn Log');
 console.log('Log Log');
 
 console.log(`You inputed ${input}`);
+console.log(null, undefined);
+console.log(10.0, -100, {});

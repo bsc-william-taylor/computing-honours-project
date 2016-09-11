@@ -58,6 +58,6 @@ exports.pause = function (ms) {
     if (ms >= 0) {
         raster.pause(ms);
     } else {
-        throw 'Error function takes 1 argument, 0 provided';
+        throw 'Error function takes 1 argument';
     }
 };

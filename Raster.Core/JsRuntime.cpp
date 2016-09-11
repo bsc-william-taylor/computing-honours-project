@@ -71,7 +71,6 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
     }
 }
 
-
 void JsRuntime::start(std::string filename)
 {
 	auto scriptSrc = readFile(filename.c_str());
@@ -120,4 +119,9 @@ void JsRuntime::initialise(std::vector<std::string>& args)
     v8::V8::Initialize();
 
     delete[] argv;
+}
+
+JsPlatform& JsRuntime::getPlatform()
+{
+    return platform;
 }

@@ -24,10 +24,11 @@
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Http.cpp" />
+    <ClCompile Include="JsArrayAllocater.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
-    <ClCompile Include="fs.cpp" />
+    <ClCompile Include="Fs.cpp" />
     <ClCompile Include="JsExtensions.cpp" />
     <ClCompile Include="JsPlatformTasks.cpp" />
     <ClCompile Include="System.cpp" />
@@ -37,11 +38,11 @@
     <ClCompile Include="OpenCL.cpp" />
     <ClCompile Include="RasterCore.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="ImageFile.cpp" />
     <ClCompile Include="Modules.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="TextFile.cpp" />
     <ClCompile Include="DateTime.cpp" />
+    <ClCompile Include="DIsplay.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -60,7 +61,6 @@
     <ClInclude Include="JsPlatform.h" />
     <ClInclude Include="JsRuntime.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="ImageFile.h" />
     <ClInclude Include="Kernel.h" />
     <ClInclude Include="OpenCL.h" />
     <ClInclude Include="OpenGL.h" />
@@ -70,6 +70,7 @@
     <ClInclude Include="Fs.h" />
     <ClInclude Include="Modules.h" />
     <ClInclude Include="JsObject.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

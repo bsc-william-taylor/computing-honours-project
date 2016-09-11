@@ -23,23 +23,8 @@
     <Filter Include="Source Code\Modules\Core\Datetime">
       <UniqueIdentifier>{18794fb5-d36c-40df-9988-956e3839cd70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Core\Display">
-      <UniqueIdentifier>{ec291963-3cb0-4103-a914-8239d5df7aab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Core\Fs">
-      <UniqueIdentifier>{ca44f343-6b9d-43f2-95d1-c817dc354d8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Core\Fs\TextFile">
-      <UniqueIdentifier>{c8f8752c-66f8-4bd5-923a-b35974ba3680}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Core\Fs\ImageFile">
-      <UniqueIdentifier>{ad461f41-6ad0-4cbe-b251-0bacbe94d2d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\Core\System">
       <UniqueIdentifier>{d13d6177-b570-4da8-ba75-bbd3198e25e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Core\Http">
-      <UniqueIdentifier>{e85708b6-76e6-480b-a8cf-dfbb921c5337}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Code\Modules\Apis">
       <UniqueIdentifier>{6175045d-2283-44d6-8241-13862741eb78}</UniqueIdentifier>
@@ -50,6 +35,21 @@
     <Filter Include="Source Code\Modules\Apis\OpenCL">
       <UniqueIdentifier>{78672bbc-3ed4-44e0-abf5-8151abddae08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Code\Modules\Core\Display TODO">
+      <UniqueIdentifier>{ec291963-3cb0-4103-a914-8239d5df7aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Core\Display TODO\Window">
+      <UniqueIdentifier>{9c47c55b-f867-4a78-a3b4-3383c9456bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Core\Fs TODO">
+      <UniqueIdentifier>{ca44f343-6b9d-43f2-95d1-c817dc354d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Core\Fs TODO\TextFile">
+      <UniqueIdentifier>{c8f8752c-66f8-4bd5-923a-b35974ba3680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Core\Http TODO">
+      <UniqueIdentifier>{e85708b6-76e6-480b-a8cf-dfbb921c5337}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules.cpp">
@@ -58,14 +58,8 @@
     <ClCompile Include="Console.cpp">
       <Filter>Source Code\Modules\Core\Console</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Code\Modules\Core\Display</Filter>
-    </ClCompile>
     <ClCompile Include="TextFile.cpp">
-      <Filter>Source Code\Modules\Core\Fs\TextFile</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageFile.cpp">
-      <Filter>Source Code\Modules\Core\Fs\ImageFile</Filter>
+      <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
     </ClCompile>
     <ClCompile Include="OpenGL.cpp">
       <Filter>Source Code\Modules\Apis\OpenGL</Filter>
@@ -87,9 +81,6 @@
     </ClCompile>
     <ClCompile Include="DateTime.cpp">
       <Filter>Source Code\Modules\Core\Datetime</Filter>
-    </ClCompile>
-    <ClCompile Include="fs.cpp">
-      <Filter>Source Code\Modules\Core\Fs</Filter>
     </ClCompile>
     <ClCompile Include="JsPlatform.cpp">
       <Filter>Source Code\JavaScript</Filter>
@@ -122,24 +113,27 @@
       <Filter>Source Code\Modules\Apis\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="Http.cpp">
-      <Filter>Source Code\Modules\Core\Http</Filter>
+      <Filter>Source Code\Modules\Core\Http TODO</Filter>
+    </ClCompile>
+    <ClCompile Include="Fs.cpp">
+      <Filter>Source Code\Modules\Core\Fs TODO</Filter>
+    </ClCompile>
+    <ClCompile Include="DIsplay.cpp">
+      <Filter>Source Code\Modules\Core\Display TODO</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Code\Modules\Core\Display TODO\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="JsArrayAllocater.cpp">
+      <Filter>Source Code\JavaScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
       <Filter>Source Code\Modules\Core\Console</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Source Code\Modules\Core\Display</Filter>
-    </ClInclude>
-    <ClInclude Include="Fs.h">
-      <Filter>Source Code\Modules\Core\Fs</Filter>
-    </ClInclude>
     <ClInclude Include="TextFile.h">
-      <Filter>Source Code\Modules\Core\Fs\TextFile</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageFile.h">
-      <Filter>Source Code\Modules\Core\Fs\ImageFile</Filter>
+      <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL.h">
       <Filter>Source Code\Modules\Apis\OpenGL</Filter>
@@ -202,7 +196,16 @@
       <Filter>Source Code\Modules\Apis\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="Http.h">
-      <Filter>Source Code\Modules\Core\Http</Filter>
+      <Filter>Source Code\Modules\Core\Http TODO</Filter>
+    </ClInclude>
+    <ClInclude Include="Fs.h">
+      <Filter>Source Code\Modules\Core\Fs TODO</Filter>
+    </ClInclude>
+    <ClInclude Include="Display.h">
+      <Filter>Source Code\Modules\Core\Display TODO</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Source Code\Modules\Core\Display TODO\Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

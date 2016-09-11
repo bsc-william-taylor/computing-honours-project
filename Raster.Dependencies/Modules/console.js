@@ -1,35 +1,40 @@
 
-function argumentsToString(functionArgs) {
-    let combinedString = "";
+const objectReplacer = null;
+const objectSpacing = 2;
+const objectType = "object";
+const space = " ";
+
+function stringArguments(functionArgs) {
+    let output = "";
 
     for (let i = 0; i < functionArgs.length; ++i) {
         const arg = functionArgs[i];
 
-        if (typeof (arg) === "object") {
-            combinedString += JSON.stringify(arg, null, 2);
+        if (typeof (arg) === objectType) {
+            output += JSON.stringify(arg, objectReplacer, objectSpacing);
         } else {
-            combinedString += arg;
+            output += arg;
         }
 
-        combinedString += " ";
+        output += space;
     }
 
-    return combinedString;
+    return output;
 };
 
 exports.error = function () {
-    raster.printLine(argumentsToString(arguments));
+    raster.printLine(stringArguments(arguments));
 }
 
 exports.warn = function() {
-    raster.printLine(argumentsToString(arguments));
+    raster.printLine(stringArguments(arguments));
 }
 
-exports.log = function() {
-    raster.printLine(argumentsToString(arguments));
+exports.log = function () {
+    raster.printLine(stringArguments(arguments));
 }
 
 exports.read = function () {
-    raster.print(argumentsToString(arguments));
-    return raster.read();
+    raster.print(stringArguments(arguments));
+    return raster.read();   
 }

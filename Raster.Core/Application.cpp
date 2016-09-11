@@ -52,7 +52,7 @@ void RasterApp::defineOptions(OptionSet& options)
     createOption(options, &RasterApp::handleInfo, "info", "i");
 }
 
-void RasterApp::createOption(OptionSet& options, OptionCallback<RasterApp>::Callback handler, std::string arg, std::string shorthand)
+void RasterApp::createOption(OptionSet& options, OptionsCallback handler, std::string arg, std::string shorthand)
 {
     OptionCallback<RasterApp> optionCallback(this, handler);
     Option option(arg, shorthand, "", false);
@@ -67,7 +67,6 @@ Poco::File RasterApp::extractFilename(const std::vector<std::string>& args)
     filename.setExtension("js");
     return Poco::File(filename);
 }
-
 
 int RasterApp::main(const std::vector<std::string>& args)
 {

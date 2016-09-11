@@ -3,30 +3,27 @@
 #include "System.h"
 #include "DateTime.h"
 #include "Console.h"
-#include "Window.h"
+#include "Display.h"
 #include "OpenGL.h"
 #include "OpenCL.h"
 #include "Http.h"
 #include "Fs.h"
 
-std::string readScript(const std::string& filename)
-{
-    std::ifstream file(filename);
-    std::string data;
+std::map<std::string, raster::JsModule> raster::modules::moduleCache = {};
 
-    if (file.is_open())
+std::map<std::string, raster::JsModuleRegisterCallback> raster::modules::moduleBindings =
+{ 
     {
-        std::string temp;
-        while (getline(file, temp))
-        {
-            data += temp + "\n";
-        }
-
-        file.close();
-    }
-
-    return data;
-}
+        { "datetime", [](v8::Local<v8::Object>& object) { raster::registerDateTime(object); } },
+        { "display", [](v8::Local<v8::Object>& object) { raster::registerDisplay(object); } },
+        { "console", [](v8::Local<v8::Object>& object) { raster::registerConsole(object); } },
+        { "system", [](v8::Local<v8::Object>& object) { raster::registerSystem(object); } },
+        { "opencl", [](v8::Local<v8::Object>& object) { raster::registerOpenCL(object); } },
+        { "opengl", [](v8::Local<v8::Object>& object) { raster::registerOpenGL(object); } },
+        { "http", [](v8::Local<v8::Object>& object) { raster::registerHttp(object); } },
+        { "fs", [](v8::Local<v8::Object>& object) { raster::registerFs(object); } }
+    } 
+};
 
 std::string parseInternalModulePath(std::string name)
 {
@@ -44,20 +41,6 @@ std::string parseExternalModulePath(std::string name)
     path.setExtension("js");
     return path.toString();
 }
-
-std::map<std::string, raster::JsModule> raster::modules::moduleCache = {};
-
-std::map<std::string, raster::JsModuleRegisterCallback> raster::modules::moduleBindings = 
-{{
-    { "datetime", [](v8::Local<v8::Object>& object) { raster::registerDateTime(object); } },
-    { "display", []( v8::Local<v8::Object>& object) { raster::registerDisplay(object); } },
-    { "console", [](v8::Local<v8::Object>& object) { raster::registerConsole(object); } },
-    { "system", [](v8::Local<v8::Object>& object) { raster::registerSystem(object); } },
-    { "opencl", [](v8::Local<v8::Object>& object) { raster::registerOpenCL(object); } },
-    { "opengl", [](v8::Local<v8::Object>& object) { raster::registerOpenGL(object); } },
-    { "http", [](v8::Local<v8::Object>& object) { raster::registerHttp(object); } },
-    { "fs", [](v8::Local<v8::Object>& object) { raster::registerFs(object); } }
-}};
 
 v8::Local<v8::ObjectTemplate> raster::registerCommonJsModules()
 {
@@ -99,15 +82,16 @@ v8::Local<v8::String> createScript(v8::Isolate * isolate, v8::String::Utf8Value&
 		filename = parseExternalModulePath(*module);
 	}
 
-	auto script = readScript(filename.c_str());
+	auto script = raster::readFile(filename.c_str());
 	script.insert(0, "(function(raster){");
 	script.append("})(cpp);");
 
 	return v8::String::NewFromUtf8(isolate, script.c_str(), v8::NewStringType::kNormal).ToLocalChecked();
 }
 
-void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args) {
-	if (args.Length() == 0) {
+void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args) 
+{
+	if (args.Length() != 1) {
 		args.GetReturnValue().SetUndefined();
 		return;
 	}
@@ -126,10 +110,9 @@ void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args) {
 	{
 		auto currentExports = global->Get(v8::String::NewFromUtf8(isolate, "exports"));
 		auto currentCpp = global->Get(v8::String::NewFromUtf8(isolate, "cpp"));
-		auto exports = v8::ObjectTemplate::New()->NewInstance();
-		auto module = v8::ObjectTemplate::New()->NewInstance();
+		auto exports = v8::Object::New(isolate);
+		auto module = v8::Object::New(isolate);
 		auto raster = v8::Object::New(isolate);
-
 		auto script = createScript(isolate, moduleName);
 		
 		if (modules::moduleBindings.find(*moduleName) != modules::moduleBindings.end())
@@ -139,17 +122,18 @@ void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
 		module->Set(v8::String::NewFromUtf8(isolate, "exports"), exports);
         module->Set(v8::String::NewFromUtf8(isolate, "name"), v8::String::NewFromUtf8(isolate, *moduleName));
-		global->Set(v8::String::NewFromUtf8(isolate, "cpp"), raster);
-		global->Set(v8::String::NewFromUtf8(isolate, "module"), module);
+
 		global->Set(v8::String::NewFromUtf8(isolate, "exports"), exports);
+        global->Set(v8::String::NewFromUtf8(isolate, "module"), module);
+        global->Set(v8::String::NewFromUtf8(isolate, "cpp"), raster);
 
 		v8::Script::Compile(context, script).ToLocalChecked()->Run(context);
 
 		global->Set(v8::String::NewFromUtf8(isolate, "exports"), currentExports);
 		global->Set(v8::String::NewFromUtf8(isolate, "cpp"), currentCpp);
 
-		args.GetReturnValue().Set(exports);
-
 		modules::moduleCache[*moduleName].Reset(v8::Isolate::GetCurrent(), exports);
+
+        args.GetReturnValue().Set(exports);
 	}
 }

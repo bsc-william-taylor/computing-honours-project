@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include <concurrent_queue.h>
 #include <concurrent_vector.h>
+#include <concurrent_queue.h>
 #include <thread>
 #include <future>
 #include <mutex>
@@ -40,6 +40,7 @@
 #include <Poco/Util/Application.h>
 #include <Poco/Util/Option.h>
 #include <Poco/File.h>
+#include <Poco/Environment.h>
 #include <Poco/Util/JSONConfiguration.h>
 #include <Poco/JSON/Array.h>
 #include <Poco/JSON/Parser.h>
