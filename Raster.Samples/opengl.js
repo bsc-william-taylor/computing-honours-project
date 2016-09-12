@@ -6,31 +6,33 @@ const http = require('http');
 const gl = require('opengl');
 const fs = require('fs');
 
-let renderData = JSON.parse(http.get('www.williamsamtaylor.co.uk', '/shapes', 3010));
+let renderData = {};
 let rotation = 0.0;
 
-class Bootstrapper {
-    setupOpenGL({ glEnable, glMatrixMode, glLoadIdentity, gluPerspective }) {
-        glEnable(gl.GL_DEPTH_TEST);
-        glMatrixMode(gl.GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45.0, 16.0 / 9.0, 0.1, 100.0);
-    }
+function enableOpenGL({ glEnable, glMatrixMode, glLoadIdentity, gluPerspective }) {
+    glEnable(gl.GL_DEPTH_TEST);
+    glMatrixMode(gl.GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, 16.0 / 9.0, 0.1, 100.0);
+}
 
-    bootstrap(windowSettings, onRender) {
-        openWindow(windowSettings, window => {
-            window.setTitle('OpenGL Example');
-            window.show();
-            window.enableOpenGL();
+function bootstrap(windowSettings, onRender) {
+    setInterval(() => renderData = JSON.parse(http.get('127.0.0.1', '/shapes', 3010)), 1000);
 
-            this.setupOpenGL(gl);
+    openWindow(windowSettings, window => {
+        window.setTitle('OpenGL Example');
+        window.show();
+        window.enableOpenGL();
 
-            window.onFrame(() => {
+        enableOpenGL(gl);
+
+        window.onFrame(() => {
+            if(Object.keys(renderData).length) {
                 onRender(gl);
                 window.swapBuffers();
-            });
+            }
         });
-    }
+    });
 }
 
 function renderObject(gl, object, type) {
@@ -53,10 +55,7 @@ function renderObject(gl, object, type) {
     gl.glEnd();
 }
 
-setInterval(() => renderData = JSON.parse(http.get('www.williamsamtaylor.co.uk', '/shapes', 3010)), 1000);
-
-const app = new Bootstrapper();
-app.bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {
+bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {
     gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
     gl.glClearColor(0.0, 0.0, 0.0, 0.0);
 

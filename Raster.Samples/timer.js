@@ -2,7 +2,7 @@
 const { setTimeout, setInterval, clearInterval, pause } = require('datetime');
 const console = require('console');
 
-pause(0);
+pause(100);
 
 const number = setInterval(() => {
     for(let i = 0; i < 3; ++i) {

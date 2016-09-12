@@ -118,7 +118,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /D "$(SolutionDir)Raster.Ts.Dependencies\Modules" "$(OutDir)modules"</Command>
+      <Command>xcopy /Y "$(SolutionDir)Raster.Dependencies\Modules" "$(OutDir)\modules"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -4,6 +4,7 @@
 #include "gl/GL.h"
 #include "JsArrayAllocater.h"
 #include "Fs.h"
+#include "JsExtensions.h"
 
 using namespace raster;
 
@@ -18,13 +19,6 @@ JsRuntime::~JsRuntime()
 {
 }
 
-void JsRuntime::printException(const v8::TryCatch& trycatch)
-{
-    v8::String::Utf8Value exception_str(trycatch.Exception());
-    const char * error = *exception_str;
-    std::cerr << error << std::endl;
-}
-
 void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> context, v8::Local<v8::String> source)
 {
     v8::TryCatch trycatch(isolate);
@@ -33,11 +27,11 @@ void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> c
 
     if (!v8::Script::Compile(context, source).ToLocal(&script))
     {
-        printException(trycatch);
+        CatchExceptions(trycatch);
     }
     else if (!script->Run(context).ToLocal(&output))
     {
-        printException(trycatch);
+        CatchExceptions(trycatch);
     }
 
     while (platform.PumpMessageLoop(isolate));
@@ -55,12 +49,12 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
         v8::Local<v8::String> source = v8::String::NewFromUtf8(isolate, enteredLine.c_str());
 
         if (!v8::Script::Compile(context, source).ToLocal(&script)) {
-            printException(trycatch);
+            CatchExceptions(trycatch);
             break;
         }
 
         if (!script->Run(context).ToLocal(&output)) {
-            printException(trycatch);
+            CatchExceptions(trycatch);
             break;
         }
 
@@ -109,7 +103,7 @@ void JsRuntime::initialise(std::vector<std::string>& args)
         argv[i] = const_cast<char *>(args[i].c_str());
     }
 
-    const auto v8Flags = "--expose_gc";
+    const auto v8Flags = "--expose_gc --expose_debug_as=v8debug";
 
     v8::V8::InitializeICUDefaultLocation(argv[0]);
     v8::V8::InitializeExternalStartupData(argv[0]);

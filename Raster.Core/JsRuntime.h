@@ -12,7 +12,6 @@ namespace raster
         explicit JsRuntime(std::vector<std::string>& args);
         virtual ~JsRuntime();
 
-        void printException(const v8::TryCatch& exception);
         void initialise(std::vector<std::string>& args);
         void start(std::string script = "");
 

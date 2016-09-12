@@ -6,9 +6,8 @@ void v8::CatchExceptions(TryCatch& trycatch)
 {
     if (trycatch.HasCaught())
     {
-        String::Utf8Value exception_str(trycatch.Exception());
-        const char * error = *exception_str;
-        std::cerr << error << std::endl;
+        String::Utf8Value stacktrace(trycatch.StackTrace()); 
+        std::cerr << *stacktrace << std::endl;
     }
 }
 

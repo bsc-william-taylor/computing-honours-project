@@ -1,6 +1,6 @@
 
 function getDefaultWindowArgs(givenArgs) {
-    var args = {};
+    const args = {};
     args.title = givenArgs.title || "";
     args.x = givenArgs.x || 0;
     args.y = givenArgs.y || 0;
@@ -18,7 +18,7 @@ exports.openMessage = function (title, body, callback) {
 }
 
 exports.openFullscreenWindow = function(callback) {
-
+    // TODO: Implement function
 };
 
 exports.openWindow = function (args, callback) {

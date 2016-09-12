@@ -3,7 +3,7 @@
 #include "gl/GLU.h"
 #include "gl/gl.h"
 
-void raster::clearColor(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glClearColor(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 4)
     {
@@ -12,28 +12,27 @@ void raster::clearColor(const v8::FunctionCallbackInfo<v8::Value>& args)
         auto b = args[2].As<v8::Number>()->Value();
         auto a = args[3].As<v8::Number>()->Value();
 
-        glClearColor(r, g, b, a);
+        ::glClearColor(r, g, b, a);
     }
 }
 
-void raster::clear(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glClear(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 1)
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        ::glClear(args[0]->NumberValue());
     }
 }
 
-void raster::begin(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glBegin(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 1)
     {
-        auto num = args[0].As<v8::Number>()->Value();
-        glBegin(static_cast<unsigned int>(num));
+        ::glBegin(static_cast<GLenum>(args[0]->NumberValue()));
     }
 }
 
-void raster::color3f(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glColor3(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 3)
     {
@@ -45,7 +44,7 @@ void raster::color3f(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::vertex2f(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glVertex2(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 2)
     {
@@ -56,7 +55,7 @@ void raster::vertex2f(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::vertex3f(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glVertex3(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 3)
     {
@@ -68,20 +67,20 @@ void raster::vertex3f(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::loadIdentity(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glLoadIdentity(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    glLoadIdentity();
+    ::glLoadIdentity();
 }
 
-void raster::matrixMode(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glMatrixMode(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 1)
     {
-        glMatrixMode(args[0].As<v8::Number>()->Value());
+        ::glMatrixMode(args[0].As<v8::Number>()->Value());
     }
 }
 
-void raster::translate(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glTranslate(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 3)
     {
@@ -93,7 +92,7 @@ void raster::translate(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::rotate(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glRotate(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 4)
     {
@@ -106,7 +105,7 @@ void raster::rotate(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::perspective(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glPerspective(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 4)
     {
@@ -119,32 +118,32 @@ void raster::perspective(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::end(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glEnd(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    glEnd();
+    ::glEnd();
 }
 
-void raster::enable(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::glEnable(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 1)
     {
-        glEnable(args[0].As<v8::Integer>()->Value());
+        ::glEnable(args[0].As<v8::Integer>()->Value());
     }
 
 }
 
 void raster::registerOpenGL(v8::Local<v8::Object>& object) {
-    object->Set(V8_String("gluPerspective"), v8::Function::New(v8::Isolate::GetCurrent(), perspective));
-    object->Set(V8_String("glEnable"), v8::Function::New(v8::Isolate::GetCurrent(), enable));
-    object->Set(V8_String("glMatrixMode"), v8::Function::New(v8::Isolate::GetCurrent(), matrixMode));
-    object->Set(V8_String("glLoadIdentity"), v8::Function::New(v8::Isolate::GetCurrent(), loadIdentity));
-    object->Set(V8_String("glTranslatef"), v8::Function::New(v8::Isolate::GetCurrent(), translate));
-    object->Set(V8_String("glRotatef"), v8::Function::New(v8::Isolate::GetCurrent(), rotate));
-    object->Set(V8_String("glClearColor"), v8::Function::New(v8::Isolate::GetCurrent(), clearColor));
-    object->Set(V8_String("glVertex3f"), v8::Function::New(v8::Isolate::GetCurrent(), vertex3f));
-    object->Set(V8_String("glVertex2f"), v8::Function::New(v8::Isolate::GetCurrent(), vertex2f));
-    object->Set(V8_String("glColor3f"), v8::Function::New(v8::Isolate::GetCurrent(), color3f));
-    object->Set(V8_String("glClear"), v8::Function::New(v8::Isolate::GetCurrent(), clear));
-    object->Set(V8_String("glBegin"), v8::Function::New(v8::Isolate::GetCurrent(), begin));
-    object->Set(V8_String("glEnd"), v8::Function::New(v8::Isolate::GetCurrent(), end));
+    object->Set(V8_String("gluPerspective"), v8::Function::New(v8::Isolate::GetCurrent(), glPerspective));
+    object->Set(V8_String("glEnable"), v8::Function::New(v8::Isolate::GetCurrent(), glEnable));
+    object->Set(V8_String("glMatrixMode"), v8::Function::New(v8::Isolate::GetCurrent(), glMatrixMode));
+    object->Set(V8_String("glLoadIdentity"), v8::Function::New(v8::Isolate::GetCurrent(), glLoadIdentity));
+    object->Set(V8_String("glTranslatef"), v8::Function::New(v8::Isolate::GetCurrent(), glTranslate));
+    object->Set(V8_String("glRotatef"), v8::Function::New(v8::Isolate::GetCurrent(), glRotate));
+    object->Set(V8_String("glClearColor"), v8::Function::New(v8::Isolate::GetCurrent(), glClearColor));
+    object->Set(V8_String("glVertex3f"), v8::Function::New(v8::Isolate::GetCurrent(), glVertex3));
+    object->Set(V8_String("glVertex2f"), v8::Function::New(v8::Isolate::GetCurrent(), glVertex2));
+    object->Set(V8_String("glColor3f"), v8::Function::New(v8::Isolate::GetCurrent(), glColor3));
+    object->Set(V8_String("glClear"), v8::Function::New(v8::Isolate::GetCurrent(), glClear));
+    object->Set(V8_String("glBegin"), v8::Function::New(v8::Isolate::GetCurrent(), glBegin));
+    object->Set(V8_String("glEnd"), v8::Function::New(v8::Isolate::GetCurrent(), glEnd));
 }

@@ -3,22 +3,21 @@
 #include "RasterCore.h"
 #include "JsObject.h"
 
-namespace raster {
-    void perspective(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void loadIdentity(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void matrixMode(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void translate(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void rotate(const v8::FunctionCallbackInfo<v8::Value>& args);
-
-    void clearColor(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void vertex2f(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void vertex3f(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void color3f(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void clear(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void enable(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void begin(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void end(const v8::FunctionCallbackInfo<v8::Value>& args);
-
+namespace raster 
+{
+    void glPerspective(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glLoadIdentity(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glMatrixMode(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glTranslate(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glRotate(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glClearColor(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glVertex2(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glVertex3(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glColor3(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glClear(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glEnable(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glBegin(const v8::FunctionCallbackInfo<v8::Value>& args);
+    void glEnd(const v8::FunctionCallbackInfo<v8::Value>& args);
 
     void registerOpenGL(v8::Local<v8::Object>& object);
 }

@@ -26,15 +26,6 @@
     <Filter Include="Source Code\Modules\Core\System">
       <UniqueIdentifier>{d13d6177-b570-4da8-ba75-bbd3198e25e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Apis">
-      <UniqueIdentifier>{6175045d-2283-44d6-8241-13862741eb78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Apis\OpenGL">
-      <UniqueIdentifier>{0b816f25-2673-4bd6-be4f-0f88bca583ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Apis\OpenCL">
-      <UniqueIdentifier>{78672bbc-3ed4-44e0-abf5-8151abddae08}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\Core\Display TODO">
       <UniqueIdentifier>{ec291963-3cb0-4103-a914-8239d5df7aab}</UniqueIdentifier>
     </Filter>
@@ -50,6 +41,15 @@
     <Filter Include="Source Code\Modules\Core\Http TODO">
       <UniqueIdentifier>{e85708b6-76e6-480b-a8cf-dfbb921c5337}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Code\Modules\Gpu">
+      <UniqueIdentifier>{6175045d-2283-44d6-8241-13862741eb78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Gpu\OpenGL">
+      <UniqueIdentifier>{0b816f25-2673-4bd6-be4f-0f88bca583ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Gpu\OpenCL">
+      <UniqueIdentifier>{78672bbc-3ed4-44e0-abf5-8151abddae08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules.cpp">
@@ -62,7 +62,7 @@
       <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
     </ClCompile>
     <ClCompile Include="OpenGL.cpp">
-      <Filter>Source Code\Modules\Apis\OpenGL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Code\Application</Filter>
@@ -71,7 +71,7 @@
       <Filter>Source Code</Filter>
     </ClCompile>
     <ClCompile Include="OpenCL.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="JsRuntime.cpp">
       <Filter>Source Code\JavaScript</Filter>
@@ -92,25 +92,25 @@
       <Filter>Source Code\JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="Buffer.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="Platform.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="Kernel.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="Device.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="Context.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="CommandQueue.cpp">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="Http.cpp">
       <Filter>Source Code\Modules\Core\Http TODO</Filter>
@@ -136,7 +136,7 @@
       <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL.h">
-      <Filter>Source Code\Modules\Apis\OpenGL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Modules.h">
       <Filter>Source Code\Modules</Filter>
@@ -148,7 +148,7 @@
       <Filter>Source Code</Filter>
     </ClInclude>
     <ClInclude Include="OpenCL.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="JsRuntime.h">
       <Filter>Source Code\JavaScript</Filter>
@@ -175,25 +175,25 @@
       <Filter>Source Code\JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="Program.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="Platform.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="Kernel.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="Device.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="Context.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="CommandQueue.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="Buffer.h">
-      <Filter>Source Code\Modules\Apis\OpenCL</Filter>
+      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="Http.h">
       <Filter>Source Code\Modules\Core\Http TODO</Filter>

@@ -48,7 +48,6 @@ void CL_Kernel::create(v8::Local<v8::Object>& cpp, v8::Isolate * isolate)
     cpp->Set(v8::String::NewFromUtf8(isolate, "Kernel"), constructor.Get(isolate));
 }
 
-// Member functions
 void CL_Kernel::setArg(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     auto kernelWrapper = unwrap(args);

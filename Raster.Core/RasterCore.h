@@ -58,24 +58,23 @@
 #include <SDL_image.h>
 #include <functional>
 
-#pragma comment(lib, "glew32.lib")
-#pragma comment(lib, "opencl.lib")
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "SDL2main.lib")
 #pragma comment(lib, "SDL2_image.lib")
 #pragma comment(lib, "SDL2.lib")
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "opencl.lib")
+#pragma comment(lib, "glew32.lib")
+#pragma comment(lib, "glu32.lib")
+#pragma comment(lib, "shlwapi.lib")
+#pragma comment(lib, "Winmm.lib")
 #pragma comment(lib, "icui18n.dll.lib")
 #pragma comment(lib, "icuuc.dll.lib")
 #pragma comment(lib, "v8.dll.lib")
-#pragma comment(lib, "mksnapshot.lib")
-#pragma comment(lib, "shlwapi.lib")
-#pragma comment(lib, "Winmm.lib")
 
 #pragma warning(disable : 4099)
 #pragma warning(disable : 4244)
 
-#define V8_Function(func) v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), func)->GetFunction()
+#define V8_Function(func) v8::Function::New(v8::Isolate::GetCurrent(), func)
 #define V8_Integer(data) v8::Integer::New(v8::Isolate::GetCurrent(), data)
 #define V8_String(data) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), data)
 
