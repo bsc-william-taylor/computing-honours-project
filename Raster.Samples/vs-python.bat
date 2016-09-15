@@ -2,5 +2,5 @@
 echo --- Python ---
 call python prime.py
 echo --- Raster ---
-call raster prime.js
+call raster_r prime.js
 echo --- End ---
