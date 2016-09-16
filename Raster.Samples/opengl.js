@@ -17,7 +17,7 @@ function enableOpenGL({ glEnable, glMatrixMode, glLoadIdentity, gluPerspective }
 }
 
 function bootstrap(windowSettings, onRender) {
-    setInterval(() => renderData = JSON.parse(http.get('127.0.0.1', '/shapes', 3010)), 1000);
+    setInterval(() => renderData = JSON.parse(http.get('www.williamsamtaylor.co.uk', '/shapes', 3010)), 1000);
 
     openWindow(windowSettings, window => {
         window.setTitle('OpenGL Example');
@@ -45,7 +45,7 @@ function renderObject(gl, object, type) {
     gl.glBegin(type);
 
     object.faces.forEach((face, index) => {
-        const { r, g, b } = object.colours[index];
+        const { r, g, b } = object.colours[index]; 
         gl.glColor3f(r, g, b);
         face.vertices.forEach(({ x, y, z }) => {
             gl.glVertex3f(x, y, z);

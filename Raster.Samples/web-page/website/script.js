@@ -1,7 +1,8 @@
 
+const url = 'www.williamsamtaylor.co.uk';
 let shapes = null;
 
-fetch('http://localhost:3010/shapes').then(function(response) {
+fetch(`http://${url}:3010/shapes`).then(function(response) {
   return response.json();
 }).then(function(json) {
    shapes = json;
@@ -10,7 +11,7 @@ fetch('http://localhost:3010/shapes').then(function(response) {
 
 $("#save").click(function() {
     if(shapes != null) {
-        var request = new Request('http://locahost:3010/shapes', {
+        var request = new Request(`http://${url}:3010/shapes`, {
             method: 'POST', 
             mode: 'cors',
             headers: new Headers({
