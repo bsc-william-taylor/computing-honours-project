@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raster", "Raster\Raster.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raster.Core", "Raster.Core\Raster.Core.vcxproj", "{471C9745-166A-44E6-A66C-70F660C4ED19}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raster.Modules", "Raster.Dependencies\Raster.Dependencies.vcxproj", "{A16AA1EE-4543-4432-8D20-0E7D94415196}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Raster.Modules", "Raster.Modules\Raster.Modules.vcxproj", "{A16AA1EE-4543-4432-8D20-0E7D94415196}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
