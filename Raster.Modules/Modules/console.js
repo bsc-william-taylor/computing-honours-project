@@ -2,6 +2,7 @@
 const objectReplacer = null;
 const objectSpacing = 2;
 const objectType = "object";
+const readToken = "\n:";
 const space = " ";
 
 function stringArguments(functionArgs) {
@@ -35,6 +36,7 @@ exports.log = function () {
 }
 
 exports.read = function () {
-    raster.print(stringArguments(arguments));
+    const output = stringArguments(arguments) + readToken;
+    raster.print(output);
     return raster.read();   
 }

@@ -1,4 +1,14 @@
 
+const getKeyByValue = (object, value) => {
+    for (let prop in object) {
+        if (object.hasOwnProperty(prop)) {
+            if (object[prop] === value) {
+                return prop;
+            }
+        }
+    }
+}
+
 exports.CL_BUILD_SUCCESS = 0;
 exports.CL_DEVICE_NAME = 0x102B;
 
@@ -111,6 +121,26 @@ exports.CL_DEVICE_PREFERRED_PLATFORM_ATOMIC_ALIGNMENT = 0x1058;
 exports.CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT = 0x1059;
 exports.CL_DEVICE_PREFERRED_LOCAL_ATOMIC_ALIGNMENT = 0x105A;
 
-for (let key in raster) {
-    exports[key] = raster[key];
-}
+exports.getPlatformIDs = raster.getPlatformIDs;
+exports.getDeviceIDs = raster.getDeviceIDs;
+
+exports.getPlatformInfo = function(platform, info) {
+    raster.getPlatformInfo(platform, info);
+
+    const keyName = getKeyByValue(exports, info);
+    const value = platform.info;
+
+    delete platform.info;
+    platform[keyName] = value;
+};
+
+exports.getDeviceInfo = (device, info) => {
+    raster.getDeviceInfo(device, info);
+
+    const keyName = getKeyByValue(exports, info);
+    const value = device.info;
+
+    delete device.info;
+    device[keyName] = value;
+};
+

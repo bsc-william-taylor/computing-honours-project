@@ -27,7 +27,7 @@ public:
     {
         auto isolate = v8::Isolate::GetCurrent();
         constructor.Reset(isolate, templ->GetFunction());
-        cpp->Set(V8_String(name), constructor.Get(isolate));
+        cpp->Set(v8::NewString(name), constructor.Get(isolate));
     }
 
     void wrap(v8::Handle<v8::Object> handle)

@@ -1,5 +1,6 @@
 ﻿
 #include "TextFile.h"
+#include "JsExtensions.h"
 
 v8::Persistent<v8::ObjectTemplate> TextFile::objectTemplate;
 v8::Persistent<v8::Function> TextFile::constructor;
@@ -33,7 +34,7 @@ void TextFile::getExt(v8::Local<v8::String> property, const v8::PropertyCallback
 {
     auto that = info.This();
     auto obj = unwrap(that);
-    info.GetReturnValue().Set(V8_String(obj->ext.c_str()));
+    info.GetReturnValue().Set(v8::NewString(obj->ext.c_str()));
 }
 
 void TextFile::setContents(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
@@ -47,7 +48,7 @@ void TextFile::getContents(v8::Local<v8::String> property, const v8::PropertyCal
 {
     auto that = info.This();
     auto obj = unwrap(that);
-    info.GetReturnValue().Set(V8_String(obj->contents.c_str()));
+    info.GetReturnValue().Set(v8::NewString(obj->contents.c_str()));
 }
 
 void TextFile::setFilename(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
@@ -61,7 +62,7 @@ void TextFile::getFilename(v8::Local<v8::String> property, const v8::PropertyCal
 {
     auto that = info.This();
     auto obj = unwrap(that);
-    info.GetReturnValue().Set(V8_String(obj->filename.c_str()));
+    info.GetReturnValue().Set(v8::NewString(obj->filename.c_str()));
 }
 
 void TextFile::setPath(v8::Local<v8::String> property, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
@@ -75,7 +76,7 @@ void TextFile::getPath(v8::Local<v8::String> property, const v8::PropertyCallbac
 {
     auto that = info.This();
     auto obj = unwrap(that);
-    info.GetReturnValue().Set(V8_String(obj->path.c_str()));
+    info.GetReturnValue().Set(v8::NewString(obj->path.c_str()));
 }
 
 void TextFile::read(const v8::FunctionCallbackInfo<v8::Value>& args)
@@ -109,11 +110,11 @@ void TextFile::newInstance(const v8::FunctionCallbackInfo<v8::Value>& info)
     auto object = newTemplate(objectTemplate);
     auto file = new TextFile();
 
-    object->Set(V8_String("read"), v8::Function::New(isolate, read));
-    object->SetAccessor(V8_String("contents"), getContents, setContents);
-    object->SetAccessor(V8_String("filename"), getFilename, setFilename);
-    object->SetAccessor(V8_String("path"), getPath, setPath);
-    object->SetAccessor(V8_String("ext"), getExt, setExt);
+    object->Set(v8::NewString("read"), v8::Function::New(isolate, read));
+    object->SetAccessor(v8::NewString("contents"), getContents, setContents);
+    object->SetAccessor(v8::NewString("filename"), getFilename, setFilename);
+    object->SetAccessor(v8::NewString("path"), getPath, setPath);
+    object->SetAccessor(v8::NewString("ext"), getExt, setExt);
 
     file->wrap(object);
 

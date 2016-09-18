@@ -47,9 +47,9 @@ v8::Local<v8::ObjectTemplate> raster::registerCommonJsModules()
     auto isolate = v8::Isolate::GetCurrent();
     auto moduleTemplate = v8::ObjectTemplate::New(isolate);
 
-    moduleTemplate->Set(V8_String("require"), v8::FunctionTemplate::New(isolate, require));
-    moduleTemplate->Set(V8_String("exports"), v8::ObjectTemplate::New(isolate));
-    moduleTemplate->Set(V8_String("cpp"), v8::ObjectTemplate::New(isolate));
+    moduleTemplate->Set(v8::NewString("require"), v8::FunctionTemplate::New(isolate, require));
+    moduleTemplate->Set(v8::NewString("exports"), v8::ObjectTemplate::New(isolate));
+    moduleTemplate->Set(v8::NewString("cpp"), v8::ObjectTemplate::New(isolate));
 
     return moduleTemplate;
 }
@@ -83,8 +83,8 @@ v8::Local<v8::String> createScript(v8::Isolate * isolate, v8::String::Utf8Value&
     }
 
     auto script = raster::readFile(filename.c_str());
-    script.insert(0, "(function(raster){");
-    script.append("})(cpp);");
+    script.insert(0, "(function(raster, exports){");
+    script.append("})(cpp, exports);");
 
     return v8::String::NewFromUtf8(isolate, script.c_str(), v8::NewStringType::kNormal).ToLocalChecked();
 }

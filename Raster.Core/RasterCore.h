@@ -76,6 +76,5 @@
 
 #define V8_Function(func) v8::Function::New(v8::Isolate::GetCurrent(), func)
 #define V8_Integer(data) v8::Integer::New(v8::Isolate::GetCurrent(), data)
-#define V8_String(data) v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), data)
 
 extern std::string cwd;

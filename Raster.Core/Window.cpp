@@ -31,22 +31,22 @@ void Window::newWindow(const v8::FunctionCallbackInfo<v8::Value>& info)
     auto isolate = info.GetIsolate();
     auto object = newTemplate(objectTemplate);
 
-    object->Set(V8_String("enableOpenGL"), v8::Function::New(isolate, enableOpenGL));
-    object->Set(V8_String("swapBuffers"), v8::Function::New(isolate, swapBuffers));
-    object->Set(V8_String("setPosition"), v8::Function::New(isolate, setPosition));
-    object->Set(V8_String("setTitle"), v8::Function::New(isolate, setTitle));
-    object->Set(V8_String("onFrame"), v8::Function::New(isolate, onFrame));
-    object->Set(V8_String("setSize"), v8::Function::New(isolate, setSize));
-    object->Set(V8_String("show"), v8::Function::New(isolate, show));
-    object->Set(V8_String("hide"), v8::Function::New(isolate, hide));
+    object->Set(v8::NewString("enableOpenGL"), v8::Function::New(isolate, enableOpenGL));
+    object->Set(v8::NewString("swapBuffers"), v8::Function::New(isolate, swapBuffers));
+    object->Set(v8::NewString("setPosition"), v8::Function::New(isolate, setPosition));
+    object->Set(v8::NewString("setTitle"), v8::Function::New(isolate, setTitle));
+    object->Set(v8::NewString("onFrame"), v8::Function::New(isolate, onFrame));
+    object->Set(v8::NewString("setSize"), v8::Function::New(isolate, setSize));
+    object->Set(v8::NewString("show"), v8::Function::New(isolate, show));
+    object->Set(v8::NewString("hide"), v8::Function::New(isolate, hide));
 
     auto window = new Window();
     auto args = info[0].As<v8::Object>();
-    auto t = args->Get(V8_String("title"));
-    auto x = args->Get(V8_String("x"));
-    auto y = args->Get(V8_String("y"));
-    auto w = args->Get(V8_String("w"));
-    auto h = args->Get(V8_String("h"));
+    auto t = args->Get(v8::NewString("title"));
+    auto x = args->Get(v8::NewString("x"));
+    auto y = args->Get(v8::NewString("y"));
+    auto w = args->Get(v8::NewString("w"));
+    auto h = args->Get(v8::NewString("h"));
 
     window->windowTitle = std::string(*v8::String::Utf8Value(t));
     window->rect.x = x->Int32Value();

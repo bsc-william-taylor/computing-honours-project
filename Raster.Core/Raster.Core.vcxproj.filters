@@ -50,9 +50,6 @@
     <Filter Include="Source Code\Modules\Gpu\OpenCL">
       <UniqueIdentifier>{78672bbc-3ed4-44e0-abf5-8151abddae08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Gpu\OpenCL\old">
-      <UniqueIdentifier>{41f73edf-876b-4754-8912-c5942552d1cb}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules.cpp">
@@ -108,27 +105,6 @@
     </ClCompile>
     <ClCompile Include="JsArrayAllocater.cpp">
       <Filter>Source Code\JavaScript</Filter>
-    </ClCompile>
-    <ClCompile Include="Program.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Kernel.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Device.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Context.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandQueue.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClCompile>
-    <ClCompile Include="Buffer.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,27 +164,6 @@
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Source Code\Modules\Core\Display TODO\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Program.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Kernel.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Device.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Context.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandQueue.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffer.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL\old</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

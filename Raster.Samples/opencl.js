@@ -28,6 +28,8 @@ function acquireDevice(platform) {
 
     devices.forEach(device => {
         cl.getDeviceInfo(device, cl.CL_DEVICE_NAME);
+        cl.getDeviceInfo(device, cl.CL_DEVICE_VERSION);
+        cl.getDeviceInfo(device, cl.CL_DEVICE_VENDOR);
     })
 
     return devices[console.read(devices)];
