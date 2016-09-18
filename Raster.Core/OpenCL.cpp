@@ -1,34 +1,95 @@
 
 #include "OpenCL.h"
 
-void raster::getPlatforms(const v8::FunctionCallbackInfo<v8::Value>& args)
+void getPlatforms(v8::FunctionArgs args)
 {
-    std::vector<cl::Platform> platforms;
-    cl::Platform::get(&platforms);
-
-    auto platformArray = v8::Array::New(v8::Isolate::GetCurrent(), platforms.size());
-
-    for (auto i = 0; i < platforms.size(); i++)
+    if(args.Length() == 3)
     {
-        auto platformWrapper = CL_Platform::newInstance();
-        auto pointer = CL_Platform::unwrap(platformWrapper);
-        pointer->setPlatform(platforms[i]);
-        platformArray->Set(i, platformWrapper);
-    }
+        auto isolate = args.GetIsolate();
+        auto arg1 = args[0].As<v8::Number>();
+        auto arg2 = args[1].As<v8::Array>();
+        auto arg3 = args[2].As<v8::Array>();
+        
+        cl_uint devices = arg1->Value();
+        cl_uint count = 0;
+        
+        auto platformBuffer = new cl_platform_id[devices];
+        auto platformOut = arg2->IsNull() ? nullptr : platformBuffer;
+        auto countOut = arg3->IsNull() ? nullptr : &count;
 
-    args.GetReturnValue().Set(platformArray);
+        clGetPlatformIDs(devices, platformOut, countOut);
+
+        if(platformOut != nullptr)
+        {
+            for(auto i = 0; i < devices; ++i)
+            {
+                arg2->Set(i, v8::WrapPointer(platformBuffer[i]));
+            }
+        }
+       
+        if(countOut != nullptr)
+        {
+            arg3->Set(v8::NewString("length"), v8::Number::New(isolate, count));
+        }
+
+        delete platformBuffer;
+    }
 }
 
-void raster::registerOpenCL(v8::Local<v8::Object>& object) {
-    const auto isolate = v8::Isolate::GetCurrent();
+std::string deviceEnumName(int enumValue)
+{
+    std::string name = "unknown";
 
-    object->Set(V8_String("getPlatforms"), v8::Function::New(isolate, getPlatforms));
+    switch (enumValue)
+    {
+        case CL_PLATFORM_EXTENSIONS: name = "extensions"; break;
+        case CL_PLATFORM_VERSION: name = "version"; break;
+        case CL_PLATFORM_PROFILE: name = "profile"; break;
+        case CL_PLATFORM_VENDOR: name = "vendor"; break;
+        case CL_PLATFORM_NAME: name = "name"; break;
 
-    CL_CommandQueue::create(object, isolate);
-    CL_Platform::create(object, isolate);
-    CL_Program::create(object, isolate);
-    CL_Context::create(object, isolate);
-    CL_Kernel::create(object, isolate);
-    CL_Buffer::create(object, isolate);
-    CL_Device::create(object, isolate);
+    default:
+        break;
+    }
+
+    return name;
+}
+
+void getPlatformInfo(v8::FunctionArgs args)
+{
+    if (args.Length() == 2)
+    {
+        const auto arg1 = args[0].As<v8::Object>();
+        const auto arg2 = args[1].As<v8::Number>();
+        const auto sz = 10240;
+
+        auto platformID = cl_platform_id(arg1->GetAlignedPointerFromInternalField(0));
+        auto enumInfo = int(arg2->Value());
+        char buffer[sz];
+        
+        clGetPlatformInfo(platformID, enumInfo, sz, buffer, nullptr);
+        arg1->Set(v8::NewString(deviceEnumName(enumInfo)), v8::NewString(buffer));
+    }
+}
+
+void getDevices(v8::FunctionArgs args)
+{
+    if(args.Length() == 2)
+    {
+        
+    }
+}
+
+void getDeviceInfo(v8::FunctionArgs args)
+{
+    
+}
+
+void raster::registerOpenCL(v8::Local<v8::Object>& object) 
+{
+    AttachFunction(object, "getPlatformIDs", getPlatforms);
+    AttachFunction(object, "getPlatformInfo", getPlatformInfo);
+
+    AttachFunction(object, "getDeviceIDs", getDevices);
+    AttachFunction(object, "getDeviceInfo", getDeviceInfo);
 }

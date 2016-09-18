@@ -53,3 +53,27 @@ void v8::Throw(const FunctionCallbackInfo<Value>& args, std::string msg)
         isolate->ThrowException(error);
     }
 }
+
+
+v8::Persistent<v8::ObjectTemplate> WrappedPointerTemplate;
+
+v8::Local<v8::Object> v8::WrapPointer(void* pointer)
+{
+    const auto isolate = Isolate::GetCurrent();
+
+    if (WrappedPointerTemplate.IsEmpty())
+    {
+        auto objectTemplate = ObjectTemplate::New(isolate);
+        objectTemplate->SetInternalFieldCount(1);
+        WrappedPointerTemplate.Reset(isolate, objectTemplate);
+    }
+
+    auto object = WrappedPointerTemplate.Get(isolate)->NewInstance();
+    object->SetAlignedPointerInInternalField(0, pointer);
+    return object;
+}
+
+v8::Local<v8::String> v8::NewString(std::string value)
+{
+    return v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), value.c_str());
+}

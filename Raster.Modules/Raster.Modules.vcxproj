@@ -87,7 +87,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy /Y "$(SolutionDir)Raster.Dependencies\Modules" "$(OutDir)\modules"</Command>
+      <Command>xcopy /Y "$(SolutionDir)Raster.Modules\Modules" "$(OutDir)\modules"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>

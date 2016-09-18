@@ -2,7 +2,7 @@
 #include "Console.h"
 #include "JsExtensions.h"
 
-void raster::console::printLine(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::console::printLine(v8::FunctionArgs args)
 {
     const auto argLength = args.Length();
 
@@ -16,7 +16,7 @@ void raster::console::printLine(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::console::print(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::console::print(v8::FunctionArgs args)
 {
     const auto argLength = args.Length();
 
@@ -30,7 +30,7 @@ void raster::console::print(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void raster::console::read(const v8::FunctionCallbackInfo<v8::Value>& args)
+void raster::console::read(v8::FunctionArgs args)
 {
     std::string input;
     std::getline(std::cin, input);
