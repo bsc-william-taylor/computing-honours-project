@@ -1,12 +1,28 @@
+const { read, write } = raster;
+const defaultSpacing = 2;
 
-exports.readFile = function (path) {
-    const file = new raster.TextFile();
-    file.read(path);
-    return file;
+let jsonSpacing = defaultSpacing;
+let jsonReplacer = null;
+let jsonReviver = null;
+
+exports.readJson = path => {
+    const jsonString = read(path);
+    const characters = jsonString.contents;
+
+    return JSON.parse(characters, jsonReviver);
 }
 
-exports.readJson = function (path) {
-    const file = new raster.TextFile();
-    file.read(path);
-    return JSON.parse(file.contents);
+exports.writeJson = (path, json) => {
+    const string = JSON.stringify(json, jsonReplacer, jsonSpacing);
+    
+    if (string.length > 0) {
+        write(path, string);
+    }
 }
+
+exports.write = (path, string) => write(path, string);
+exports.read = path => read(path);
+
+exports.replacer = replacer => jsonReplacer = replacer;
+exports.reviver = reviver => jsonReviver = reviver;
+exports.spacing = spacing => jsonSpacing = spacing;

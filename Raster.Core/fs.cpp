@@ -1,8 +1,8 @@
 
-#include "TextFile.h"
 #include "Fs.h"
+#include "JsExtensions.h"
 
-std::string raster::readFile(const char * filename)
+std::string raster::readFile(std::string filename)
 {
     std::ifstream file(filename);
     std::string data;
@@ -20,7 +20,43 @@ std::string raster::readFile(const char * filename)
     return data;
 }
 
+void read(v8::FunctionArgs args)
+{
+    if(args.Length() == 1)
+    {
+        v8::String::Utf8Value path(args[0]);
+
+        Poco::Path pocoPath(*path);
+        Poco::File pocoFile(*path);
+
+        const auto fileSize = std::to_string(pocoFile.getSize());
+        const auto file = v8::Object::New(args.GetIsolate());
+
+        file->Set(v8::NewString("path"), v8::NewString(pocoPath.toString(Poco::Path::PATH_UNIX)));
+        file->Set(v8::NewString("size"), v8::NewString(fileSize));
+        file->Set(v8::NewString("extension"), v8::NewString(pocoPath.getExtension()));
+        file->Set(v8::NewString("filename"), v8::NewString(pocoPath.getFileName()));
+        file->Set(v8::NewString("contents"), v8::NewString(raster::readFile(*path)));
+
+        args.GetReturnValue().Set(file);
+    }
+}
+
+void write(v8::FunctionArgs args)
+{
+    if(args.Length() == 2)
+    {
+        v8::String::Utf8Value path(args[0]);
+        v8::String::Utf8Value data(args[1]);
+
+        std::ofstream file(*path);
+        file << *data;
+        file.close();
+    }
+}
+
 void raster::registerFs(v8::Local<v8::Object>& object)
 {
-    TextFile::create(object, v8::Isolate::GetCurrent());
+    AttachFunction(object, "write", write);
+    AttachFunction(object, "read", read);
 }

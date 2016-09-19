@@ -1,13 +1,11 @@
 
-const {log} = require('console');
+const console = require('console');
 const fs = require('fs');
 
-const shapesFile = fs.readFile('http.js');
+const httpFile = fs.readJson('./web-page/server/shapes.json');
 
-console.log(shapesFile.filename);
-console.log(shapesFile.path);
-console.log(shapesFile.ext);
-console.log(shapesFile.contents.length);
-console.log(shapesFile.contents);
+console.log(httpFile);
 
 
+fs.spacing(2);
+fs.writeJson('helloworld.json', httpFile);

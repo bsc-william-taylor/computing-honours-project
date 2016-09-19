@@ -33,9 +33,8 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Modules.cpp" />
     <ClCompile Include="OpenGL.cpp" />
-    <ClCompile Include="TextFile.cpp" />
     <ClCompile Include="DateTime.cpp" />
-    <ClCompile Include="DIsplay.cpp" />
+    <ClCompile Include="Display.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -50,7 +49,6 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="OpenCL.h" />
     <ClInclude Include="OpenGL.h" />
-    <ClInclude Include="TextFile.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="RasterCore.h" />
     <ClInclude Include="Fs.h" />

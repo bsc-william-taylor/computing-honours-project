@@ -1,42 +1,41 @@
-
-const objectReplacer = null;
-const objectSpacing = 2;
-const objectType = "object";
+const { printLine, print, read } = raster;
+const jsonReplacer = null;
+const jsonSpacing = 2;
 const readToken = "\n:";
-const space = " ";
 
-function stringArguments(functionArgs) {
+const stringArguments = args => {
     let output = "";
 
-    for (let i = 0; i < functionArgs.length; ++i) {
-        const arg = functionArgs[i];
-
-        if (typeof (arg) === objectType) {
-            output += JSON.stringify(arg, objectReplacer, objectSpacing);
+    for (let i = 0; i < args.length; ++i) {
+        if (typeof (args[i]) === "object") {
+            output += JSON.stringify(args[i], jsonReplacer, jsonSpacing);
         } else {
-            output += arg;
+            output += args[i];
         }
 
-        output += space;
+        output += " ";
     }
 
     return output;
 };
 
-exports.error = function () {
-    raster.printLine(stringArguments(arguments));
+exports.error = function() {
+    const output = stringArguments(arguments);
+    printLine(output);
 }
 
 exports.warn = function() {
-    raster.printLine(stringArguments(arguments));
+    const output = stringArguments(arguments);
+    printLine(output);
 }
 
-exports.log = function () {
-    raster.printLine(stringArguments(arguments));
+exports.log = function() {
+    const output = stringArguments(arguments);
+    printLine(output);
 }
 
-exports.read = function () {
-    const output = stringArguments(arguments) + readToken;
-    raster.print(output);
-    return raster.read();   
+exports.read = function() {
+    const output = stringArguments(arguments);
+    print(output + readToken);
+    return read();   
 }

@@ -32,17 +32,14 @@
     <Filter Include="Source Code\Modules\Core\Display TODO\Window">
       <UniqueIdentifier>{9c47c55b-f867-4a78-a3b4-3383c9456bf3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Core\Fs TODO">
-      <UniqueIdentifier>{ca44f343-6b9d-43f2-95d1-c817dc354d8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Core\Fs TODO\TextFile">
-      <UniqueIdentifier>{c8f8752c-66f8-4bd5-923a-b35974ba3680}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Code\Modules\Core\Http TODO">
       <UniqueIdentifier>{e85708b6-76e6-480b-a8cf-dfbb921c5337}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Code\Modules\Gpu">
       <UniqueIdentifier>{6175045d-2283-44d6-8241-13862741eb78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules\Core\Fs">
+      <UniqueIdentifier>{ca44f343-6b9d-43f2-95d1-c817dc354d8d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,9 +48,6 @@
     </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Source Code\Modules\Core\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="TextFile.cpp">
-      <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Code\Application</Filter>
@@ -83,10 +77,7 @@
       <Filter>Source Code\Modules\Core\Http TODO</Filter>
     </ClCompile>
     <ClCompile Include="Fs.cpp">
-      <Filter>Source Code\Modules\Core\Fs TODO</Filter>
-    </ClCompile>
-    <ClCompile Include="DIsplay.cpp">
-      <Filter>Source Code\Modules\Core\Display TODO</Filter>
+      <Filter>Source Code\Modules\Core\Fs</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Source Code\Modules\Core\Display TODO\Window</Filter>
@@ -100,13 +91,13 @@
     <ClCompile Include="OpenCL.cpp">
       <Filter>Source Code\Modules\Gpu</Filter>
     </ClCompile>
+    <ClCompile Include="Display.cpp">
+      <Filter>Source Code\Modules\Core\Display TODO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
       <Filter>Source Code\Modules\Core\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="TextFile.h">
-      <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
     </ClInclude>
     <ClInclude Include="Modules.h">
       <Filter>Source Code\Modules</Filter>
@@ -145,7 +136,7 @@
       <Filter>Source Code\Modules\Core\Http TODO</Filter>
     </ClInclude>
     <ClInclude Include="Fs.h">
-      <Filter>Source Code\Modules\Core\Fs TODO</Filter>
+      <Filter>Source Code\Modules\Core\Fs</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">
       <Filter>Source Code\Modules\Core\Display TODO</Filter>
