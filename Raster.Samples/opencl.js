@@ -18,7 +18,7 @@ function acquirePlatform() {
         cl.getPlatformInfo(platform, cl.CL_PLATFORM_VENDOR);
     });
 
-    return platforms[console.read(platforms)];
+    return platforms[0];//platforms[console.read(platforms)];
 }
 
 function acquireDevice(platform) {
@@ -32,8 +32,12 @@ function acquireDevice(platform) {
         cl.getDeviceInfo(device, cl.CL_DEVICE_VENDOR);
     })
 
-    return devices[console.read(devices)];
+    return devices[0];//devices[console.read(devices)];
 }
 
 const platform = acquirePlatform();
 const device = acquireDevice(platform);
+
+const context = cl.createContextFromType( [ cl.CL_CONTEXT_PLATFORM, platform, 0 ], cl.CL_DEVICE_TYPE_ALL, null, null, null);
+
+cl.releaseContext(context);

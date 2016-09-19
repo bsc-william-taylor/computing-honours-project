@@ -1,44 +1,6 @@
 
 #include "OpenCL.h"
 
-std::string platformEnumName(int enumValue)
-{
-    std::string name = "unknown";
-
-    switch (enumValue)
-    {
-    case CL_PLATFORM_EXTENSIONS: name = "extensions"; break;
-    case CL_PLATFORM_VERSION: name = "version"; break;
-    case CL_PLATFORM_PROFILE: name = "profile"; break;
-    case CL_PLATFORM_VENDOR: name = "vendor"; break;
-    case CL_PLATFORM_NAME: name = "name"; break;
-
-    default:
-        break;
-    }
-
-    return name;
-}
-
-std::string deviceInfoName(int enumValue)
-{
-    std::string name = "unknown";
-
-    switch (enumValue)
-    {
-    case CL_PLATFORM_EXTENSIONS: name = "extensions"; break;
-    case CL_PLATFORM_VERSION: name = "version"; break;
-    case CL_PLATFORM_PROFILE: name = "profile"; break;
-    case CL_PLATFORM_VENDOR: name = "vendor"; break;
-    case CL_PLATFORM_NAME: name = "name"; break;
-
-    default:
-        break;
-    }
-
-    return name;
-}
-
 void getPlatforms(v8::FunctionArgs args)
 {
     if(args.Length() == 3)
@@ -147,6 +109,44 @@ void getDeviceInfo(v8::FunctionArgs args)
     }
 }
 
+void releaseContext(v8::FunctionArgs args)
+{
+    if (args.Length())
+    {
+        auto arg1 = args[0].As<v8::Object>();
+        auto ctx = cl_context(arg1->GetAlignedPointerFromInternalField(0));
+
+        if (ctx != nullptr)
+        {
+            clReleaseContext(ctx);
+        }
+    }
+}
+
+void createContextFromType(v8::FunctionArgs args)
+{
+    if(args.Length() == 5)
+    {
+        auto arg1 = args[0].As<v8::Array>();
+        auto arg2 = args[1].As<v8::Number>();
+        //auto arg3 = args[2].As<v8::Object>();
+        //auto arg4 = args[3].As<v8::Object>();
+        //auto arg5 = args[4].As<v8::Object>();
+
+        auto platformObject = arg1->Get(1).As<v8::Object>();
+
+        const auto platformID = cl_context_properties(platformObject->GetAlignedPointerFromInternalField(0));
+        const auto platformType = arg1->Get(0)->NumberValue();
+        const auto platformIndex = arg1->Get(2)->NumberValue();
+
+        cl_context_properties properties[] = { platformType, platformID, platformIndex };
+
+        auto ctx = clCreateContextFromType(properties, arg2->Value(), nullptr, nullptr, nullptr);
+
+        args.GetReturnValue().Set(v8::WrapPointer(ctx));
+    }
+}
+
 void raster::registerOpenCL(v8::Local<v8::Object>& object) 
 {
     AttachFunction(object, "getPlatformIDs", getPlatforms);
@@ -154,4 +154,7 @@ void raster::registerOpenCL(v8::Local<v8::Object>& object)
 
     AttachFunction(object, "getDeviceIDs", getDevices);
     AttachFunction(object, "getDeviceInfo", getDeviceInfo);
+
+    AttachFunction(object, "createContextFromType", createContextFromType);
+    AttachFunction(object, "releaseContext", releaseContext);
 }

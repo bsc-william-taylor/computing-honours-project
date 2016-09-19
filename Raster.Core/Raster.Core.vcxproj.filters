@@ -44,12 +44,6 @@
     <Filter Include="Source Code\Modules\Gpu">
       <UniqueIdentifier>{6175045d-2283-44d6-8241-13862741eb78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Gpu\OpenGL">
-      <UniqueIdentifier>{0b816f25-2673-4bd6-be4f-0f88bca583ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Modules\Gpu\OpenCL">
-      <UniqueIdentifier>{78672bbc-3ed4-44e0-abf5-8151abddae08}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules.cpp">
@@ -61,17 +55,11 @@
     <ClCompile Include="TextFile.cpp">
       <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGL.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Code\Application</Filter>
     </ClCompile>
     <ClCompile Include="RasterCore.cpp">
       <Filter>Source Code</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenCL.cpp">
-      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClCompile>
     <ClCompile Include="JsRuntime.cpp">
       <Filter>Source Code\JavaScript</Filter>
@@ -106,6 +94,12 @@
     <ClCompile Include="JsArrayAllocater.cpp">
       <Filter>Source Code\JavaScript</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL.cpp">
+      <Filter>Source Code\Modules\Gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenCL.cpp">
+      <Filter>Source Code\Modules\Gpu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h">
@@ -113,9 +107,6 @@
     </ClInclude>
     <ClInclude Include="TextFile.h">
       <Filter>Source Code\Modules\Core\Fs TODO\TextFile</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGL.h">
-      <Filter>Source Code\Modules\Gpu\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Modules.h">
       <Filter>Source Code\Modules</Filter>
@@ -125,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="RasterCore.h">
       <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenCL.h">
-      <Filter>Source Code\Modules\Gpu\OpenCL</Filter>
     </ClInclude>
     <ClInclude Include="JsRuntime.h">
       <Filter>Source Code\JavaScript</Filter>
@@ -164,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Source Code\Modules\Core\Display TODO\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Source Code\Modules\Gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenCL.h">
+      <Filter>Source Code\Modules\Gpu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

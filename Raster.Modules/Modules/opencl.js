@@ -12,6 +12,10 @@ const getKeyByValue = (object, value) => {
 exports.CL_BUILD_SUCCESS = 0;
 exports.CL_DEVICE_NAME = 0x102B;
 
+/* cl_context_properties */
+exports.CL_CONTEXT_PLATFORM = 0x1084;
+exports.CL_CONTEXT_INTEROP_USER_SYNC = 0x1085;
+
 // Device Type Constants
 exports.CL_DEVICE_TYPE_DEFAULT = (1 << 0);
 exports.CL_DEVICE_TYPE_CPU = (1 << 1);
@@ -121,6 +125,8 @@ exports.CL_DEVICE_PREFERRED_PLATFORM_ATOMIC_ALIGNMENT = 0x1058;
 exports.CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT = 0x1059;
 exports.CL_DEVICE_PREFERRED_LOCAL_ATOMIC_ALIGNMENT = 0x105A;
 
+exports.createContextFromType = raster.createContextFromType;
+exports.releaseContext = raster.releaseContext;
 exports.getPlatformIDs = raster.getPlatformIDs;
 exports.getDeviceIDs = raster.getDeviceIDs;
 
