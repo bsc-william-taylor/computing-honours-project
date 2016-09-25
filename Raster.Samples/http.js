@@ -6,4 +6,6 @@ const address = 'www.williamsamtaylor.co.uk';
 const page = '/apps/mgd/index.html';
 const port = 80;
 
-console.log(http.get(address, page, 80));
+http.get(address, page, 80, res => {
+    console.log(res);
+});

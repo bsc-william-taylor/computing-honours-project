@@ -1,15 +1,31 @@
 
 #include "Http.h"
 #include "JsExtensions.h"
+#include "JsRuntime.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
 using Poco::Net::HTTPResponse;
 
-std::string httpRequest(const std::string& method, std::string domain, std::string route, int port)
+void httpPost(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+    // TODO: Implement post method
+}
+
+const auto Callback = [](v8::PersistentCopyable callback, std::string response)
+{
+    auto isolate = v8::Isolate::GetCurrent();
+    auto function = callback.Get(isolate);
+
+    v8::Local<v8::Value> args[1];
+    args[0] = v8::NewString(response);
+    function->Call(function, 1, args);
+};
+
+const auto Send = [](v8::PersistentCopyable callback, std::string domain, std::string route, int port)
 {
     HTTPClientSession session(domain);
-    HTTPRequest request(method, route);
+    HTTPRequest request(HTTPRequest::HTTP_GET, route);
     HTTPResponse response;
 
     session.setPort(port);
@@ -17,24 +33,19 @@ std::string httpRequest(const std::string& method, std::string domain, std::stri
 
     std::stringstream ss;
     Poco::StreamCopier::copyStream(session.receiveResponse(response), ss);
-    return ss.str();
-}
-
-void httpPost(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-    // TODO: Implement post method
-}
+    v8::OnForeground<JsAsyncTask>(Callback, callback, ss.str());
+};
 
 void httpGet(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    v8::String::Utf8Value domainUtf(args[0].As<v8::String>());
-    v8::String::Utf8Value routeUtf(args[1].As<v8::String>());
-
-    auto port = args[2].As<v8::Number>()->Value();
-    auto isolate = v8::Isolate::GetCurrent();
-    auto result = httpRequest(HTTPRequest::HTTP_GET, *domainUtf, *routeUtf, port);
-
-    args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, result.c_str()));
+    auto function = GetFunction(args[3]);
+    auto domain = GetString(args[0]);
+    auto route = GetString(args[1]);
+    auto port = GetNumber(args[2]);
+   
+    v8::PersistentCopyable callback;
+    callback.Reset(v8::Isolate::GetCurrent(), function);
+    v8::OnBackground<JsAsyncTask>(Send, callback, domain, route, port);
 }
 
 void raster::registerHttp(v8::Local<v8::Object>& object)

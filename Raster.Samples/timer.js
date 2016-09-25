@@ -11,7 +11,7 @@ const number = setInterval(() => {
 }, 1000);
 
 
-setTimeout(() => clearInterval(number), 2000);
+setTimeout(() => clearInterval(number), 2100);
 
 for(let i = 0; i < 5; i++){
     setTimeout(() => console.log(`${i}`), i * 1000);

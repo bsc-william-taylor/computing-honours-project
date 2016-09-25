@@ -43,14 +43,19 @@ void display::createWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
             callbackFunction->Call(callbackFunction, 1, parameters);
         }));
 
-        platform.CallOnForegroundThread(isolate, new JsAwaitTask([=](SDL_Event& ev) {
-            if (ev.type == SDL_QUIT) {
-                auto windowJs = window.Get(v8::Isolate::GetCurrent());
-                auto wnd = Window::unwrap(windowJs);
-                SDL_DestroyWindow(wnd->getWindow());
-                return true;
+        platform.CallOnForegroundThread(isolate, new JsAwaitTask([=]() {
+            auto& events = JsRuntime::getPlatform().GetSystemEvents();
+            for(auto& ev : events)
+            {
+                if (ev.type == SDL_QUIT) 
+                {
+                    auto windowJs = window.Get(v8::Isolate::GetCurrent());
+                    auto wnd = Window::unwrap(windowJs);
+                    SDL_DestroyWindow(wnd->getWindow());
+                    return true;
+                }
             }
-
+           
             return false;
         }));
     }

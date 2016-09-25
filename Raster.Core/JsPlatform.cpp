@@ -1,32 +1,26 @@
 
 #include "JsPlatform.h"
+#include "JsExtensions.h"
 
-JsPlatform::JsPlatform() :
-    disposeBackgroundThread(false)
+JsPlatform::JsPlatform()
 {
-    backgroundThread = std::thread([this]()
+    taskThread.start([&]()
     {
-        while (!queue.empty() || !disposeBackgroundThread)
+        while (taskQueue.length())
         {
-            v8::Task* task = nullptr;
-            if (queue.try_pop(task))
-            {
-                task->Run();
-                delete task;
-            }
+            taskQueue.pop();
         }
     });
 }
 
 JsPlatform::~JsPlatform()
 {
-    disposeBackgroundThread = true;
-    backgroundThread.join();
+    taskThread.join();
 }
 
 void JsPlatform::CallOnBackgroundThread(v8::Task* task, ExpectedRuntime expected_runtime)
 {
-    queue.push(task);
+    taskQueue.push(task);
 };
 
 std::vector<SDL_Event>& JsPlatform::GetSystemEvents()
@@ -36,12 +30,12 @@ std::vector<SDL_Event>& JsPlatform::GetSystemEvents()
 
 void JsPlatform::CallOnForegroundThread(v8::Isolate* isolate, v8::Task* task)
 {
-    buffer.push_back({ task, false });
+    taskBuffer.push(task);
 };
 
-void JsPlatform::CallDelayedOnForegroundThread(v8::Isolate* isolate, v8::Task* task, double delay_in_seconds)
+void JsPlatform::CallDelayedOnForegroundThread(v8::Isolate* isolate, v8::Task* task, double delay )
 {
-    buffer.push_back({ task, false });
+    taskBuffer.push(task);
 };
 
 double JsPlatform::MonotonicallyIncreasingTime()
@@ -49,9 +43,9 @@ double JsPlatform::MonotonicallyIncreasingTime()
     return SDL_GetTicks();
 }
 
-void JsPlatform::CallOnForegroundThread(std::pair<v8::Task*, bool> task)
+void JsPlatform::CallOnForegroundThread(v8::Task* task)
 {
-    buffer.push_back(task);
+    taskBuffer.push(task);
 }
 
 bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
@@ -62,18 +56,18 @@ bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
         events.push_back(e);
     }
 
-    auto tasks = move(buffer);
+    auto tasks = taskBuffer.acquire();
 
     for (auto& task : tasks)
     {
-        task.first->Run();
-        delete task.first;
+        Run(task);
     }
 
     events.clear();
+    return NoEvents();
+}
 
-    const auto& start = buffer.begin();
-    const auto& end = buffer.end();
-
-    return std::find_if(start, end, [](auto& t) { return t.second; }) != end;
+bool JsPlatform::NoEvents()
+{
+    return taskBuffer.length() || taskQueue.length();
 }

@@ -70,19 +70,21 @@ void raster::datetime::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
 
     SDL_AddTimer(ms, timerCallback, new long long{ uniqueID });
 
-    std::pair<v8::Task*, bool> pair(new JsAwaitTask([=](SDL_Event e) {
-        if (e.user.type == TimeoutEvent && e.user.code == uniqueID) {
-            v8::TryCatch trycatch(isolate);
-            v8::Local<v8::Function> function = callback.Get(isolate);
-            function->Call(function, 0, nullptr);
-            CatchExceptions(trycatch);
-            return true;
+    JsRuntime::getPlatform().CallOnForegroundThread(new JsAwaitTask([=]() {
+        auto& events = JsRuntime::getPlatform().GetSystemEvents();
+
+        for (auto& e : events) {
+            if (e.user.type == TimeoutEvent && e.user.code == uniqueID) {
+                v8::TryCatch trycatch(isolate);
+                v8::Local<v8::Function> function = callback.Get(isolate);
+                function->Call(function, 0, nullptr);
+                CatchExceptions(trycatch);
+                return true;
+            }
         }
 
         return false;
-    }), true);
-
-    JsRuntime::getPlatform().CallOnForegroundThread(pair);
+    }));
 }
 
 void raster::datetime::pause(const v8::FunctionCallbackInfo<v8::Value>& args)

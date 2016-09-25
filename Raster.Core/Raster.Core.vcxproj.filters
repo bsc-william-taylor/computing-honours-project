@@ -73,6 +73,9 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source Code\Application</Filter>
     </ClCompile>
+    <ClCompile Include="JsPlatformStructures.cpp">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Modules.h">
@@ -128,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Code\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="JsPlatformStructures.h">
+      <Filter>Source Code\JavaScript</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

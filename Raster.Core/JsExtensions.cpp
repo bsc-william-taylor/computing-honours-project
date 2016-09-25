@@ -54,6 +54,11 @@ void v8::Throw(const FunctionCallbackInfo<Value>& args, std::string msg)
     }
 }
 
+void v8::Run(Task* task)
+{
+    task->Run();
+    delete task;
+}
 
 v8::Persistent<v8::ObjectTemplate> WrappedPointerTemplate;
 
@@ -75,5 +80,22 @@ v8::Local<v8::Object> v8::WrapPointer(void* pointer)
 
 v8::Local<v8::String> v8::NewString(std::string value)
 {
-    return v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), value.c_str());
+    return String::NewFromUtf8(Isolate::GetCurrent(), value.c_str());
+}
+
+std::string v8::GetString(Local<Value> value)
+{
+    String::Utf8Value stringValue(value.As<String>());
+    return std::string(*stringValue);
+    
+}
+
+int v8::GetNumber(Local<Value> value)
+{
+    return value.As<Number>()->Value();
+}
+
+v8::Local<v8::Function> v8::GetFunction(Local<Value> value)
+{
+    return value.As<Function>();
 }
