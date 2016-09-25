@@ -1,11 +1,11 @@
-# RasterJs
+# Compute Js
 
 My honours project for the final year of my course.
 
 ## Folders
 
- * Raster.Documents - Documents required for the honours project.
- * Raster.Samples   - Example code and tests for the platform
- * Raster.Modules   - JavaScript modules which call native C++ methods
- * Raster.Core      - Core classes and functions for the platform
- * Raster           - Application which bootstraps Raster.
+ * Compute.Documents - Documents required for the honours project.
+ * Compute.Samples   - Example code and tests for the platform
+ * Compute.Modules   - JavaScript modules which call native C++ methods
+ * Compute.Core      - Core classes and functions for the platform
+ * Compute           - Application which bootstraps Compute.
