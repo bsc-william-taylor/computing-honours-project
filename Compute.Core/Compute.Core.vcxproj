@@ -30,7 +30,7 @@
     <ClCompile Include="JsPlatform.cpp" />
     <ClCompile Include="JsRuntime.cpp" />
     <ClCompile Include="OpenCL.cpp" />
-    <ClCompile Include="RasterCore.cpp" />
+    <ClCompile Include="ComputeCore.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Modules.cpp" />
     <ClCompile Include="OpenGL.cpp" />
@@ -52,7 +52,7 @@
     <ClInclude Include="OpenCL.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="DateTime.h" />
-    <ClInclude Include="RasterCore.h" />
+    <ClInclude Include="ComputeCore.h" />
     <ClInclude Include="Fs.h" />
     <ClInclude Include="Modules.h" />
     <ClInclude Include="JsObject.h" />

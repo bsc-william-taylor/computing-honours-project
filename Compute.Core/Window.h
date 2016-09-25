@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "RasterCore.h"
+#include "ComputeCore.h"
 #include "JsObject.h"
 
 class Window : public JsObject<Window> 

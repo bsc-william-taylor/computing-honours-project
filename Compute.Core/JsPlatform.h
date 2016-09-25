@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "RasterCore.h"
+#include "ComputeCore.h"
 #include "JsPlatformTasks.h"
 #include "JsPlatformStructures.h"
 

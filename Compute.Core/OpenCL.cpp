@@ -1,33 +1,35 @@
 
 #include "OpenCL.h"
+#include "JsExtensions.h"
+#include "JsObject.h"
 
 void getPlatforms(v8::FunctionArgs args)
 {
-    if(args.Length() == 3)
+    if (args.Length() == 3)
     {
         auto isolate = args.GetIsolate();
         auto arg1 = args[0].As<v8::Number>();
         auto arg2 = args[1].As<v8::Array>();
         auto arg3 = args[2].As<v8::Array>();
-        
+
         cl_uint devices = arg1->Value();
         cl_uint count = 0;
-        
+
         auto platformBuffer = new cl_platform_id[devices];
         auto platformOut = arg2->IsNull() ? nullptr : platformBuffer;
         auto countOut = arg3->IsNull() ? nullptr : &count;
 
         clGetPlatformIDs(devices, platformOut, countOut);
 
-        if(platformOut != nullptr)
+        if (platformOut != nullptr)
         {
-            for(auto i = 0; i < devices; ++i)
+            for (auto i = 0; i < devices; ++i)
             {
                 arg2->Set(i, v8::WrapPointer(platformBuffer[i]));
             }
         }
-       
-        if(countOut != nullptr)
+
+        if (countOut != nullptr)
         {
             arg3->Set(v8::NewString("length"), v8::Number::New(isolate, count));
         }
@@ -47,7 +49,7 @@ void getPlatformInfo(v8::FunctionArgs args)
         auto platformID = cl_platform_id(arg1->GetAlignedPointerFromInternalField(0));
         auto enumInfo = int(arg2->Value());
         char buffer[sz];
-        
+
         clGetPlatformInfo(platformID, enumInfo, sz, buffer, nullptr);
         arg1->Set(v8::NewString("info"), v8::NewString(buffer));
     }
@@ -55,7 +57,7 @@ void getPlatformInfo(v8::FunctionArgs args)
 
 void getDevices(v8::FunctionArgs args)
 {
-    if(args.Length() == 5)
+    if (args.Length() == 5)
     {
         const auto isolate = args.GetIsolate();
         const auto arg1 = args[0].As<v8::Object>();
@@ -75,15 +77,15 @@ void getDevices(v8::FunctionArgs args)
 
         clGetDeviceIDs(platformID, deviceType, deviceArraySize, devicesOut, totalOut);
 
-        if(!arg4->IsNull())
+        if (!arg4->IsNull())
         {
-            for(auto i = 0; i < deviceArraySize; ++i)
+            for (auto i = 0; i < deviceArraySize; ++i)
             {
                 arg4->Set(i, v8::WrapPointer(deviceArray[i]));
             }
         }
 
-        if(!arg5->IsNull())
+        if (!arg5->IsNull())
         {
             arg5->Set(v8::NewString("length"), v8::Number::New(isolate, totalDevices));
         }
@@ -94,7 +96,7 @@ void getDevices(v8::FunctionArgs args)
 
 void getDeviceInfo(v8::FunctionArgs args)
 {
-    if(args.Length() == 2)
+    if (args.Length() == 2)
     {
         const auto arg1 = args[0].As<v8::Object>();
         const auto arg2 = args[1].As<v8::Number>();
@@ -125,7 +127,7 @@ void releaseContext(v8::FunctionArgs args)
 
 void createContextFromType(v8::FunctionArgs args)
 {
-    if(args.Length() == 5)
+    if (args.Length() == 5)
     {
         auto arg1 = args[0].As<v8::Array>();
         auto arg2 = args[1].As<v8::Number>();
@@ -147,7 +149,7 @@ void createContextFromType(v8::FunctionArgs args)
     }
 }
 
-void compute::registerOpenCL(v8::Local<v8::Object>& object) 
+void compute::registerOpenCL(v8::Local<v8::Object>& object)
 {
     AttachFunction(object, "getPlatformIDs", getPlatforms);
     AttachFunction(object, "getPlatformInfo", getPlatformInfo);

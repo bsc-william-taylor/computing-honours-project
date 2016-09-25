@@ -22,7 +22,7 @@ std::string compute::readFile(std::string filename)
 
 void read(v8::FunctionArgs args)
 {
-    if(args.Length() == 1)
+    if (args.Length() == 1)
     {
         v8::String::Utf8Value path(args[0]);
 
@@ -44,7 +44,7 @@ void read(v8::FunctionArgs args)
 
 void write(v8::FunctionArgs args)
 {
-    if(args.Length() == 2)
+    if (args.Length() == 2)
     {
         v8::String::Utf8Value path(args[0]);
         v8::String::Utf8Value data(args[1]);

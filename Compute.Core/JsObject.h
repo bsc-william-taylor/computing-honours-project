@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "RasterCore.h"
+#include "ComputeCore.h"
 
 template<typename T>
 class JsObject

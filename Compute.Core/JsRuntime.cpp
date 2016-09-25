@@ -67,8 +67,6 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
 
 void JsRuntime::start(std::string filename)
 {
-    auto scriptSrc = readFile(filename.c_str());
-
     ArrayBufferAllocator allocator;
     v8::Isolate::CreateParams createParams;
     createParams.array_buffer_allocator = &allocator;
@@ -81,7 +79,7 @@ void JsRuntime::start(std::string filename)
         auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
         auto scope = v8::Context::Scope(context);
 
-        const auto src = v8::String::NewFromUtf8(isolate, scriptSrc.c_str());
+        const auto src = v8::NewString(readFile(filename.c_str()));
         filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
         clearCommonJsModules();
     }

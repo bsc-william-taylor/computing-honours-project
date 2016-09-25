@@ -3,7 +3,6 @@
 #include "DateTime.h"
 #include "JsExtensions.h"
 
-
 const auto TimeoutID = SDL_USEREVENT + 3;
 
 SDL_TimerCallback createTimeoutFunction()

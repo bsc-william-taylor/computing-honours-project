@@ -2,7 +2,7 @@
 #include "Console.h"
 #include "JsExtensions.h"
 
-void compute::console::printLine(v8::FunctionArgs args)
+void printLine(v8::FunctionArgs args)
 {
     const auto argLength = args.Length();
 
@@ -15,7 +15,7 @@ void compute::console::printLine(v8::FunctionArgs args)
     }
 }
 
-void compute::console::print(v8::FunctionArgs args)
+void print(v8::FunctionArgs args)
 {
     const auto argLength = args.Length();
 
@@ -28,7 +28,7 @@ void compute::console::print(v8::FunctionArgs args)
     }
 }
 
-void compute::console::read(v8::FunctionArgs args)
+void get(v8::FunctionArgs args)
 {
     std::string input;
     std::getline(std::cin, input);
@@ -37,7 +37,7 @@ void compute::console::read(v8::FunctionArgs args)
 
 void compute::registerConsole(v8::Local<v8::Object>& object)
 {
-    AttachFunction(object, "printLine", console::printLine);
-    AttachFunction(object, "print", console::print);
-    AttachFunction(object, "read", console::read);
+    AttachFunction(object, "printLine", printLine);
+    AttachFunction(object, "print", print);
+    AttachFunction(object, "read", get);
 }

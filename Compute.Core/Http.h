@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "RasterCore.h"
+#include "ComputeCore.h"
 #include "JsObject.h"
 
 namespace compute

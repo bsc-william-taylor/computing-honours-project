@@ -7,9 +7,9 @@ int main(int argc, char* argv[])
 {
     try
     {
-        ComputeApp rasterApp;
-        rasterApp.init(argc, argv);
-        rasterApp.run();
+        ComputeApp compute;
+        compute.init(argc, argv);
+        compute.run();
     }
     catch (OptionException& exception)
     {

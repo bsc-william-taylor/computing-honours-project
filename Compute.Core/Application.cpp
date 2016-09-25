@@ -8,14 +8,14 @@
 using namespace Poco::Util;
 using namespace compute;
 
-const int RasterMajorVersion = 0;
-const int RasterMinorVersion = 0;
-const int RasterRevVersion = 1;
+const int RevisionVersion = 1;
+const int MajorVersion = 0;
+const int MinorVersion = 0;
 
 ComputeApp::ComputeApp() :
-    majorVersion(RasterMajorVersion),
-    minorVersion(RasterMinorVersion),
-    revVersion(RasterRevVersion),
+    majorVersion(MajorVersion),
+    minorVersion(MinorVersion),
+    revVersion(RevisionVersion),
     skip(false)
 {
     setupExternalLirbaries();
@@ -114,34 +114,30 @@ void ComputeApp::handleHelp(const std::string& name, const std::string& v)
 
 void ComputeApp::handleVersion(const std::string& name, const std::string& v)
 {
+    // Compute Version
     std::stringstream ss;
-    skip = true;
-
-    // compute Version
     ss << "v";
     ss << majorVersion << ".";
     ss << minorVersion << ".";
     ss << revVersion << std::endl << std::endl;
 
     // V8 version
-    ss << "V8 version: ";
-    ss << v8::V8::GetVersion() << std::endl;
+    ss << "V8 version: " << v8::V8::GetVersion() << std::endl;
 
     // SDL Version
     SDL_version version;
     SDL_GetVersion(&version);
     ss << "SDL version: ";
-    ss << static_cast<int>(version.major) << ".";
-    ss << static_cast<int>(version.minor) << ".";
-    ss << static_cast<int>(version.patch) << std::endl;
+    ss << int(version.major) << ".";
+    ss << int(version.minor) << ".";
+    ss << int(version.patch) << std::endl;
 
     // OpenGL/OpenCL Version
-    ss << "OpenGL Version: ";
-    ss << getOpenGLVersion() << std::endl;
-    ss << "OpenCL Version: ";
-    ss << getOpenCLVersion();
+    ss << "OpenGL Version: " << getOpenGLVersion() << std::endl;
+    ss << "OpenCL Version: " << getOpenCLVersion() << std::endl;
 
     std::cout << ss.str();
+    skip = true;
 }
 
 void ComputeApp::handleInfo(const std::string& name, const std::string& v)

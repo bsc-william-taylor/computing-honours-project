@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "RasterCore.h"
+#include "ComputeCore.h"
 
 using Concurrency::concurrent_vector;
 using Concurrency::concurrent_queue;

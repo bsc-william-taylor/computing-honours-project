@@ -5,9 +5,9 @@
 
 using namespace compute;
 
-void openMessage(const v8::FunctionCallbackInfo<v8::Value>& args) 
+void openMessage(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    if (args.Length() == 3) 
+    if (args.Length() == 3)
     {
         auto function = GetFunction(args[2]);
         auto title = GetString(args[0]);
@@ -37,9 +37,9 @@ const auto OnQuit = [](v8::PersistentCopyable window)
     {
         if (ev.type == SDL_QUIT || ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
         {
-            auto windowJs = window.Get(v8::Isolate::GetCurrent());
-            auto window = Window::unwrap(windowJs);
-            window->destroy();
+            auto object = window.Get(v8::Isolate::GetCurrent());
+            auto screen = Window::unwrap(object);
+            screen->destroy();
             return true;
         }
     }
@@ -51,8 +51,8 @@ void openWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 2)
     {
-        auto windowCallback = GetFunction(args[1]); 
-        auto windowObject = GetFunction(args[0]); 
+        auto windowCallback = GetFunction(args[1]);
+        auto windowObject = GetFunction(args[0]);
 
         v8::PersistentCopyable callback;
         v8::PersistentCopyable window;
@@ -68,9 +68,9 @@ void openWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 void displayInfo(v8::FunctionArgs args)
 {
     SDL_DisplayMode dm;
-    if (SDL_GetDesktopDisplayMode(0, &dm) != 0) 
+    if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
     {
-       v8::Throw("SDL_GetDesktopDisplayMode failed");
+        v8::Throw("SDL_GetDesktopDisplayMode failed");
     }
 
     const auto data = v8::Object::New(args.GetIsolate());

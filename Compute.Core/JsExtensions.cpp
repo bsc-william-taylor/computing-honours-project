@@ -1,5 +1,5 @@
 
-#include "RasterCore.h"
+#include "ComputeCore.h"
 #include "JsExtensions.h"
 
 void v8::CatchExceptions(TryCatch& trycatch)

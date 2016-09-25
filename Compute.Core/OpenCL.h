@@ -1,9 +1,7 @@
 
 #pragma once
 
-#include "RasterCore.h"
-#include "JsExtensions.h"
-#include "JsObject.h"
+#include "ComputeCore.h"
 
 namespace compute 
 {

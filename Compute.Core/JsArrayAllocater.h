@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "RasterCore.h"
+#include "ComputeCore.h"
 
 class ArrayBufferAllocator : public v8::ArrayBuffer::Allocator
 {
