@@ -42,12 +42,14 @@ void Window::newWindow(const v8::FunctionCallbackInfo<v8::Value>& info)
 
     auto window = new Window();
     auto args = info[0].As<v8::Object>();
+    auto fullscreen = args->Get(v8::NewString("fullscreen"));
     auto t = args->Get(v8::NewString("title"));
     auto x = args->Get(v8::NewString("x"));
     auto y = args->Get(v8::NewString("y"));
     auto w = args->Get(v8::NewString("w"));
     auto h = args->Get(v8::NewString("h"));
 
+    window->fullscreen = fullscreen->BooleanValue() ? SDL_TRUE : SDL_FALSE;
     window->windowTitle = std::string(*v8::String::Utf8Value(t));
     window->rect.x = x->Int32Value();
     window->rect.y = y->Int32Value();
@@ -91,14 +93,21 @@ void Window::onFrame(const v8::FunctionCallbackInfo<v8::Value>& args)
     v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
     callback.Reset(v8::Isolate::GetCurrent(), args[0].As<v8::Function>());
 
+    v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> window;
+    window.Reset(v8::Isolate::GetCurrent(), args.This());
+  
     auto& platform = raster::JsRuntime::getPlatform();
     auto isolate = v8::Isolate::GetCurrent();
 
-    platform.CallOnForegroundThread(isolate, new JsRepeatTask([=]() {
+    platform.CallOnForegroundThread(isolate, new JsAwaitTask([=]() {
+        auto parent = window.Get(isolate);
+        auto instance = unwrap(parent);
         auto function = callback.Get(isolate);
+
         v8::TryCatch trycatch(isolate);
         function->Call(function, 0, nullptr);
         CatchExceptions(trycatch);
+        return !instance->window;
     }));
 }
 
@@ -106,25 +115,36 @@ void Window::swapBuffers(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     auto object = unwrap(args);
     auto window = object->window;
-    SDL_GL_SwapWindow(window);
+
+    if(window != nullptr)
+    {
+        SDL_GL_SwapWindow(window);
+    }
 }
 
 void Window::show(const v8::FunctionCallbackInfo<v8::Value>& args) {
     auto object = unwrap(args);
-    auto window = object->window;
 
-    if (window == nullptr)
+    if (object->window == nullptr)
     {
         object->window = SDL_CreateWindow(
             object->windowTitle.c_str(),
             object->rect.x, object->rect.y,
             object->rect.w, object->rect.h,
             SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
-            );
+        );
+
+        if(object->fullscreen && object->window != nullptr)
+        {
+            SDL_SetWindowFullscreen(object->window, SDL_WINDOW_FULLSCREEN);
+        }
     }
     else
     {
-        SDL_ShowWindow(window);
+        if(object->window != nullptr)
+        {
+            SDL_ShowWindow(object->window);
+        }
     }
 }
 

@@ -10,8 +10,7 @@ void raster::console::printLine(v8::FunctionArgs args)
     {
         if (args[i]->IsString())
         {
-            v8::String::Utf8Value str(args[i]);
-            std::cout << *str << std::endl;
+            std::cout << GetString(args[i]) << std::endl;
         }
     }
 }
@@ -24,8 +23,7 @@ void raster::console::print(v8::FunctionArgs args)
     {
         if (args[i]->IsString())
         {
-            v8::String::Utf8Value str(args[i]);
-            std::cout << *str;
+            std::cout << GetString(args[i]);
         }
     }
 }
@@ -34,11 +32,7 @@ void raster::console::read(v8::FunctionArgs args)
 {
     std::string input;
     std::getline(std::cin, input);
-
-    const auto isolate = v8::Isolate::GetCurrent();
-    const auto value = v8::String::NewFromUtf8(isolate, input.c_str());
-
-    args.GetReturnValue().Set(value);
+    args.GetReturnValue().Set(v8::NewString(input.c_str()));
 }
 
 void raster::registerConsole(v8::Local<v8::Object>& object)

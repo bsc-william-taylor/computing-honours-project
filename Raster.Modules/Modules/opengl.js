@@ -1,8 +1,8 @@
 
 exports.GL_COLOR_BUFFER_BIT = 16384;
 exports.GL_DEPTH_BUFFER_BIT = 256;
-exports.GL_PROJECTION = 5889;
-exports.GL_DEPTH_TEST = 2929;
+exports.GL_PROJECTION = 0x1701;
+exports.GL_DEPTH_TEST = 0x0B71;
 exports.GL_MODELVIEW = 5888;
 exports.GL_TRIANGLES = 4;
 exports.GL_QUADS = 7;
@@ -47,7 +47,7 @@ exports.glRotatef = function(rotate, x, y, z) {
     raster.glRotatef(rotate, x, y, z);
 }
 
-exports.glMatrixMode = function(matrixMode) {
+exports.glMatrixMode = function (matrixMode) {
     raster.glMatrixMode(matrixMode);
 }
 

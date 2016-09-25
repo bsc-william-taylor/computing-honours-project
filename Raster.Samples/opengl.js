@@ -1,6 +1,6 @@
 
 const { openWindow, openMessageBox } = require('display');
-const { setInterval } = require('datetime');
+const { setTimeout, setInterval } = require('datetime');
 const console = require('console');
 const http = require('http');
 const gl = require('opengl');
@@ -16,10 +16,15 @@ function enableOpenGL({ glEnable, glMatrixMode, glLoadIdentity, gluPerspective }
     gluPerspective(45.0, 16.0 / 9.0, 0.1, 100.0);
 }
 
-function bootstrap(windowSettings, onRender) {
-    setInterval(() => renderData = JSON.parse(http.get('www.williamsamtaylor.co.uk', '/shapes', 3010)), 1000);
+function bootstrap(onRender) {
+    setTimeout(() => {
+        http.get('www.williamsamtaylor.co.uk', '/shapes', 3010, res => {
+            renderData = JSON.parse(res);
+            console.log('Got rending data');
+        });
+    }, 2500);
 
-    openWindow(windowSettings, window => {
+    openWindow({}, window => {
         window.setTitle('OpenGL Example');
         window.show();
         window.enableOpenGL();
@@ -27,10 +32,11 @@ function bootstrap(windowSettings, onRender) {
         enableOpenGL(gl);
 
         window.onFrame(() => {
-            if(Object.keys(renderData).length) {
+            if(Object.keys(renderData).length > 0) {
                 onRender(gl);
-                window.swapBuffers();
             }
+
+            window.swapBuffers();
         });
     });
 }
@@ -55,7 +61,7 @@ function renderObject(gl, object, type) {
     gl.glEnd();
 }
 
-bootstrap({ x: '100', y: '100', w: '800', h: '500'}, gl => {
+bootstrap(gl => {
     gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
     gl.glClearColor(0.0, 0.0, 0.0, 0.0);
 

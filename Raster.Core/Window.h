@@ -12,6 +12,7 @@ class Window : public JsObject<Window>
     SDL_GLContext context;
     SDL_Window * window;
     SDL_Rect rect;
+    SDL_bool fullscreen;
 public:
     Window();
     ~Window();
@@ -28,7 +29,12 @@ public:
     static void hide(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void show(const v8::FunctionCallbackInfo<v8::Value>& args);
 
-    SDL_Window * getWindow() const {
-        return window;
+    void destroy()
+    {
+        if(window != nullptr) 
+        {
+            SDL_DestroyWindow(window);
+            window = nullptr;
+        }
     }
 };

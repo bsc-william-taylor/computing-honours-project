@@ -7,7 +7,16 @@ void v8::CatchExceptions(TryCatch& trycatch)
     if (trycatch.HasCaught())
     {
         String::Utf8Value stacktrace(trycatch.StackTrace()); 
-        std::cerr << *stacktrace << std::endl;
+        String::Utf8Value exception(trycatch.Exception());
+
+        if(stacktrace.length() > 0)
+        {
+            std::cerr << *stacktrace << std::endl;
+        }
+        else
+        {
+            std::cerr << *exception << std::endl;
+        }
     }
 }
 
@@ -43,15 +52,10 @@ void v8::AttachString(Local<Object>& object, std::string name, std::string str)
     object->Set(key, String::NewFromUtf8(isolate, str.c_str()));
 }
 
-void v8::Throw(const FunctionCallbackInfo<Value>& args, std::string msg)
+void v8::Throw(std::string msg)
 {
-    const auto isolate = args.GetIsolate();
-    const auto error = String::NewFromUtf8(isolate, msg.c_str());
-
-    if (isolate && msg.length() >= 0)
-    {
-        isolate->ThrowException(error);
-    }
+    const auto isolate = Isolate::GetCurrent();
+    isolate->ThrowException(NewString(msg));
 }
 
 void v8::Run(Task* task)
@@ -83,19 +87,34 @@ v8::Local<v8::String> v8::NewString(std::string value)
     return String::NewFromUtf8(Isolate::GetCurrent(), value.c_str());
 }
 
-std::string v8::GetString(Local<Value> value)
+v8::Local<v8::Number> v8::NewNumber(int number)
+{   
+    return Number::New(Isolate::GetCurrent(), number);
+}
+
+std::string v8::GetString(Local<Value> value, std::string err)
 {
     String::Utf8Value stringValue(value.As<String>());
     return std::string(*stringValue);
-    
 }
 
-int v8::GetNumber(Local<Value> value)
+int v8::GetNumber(Local<Value> value, std::string err)
 {
-    return value.As<Number>()->Value();
+    if(value->IsNumber())
+    {
+        return value.As<Number>()->Value();
+    }
+
+    Throw(err.length() ? err : "Error with number conversion");
+    return 0;
 }
 
-v8::Local<v8::Function> v8::GetFunction(Local<Value> value)
+v8::Local<v8::Function> v8::GetFunction(Local<Value> value, std::string err)
 {
     return value.As<Function>();
+}
+
+v8::Local<v8::Object> v8::GetObject(Local<Value> value, std::string err)
+{
+    return value.As<Object>();
 }

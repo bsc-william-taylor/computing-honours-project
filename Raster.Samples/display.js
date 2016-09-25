@@ -1,5 +1,5 @@
 
-const { openMessage, openWindow } = require('display');
+const { openMessage, openFullscreenWindow } = require('display');
 const { setTimeout } = require('datetime')
 const console = require('console');
 
@@ -11,7 +11,7 @@ let body = console.read();
 openMessage(title, body, () => {
     console.log('Hope you enjoyed your message!');
 
-    openWindow({ x: 100, y: 100, w: 500, h:500 }, window => {
+    openFullscreenWindow(window => {
         window.setTitle('HelloWorld');
         window.show();
     });

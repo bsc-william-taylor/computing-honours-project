@@ -136,8 +136,8 @@ void raster::glEnable(const v8::FunctionCallbackInfo<v8::Value>& args)
 void raster::registerOpenGL(v8::Local<v8::Object>& object) 
 {
     AttachFunction(object, "gluPerspective", glPerspective);
-    AttachFunction(object, "gluPerspective", glEnable);
-    AttachFunction(object, "glEnable", glMatrixMode);
+    AttachFunction(object, "glEnable", glEnable);
+    AttachFunction(object, "glMatrixMode", glMatrixMode);
     AttachFunction(object, "glLoadIdentity", glLoadIdentity);
     AttachFunction(object, "glTranslatef", glTranslate);
     AttachFunction(object, "glRotatef", glRotate);

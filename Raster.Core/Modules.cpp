@@ -69,17 +69,17 @@ raster::ModuleType moduleType(const std::string& path)
     return raster::ModuleType::Internal;
 }
 
-v8::Local<v8::String> createScript(v8::Isolate * isolate, v8::String::Utf8Value& module)
+v8::Local<v8::String> createScript(v8::Isolate * isolate, std::string module)
 {
     std::string filename;
 
-    if (moduleType(*module) == raster::ModuleType::Internal)
+    if (moduleType(module) == raster::ModuleType::Internal)
     {
-        filename = parseInternalModulePath(*module);
+        filename = parseInternalModulePath(module);
     }
     else
     {
-        filename = parseExternalModulePath(*module);
+        filename = parseExternalModulePath(module);
     }
 
     auto script = raster::readFile(filename.c_str());
@@ -99,12 +99,12 @@ void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args)
     auto isolate = args.GetIsolate();
     auto context = isolate->GetCurrentContext();
     auto global = context->Global();
+    auto moduleName = GetString(args[0]);
 
-    v8::String::Utf8Value moduleName(args[0]);
-
-    if (modules::moduleCache.find(*moduleName) != modules::moduleCache.end())
+    if (modules::moduleCache.find(moduleName) != modules::moduleCache.end())
     {
-        args.GetReturnValue().Set(modules::moduleCache[*moduleName].Get(isolate));
+        const auto module = modules::moduleCache[moduleName].Get(isolate);
+        args.GetReturnValue().Set(module);
     }
     else
     {
@@ -115,24 +115,24 @@ void raster::require(const v8::FunctionCallbackInfo<v8::Value>& args)
         auto raster = v8::Object::New(isolate);
         auto script = createScript(isolate, moduleName);
 
-        if (modules::moduleBindings.find(*moduleName) != modules::moduleBindings.end())
+        if (modules::moduleBindings.find(moduleName) != modules::moduleBindings.end())
         {
-            modules::moduleBindings[*moduleName](raster);
+            modules::moduleBindings[moduleName](raster);
         }
 
-        module->Set(v8::String::NewFromUtf8(isolate, "exports"), exports);
-        module->Set(v8::String::NewFromUtf8(isolate, "name"), v8::String::NewFromUtf8(isolate, *moduleName));
+        module->Set(v8::NewString("name"), v8::NewString(moduleName));
+        module->Set(v8::NewString("exports"), exports);
 
-        global->Set(v8::String::NewFromUtf8(isolate, "exports"), exports);
-        global->Set(v8::String::NewFromUtf8(isolate, "module"), module);
-        global->Set(v8::String::NewFromUtf8(isolate, "cpp"), raster);
+        global->Set(v8::NewString("exports"), exports);
+        global->Set(v8::NewString("module"), module);
+        global->Set(v8::NewString("cpp"), raster);
 
         v8::Script::Compile(context, script).ToLocalChecked()->Run(context);
 
-        global->Set(v8::String::NewFromUtf8(isolate, "exports"), currentExports);
-        global->Set(v8::String::NewFromUtf8(isolate, "cpp"), currentCpp);
+        global->Set(v8::NewString("exports"), currentExports);
+        global->Set(v8::NewString("cpp"), currentCpp);
 
-        modules::moduleCache[*moduleName].Reset(v8::Isolate::GetCurrent(), exports);
+        modules::moduleCache[moduleName].Reset(v8::Isolate::GetCurrent(), exports);
 
         args.GetReturnValue().Set(exports);
     }

@@ -3,43 +3,15 @@
 #include "DateTime.h"
 #include "JsExtensions.h"
 
-const auto TimeoutEvent = SDL_USEREVENT + 3;
 
-using raster::JsRuntime;
-
-std::pair<bool, std::string> argumentsOkay(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-    auto output = std::pair<bool, std::string>(true, "");
-
-    if (args.Length() != 3)
-    {
-        output = std::pair<bool, std::string>(false, "Error timeout function takes 3 arguments");
-    }
-
-    if (!args[0]->IsNumber())
-    {
-        output = std::pair<bool, std::string>(false, "Error timeout argument 1 is not a number");
-    }
-
-    if (!args[1]->IsNumber())
-    {
-        output = std::pair<bool, std::string>(false, "Error timeout argument 2 is not a number");
-    }
-
-    if (!args[2]->IsFunction())
-    {
-        output = std::pair<bool, std::string>(false, "Error timeout argument 3 is not a number");
-    }
-
-    return output;
-}
+const auto TimeoutID = SDL_USEREVENT + 3;
 
 SDL_TimerCallback createTimeoutFunction()
 {
     return [](Uint32, void *p) -> Uint32
     {
         SDL_Event e;
-        e.user.type = TimeoutEvent;
+        e.user.type = TimeoutID;
         e.user.code = *static_cast<long long*>(p);
         SDL_PushEvent(&e);
         delete p;
@@ -47,60 +19,53 @@ SDL_TimerCallback createTimeoutFunction()
     };
 }
 
-void raster::datetime::timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
+const auto Timeout = [](int uniqueID, v8::PersistentCopyable callback)
 {
-    v8::Isolate * isolate = args.GetIsolate();
-    std::string msg;
-    bool okay;
+    auto& systemEvents = raster::JsRuntime::getPlatform().GetSystemEvents();
+    auto* isolate = v8::Isolate::GetCurrent();
 
-    tie(okay, msg) = argumentsOkay(args);
-
-    if (!okay)
-    {
-        v8::Throw(args, msg);
-        return;
+    for (auto& e : systemEvents) {
+        if (e.user.type == TimeoutID && e.user.code == uniqueID) {
+            v8::TryCatch trycatch(isolate);
+            auto function = callback.Get(isolate);
+            function->Call(function, 0, nullptr);
+            CatchExceptions(trycatch);
+            return true;
+        }
     }
 
+    return false;
+};
+
+void timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+    const auto uniqueID = GetNumber(args[0]);
+    const auto ms = GetNumber(args[1]);
+
+    SDL_AddTimer(ms, createTimeoutFunction(), new long long{ uniqueID });
+
     v8::PersistentCopyable callback;
-    callback.Reset(isolate, args[2].As<v8::Function>());
-
-    const auto timerCallback = createTimeoutFunction();
-    const auto uniqueID = args[0]->ToInteger()->Value();
-    const auto ms = args[1]->ToInteger()->Value();
-
-    SDL_AddTimer(ms, timerCallback, new long long{ uniqueID });
-
-    JsRuntime::getPlatform().CallOnForegroundThread(new JsAwaitTask([=]() {
-        auto& events = JsRuntime::getPlatform().GetSystemEvents();
-
-        for (auto& e : events) {
-            if (e.user.type == TimeoutEvent && e.user.code == uniqueID) {
-                v8::TryCatch trycatch(isolate);
-                v8::Local<v8::Function> function = callback.Get(isolate);
-                function->Call(function, 0, nullptr);
-                CatchExceptions(trycatch);
-                return true;
-            }
-        }
-
-        return false;
-    }));
+    callback.Reset(args.GetIsolate(), GetFunction(args[2]));
+    v8::OnForeground(Timeout, uniqueID, callback);
 }
 
-void raster::datetime::pause(const v8::FunctionCallbackInfo<v8::Value>& args)
+const auto PauseConvertError = "pause: Error converting arg1 to number";
+const auto PauseNoArgError = "pause: Error expected 1 number parameter";
+
+void pause(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    if (args.Length() == 1 && args[0]->IsNumber())
+    if (args.Length() == 1)
     {
-        SDL_Delay(args[0]->ToInteger()->Value());
+        SDL_Delay(GetNumber(args[0], PauseConvertError));
     }
     else
     {
-        Throw(args, "Error expected 1 number parameter");
+        v8::Throw(PauseNoArgError);
     }
 }
 
 void raster::registerDateTime(v8::Local<v8::Object>& object)
 {
-    AttachFunction(object, "timeout", datetime::timeout);
-    AttachFunction(object, "pause", datetime::pause);
+    AttachFunction(object, "timeout", timeout);
+    AttachFunction(object, "pause", pause);
 }

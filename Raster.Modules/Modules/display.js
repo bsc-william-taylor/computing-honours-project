@@ -1,29 +1,37 @@
 
-function getDefaultWindowArgs(givenArgs) {
-    const args = {};
-    args.title = givenArgs.title || "";
-    args.x = givenArgs.x || 0;
-    args.y = givenArgs.y || 0;
-    args.w = givenArgs.w || 240;
-    args.h = givenArgs.h || 240;
-    return args;
-}
+const { openMessage, openWindow } = raster;
+const { Window, displayInfo } = raster;
 
 exports.openMessage = function (title, body, callback) {
     if (title && body && callback) {
-        raster.showMessageBox(title, body, callback);
+        openMessage(title, body, callback);
     } else {
         throw 'Expected 3 args to openMessage';
     }
 }
 
 exports.openFullscreenWindow = function(callback) {
-    // TODO: Implement function
+    if (callback) {        
+        const display = displayInfo();
+
+        const settings = { title: "", x: 0, y: 0 };
+        settings.fullscreen = true;
+        settings.h = display.h;
+        settings.w = display.w;
+
+        openWindow(new Window(settings), callback);
+    }
 };
 
 exports.openWindow = function (args, callback) {
     if (args && callback) {
-        var windowSettings = getDefaultWindowArgs(args);
-        raster.createWindow(new raster.Window(windowSettings), callback);
+        const settings = { title: args.title || "" };
+        settings.fullscreen = false;
+        settings.h = args.h || 250;
+        settings.w = args.w || 250;
+        settings.y = args.y || 50;
+        settings.x = args.x || 50;
+
+        openWindow(new Window(settings), callback);
     }
 }
