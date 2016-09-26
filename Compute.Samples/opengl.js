@@ -1,5 +1,5 @@
 
-const { openWindow, openMessageBox } = require('display');
+const { openFullscreenWindow, openMessageBox } = require('display');
 const { setTimeout, setInterval } = require('datetime');
 const console = require('console');
 const http = require('http');
@@ -20,11 +20,10 @@ function bootstrap(onRender) {
     setTimeout(() => {
         http.get('www.williamsamtaylor.co.uk', '/shapes', 3010, res => {
             renderData = JSON.parse(res);
-            console.log('Got rending data');
         });
-    }, 2500);
+    }, 5000);
 
-    openWindow({}, window => {
+    openFullscreenWindow(window => {
         window.setTitle('OpenGL Example');
         window.show();
         window.enableOpenGL();
