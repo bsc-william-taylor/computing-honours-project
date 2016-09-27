@@ -2,10 +2,14 @@
 const console = require('console');
 const http = require('http');
 
-const address = 'www.williamsamtaylor.co.uk';
-const page = '/apps/mgd/index.html';
-const port = 80;
+const address = 'localhost';
+const page = '/hkj';
+const port = 3000;
 
-http.get(address, page, 80, res => {
+http.get(address, page, port, res => {
+    console.log(res);
+});
+
+http.post(address, page, port, {}, res => {
     console.log(res);
 });
