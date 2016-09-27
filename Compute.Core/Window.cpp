@@ -127,17 +127,20 @@ void Window::show(const v8::FunctionCallbackInfo<v8::Value>& args) {
 
     if (object->window == nullptr)
     {
-        object->window = SDL_CreateWindow(
+        const auto window = SDL_CreateWindow(
             object->windowTitle.c_str(),
             object->rect.x, object->rect.y,
             object->rect.w, object->rect.h,
-            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
+            SDL_WINDOW_OPENGL
         );
 
-        if(object->fullscreen && object->window != nullptr)
+        if(object->fullscreen && window != nullptr)
         {
-            SDL_SetWindowFullscreen(object->window, SDL_WINDOW_FULLSCREEN);
+            SDL_SetWindowBordered(window, SDL_FALSE);
         }
+
+        object->window = window;
+        SDL_ShowWindow(window);
     }
     else
     {
@@ -155,10 +158,9 @@ void Window::enableOpenGL(const v8::FunctionCallbackInfo<v8::Value>& args)
     if (object->context == nullptr && object->window != nullptr)
     {
         object->context = SDL_GL_CreateContext(object->window);
-
-        auto result = SDL_GL_SetSwapInterval(1);
-
-        if (result != 0)
+        SDL_GL_MakeCurrent(object->window, object->context);
+        
+        if (SDL_GL_SetSwapInterval(1) != 0)
         {
             std::cout << "Error VSync not supported " << SDL_GetError() << std::endl;
         }

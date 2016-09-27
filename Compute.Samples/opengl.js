@@ -21,7 +21,7 @@ function bootstrap(onRender) {
         http.get('www.williamsamtaylor.co.uk', '/shapes', 3010, res => {
             renderData = JSON.parse(res);
         });
-    }, 5000);
+    }, 1000);
 
     openFullscreenWindow(window => {
         window.setTitle('OpenGL Example');

@@ -1,4 +1,10 @@
 
-const console = require('console');
+const { get, post } = raster;
 
-exports.get = raster.get;
+exports.post = function(domain, port, body) {
+    
+};
+
+exports.get = function(domain, path, port) {
+    
+}

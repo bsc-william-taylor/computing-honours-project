@@ -2,9 +2,7 @@
 #include "System.h"
 #include "JsExtensions.h"
 
-using namespace compute::system;
-
-void compute::system::battery(const v8::FunctionCallbackInfo<v8::Value>& args)
+void battery(v8::FunctionArgs args)
 {
     auto secs{ 0 }, pct{ 0 };
     auto status = SDL_GetPowerInfo(&secs, &pct);
@@ -17,14 +15,14 @@ void compute::system::battery(const v8::FunctionCallbackInfo<v8::Value>& args)
     args.GetReturnValue().Set(object);
 }
 
-void compute::system::exit(const v8::FunctionCallbackInfo<v8::Value>& args)
+void exit(v8::FunctionArgs args)
 {
     if (args.Length() == 1 && args[0]->IsNumber())
     {
-        ::exit(args[0].As<v8::Number>()->Value());
+        exit(args[0].As<v8::Number>()->Value());
     }
 
-    ::exit(0);
+    exit(0);
 }
 
 void compute::registerSystem(v8::Local<v8::Object>& object)

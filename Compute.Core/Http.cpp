@@ -4,13 +4,8 @@
 #include "JsRuntime.h"
 
 using Poco::Net::HTTPClientSession;
-using Poco::Net::HTTPRequest;
 using Poco::Net::HTTPResponse;
-
-void httpPost(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-    // TODO: Implement post method
-}
+using Poco::Net::HTTPRequest;
 
 const auto Callback = [](v8::PersistentCopyable callback, std::string response)
 {
@@ -22,7 +17,7 @@ const auto Callback = [](v8::PersistentCopyable callback, std::string response)
     function->Call(function, 1, args);
 };
 
-const auto Send = [](v8::PersistentCopyable callback, std::string domain, std::string route, int port)
+const auto Send = [](auto callback, auto domain, auto route, auto port)
 {
     HTTPClientSession session(domain);
     HTTPRequest request(HTTPRequest::HTTP_GET, route);
@@ -35,6 +30,11 @@ const auto Send = [](v8::PersistentCopyable callback, std::string domain, std::s
     Poco::StreamCopier::copyStream(session.receiveResponse(response), ss);
     v8::OnForeground<JsAsyncTask>(Callback, callback, ss.str());
 };
+
+void httpPost(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+    // TODO: Implement post method
+}
 
 void httpGet(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
