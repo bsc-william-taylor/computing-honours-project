@@ -2,6 +2,7 @@
 #pragma once
 
 #include "ComputeCore.h"
+#include "JsExtensions.h"
 
 namespace compute
 {
@@ -20,8 +21,8 @@ namespace compute
         extern std::map<std::string, JsModule> moduleCache;
     }
 
-    v8::Local<v8::ObjectTemplate> registerCommonJsModules();
+    auto registerCommonJsModules() -> v8::Local<v8::ObjectTemplate>;
 
     void require(const v8::FunctionCallbackInfo<v8::Value>& args);
-    void clearCommonJsModules();
+    void destroyModuleCache();
 }

@@ -10,22 +10,21 @@
 #include "Fs.h"
 
 std::map<std::string, compute::JsModule> compute::modules::moduleCache = {};
-
 std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::moduleBindings =
 {
     {
-        { "datetime", [](v8::Local<v8::Object>& object) { compute::registerDateTime(object); } },
-        { "display", [](v8::Local<v8::Object>& object) { compute::registerDisplay(object); } },
-        { "console", [](v8::Local<v8::Object>& object) { compute::registerConsole(object); } },
-        { "system", [](v8::Local<v8::Object>& object) { compute::registerSystem(object); } },
-        { "opencl", [](v8::Local<v8::Object>& object) { compute::registerOpenCL(object); } },
-        { "opengl", [](v8::Local<v8::Object>& object) { compute::registerOpenGL(object); } },
-        { "http", [](v8::Local<v8::Object>& object) { compute::registerHttp(object); } },
-        { "fs", [](v8::Local<v8::Object>& object) { compute::registerFs(object); } }
+        { "datetime", [](auto& object) { compute::registerDateTime(object); } },
+        { "display", [](auto& object) { compute::registerDisplay(object); } },
+        { "console", [](auto& object) { compute::registerConsole(object); } },
+        { "system", [](auto& object) { compute::registerSystem(object); } },
+        { "opencl", [](auto& object) { compute::registerOpenCL(object); } },
+        { "opengl", [](auto& object) { compute::registerOpenGL(object); } },
+        { "http", [](auto& object) { compute::registerHttp(object); } },
+        { "fs", [](auto& object) { compute::registerFs(object); } }
     }
 };
 
-std::string parseInternalModulePath(std::string name)
+auto parseInternalModulePath(std::string name)
 {
     auto path = Poco::Path(cwd);
     path.append("/modules/");
@@ -34,7 +33,7 @@ std::string parseInternalModulePath(std::string name)
     return path.toString();
 }
 
-std::string parseExternalModulePath(std::string name)
+auto parseExternalModulePath(std::string name)
 {
     auto path = Poco::Path(Poco::Path::current());
     path.append(name);
@@ -42,7 +41,7 @@ std::string parseExternalModulePath(std::string name)
     return path.toString();
 }
 
-v8::Local<v8::ObjectTemplate> compute::registerCommonJsModules()
+auto compute::registerCommonJsModules() -> v8::Local<v8::ObjectTemplate>
 {
     auto isolate = v8::Isolate::GetCurrent();
     auto moduleTemplate = v8::ObjectTemplate::New(isolate);
@@ -54,12 +53,7 @@ v8::Local<v8::ObjectTemplate> compute::registerCommonJsModules()
     return moduleTemplate;
 }
 
-void compute::clearCommonJsModules()
-{
-    modules::moduleCache.clear();
-}
-
-compute::ModuleType moduleType(const std::string& path)
+auto moduleType(const std::string& path)
 {
     if (path.find(".") != std::string::npos || path.find("/") != std::string::npos)
     {
@@ -69,7 +63,7 @@ compute::ModuleType moduleType(const std::string& path)
     return compute::ModuleType::Internal;
 }
 
-v8::Local<v8::String> createScript(v8::Isolate * isolate, std::string module)
+auto createScript(v8::Isolate * isolate, std::string module)
 {
     std::string filename;
 
@@ -85,17 +79,21 @@ v8::Local<v8::String> createScript(v8::Isolate * isolate, std::string module)
     auto script = compute::readFile(filename.c_str());
     script.insert(0, "(function(raster, exports){");
     script.append("})(cpp, exports);");
+    return v8::NewString(script);
+}
 
-    return v8::String::NewFromUtf8(isolate, script.c_str(), v8::NewStringType::kNormal).ToLocalChecked();
+void compute::destroyModuleCache()
+{
+    modules::moduleCache.clear();
 }
 
 void compute::require(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
-    if (args.Length() != 1) {
+    if (args.Length() != 1) 
+    {
         args.GetReturnValue().SetUndefined();
         return;
-    }
-
+    } 
     auto isolate = args.GetIsolate();
     auto context = isolate->GetCurrentContext();
     auto global = context->Global();

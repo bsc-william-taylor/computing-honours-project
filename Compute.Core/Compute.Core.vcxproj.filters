@@ -52,9 +52,6 @@
     <ClCompile Include="Console.cpp">
       <Filter>Source Code\Modules\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Display.cpp">
       <Filter>Source Code\Modules\Core</Filter>
     </ClCompile>
@@ -109,9 +106,6 @@
       <Filter>Source Code\Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
-      <Filter>Source Code\Modules\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
       <Filter>Source Code\Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">

@@ -81,7 +81,7 @@ void JsRuntime::start(std::string filename)
 
         const auto src = v8::NewString(readFile(filename.c_str()));
         filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
-        clearCommonJsModules();
+        destroyModuleCache();
     }
 
     isolate->RequestGarbageCollectionForTesting(v8::Isolate::kFullGarbageCollection);

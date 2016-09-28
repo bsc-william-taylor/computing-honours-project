@@ -36,7 +36,6 @@
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="Display.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -57,7 +56,6 @@
     <ClInclude Include="Modules.h" />
     <ClInclude Include="JsObject.h" />
     <ClInclude Include="Display.h" />
-    <ClInclude Include="Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{471C9745-166A-44E6-A66C-70F660C4ED19}</ProjectGuid>
