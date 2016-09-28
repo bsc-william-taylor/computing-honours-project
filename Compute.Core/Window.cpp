@@ -26,92 +26,88 @@ void Window::create(v8::Local<v8::Object>& raster, v8::Isolate * isolate)
     raster->Set(v8::String::NewFromUtf8(isolate, "Window"), constructor.Get(isolate));
 }
 
-void Window::newWindow(const v8::FunctionCallbackInfo<v8::Value>& info)
+void Window::newWindow(v8::FunctionArgs info)
 {
-    auto isolate = info.GetIsolate();
     auto object = newTemplate(objectTemplate);
 
-    object->Set(v8::NewString("enableOpenGL"), v8::Function::New(isolate, enableOpenGL));
-    object->Set(v8::NewString("swapBuffers"), v8::Function::New(isolate, swapBuffers));
-    object->Set(v8::NewString("setPosition"), v8::Function::New(isolate, setPosition));
-    object->Set(v8::NewString("setTitle"), v8::Function::New(isolate, setTitle));
-    object->Set(v8::NewString("onFrame"), v8::Function::New(isolate, onFrame));
-    object->Set(v8::NewString("setSize"), v8::Function::New(isolate, setSize));
-    object->Set(v8::NewString("show"), v8::Function::New(isolate, show));
-    object->Set(v8::NewString("hide"), v8::Function::New(isolate, hide));
+    AttachFunction(object, "enableOpenGL", enableOpenGL);
+    AttachFunction(object, "swapBuffers", swapBuffers);
+    AttachFunction(object, "setPosition", setPosition);
+    AttachFunction(object, "setTitle", setTitle);
+    AttachFunction(object, "onFrame", onFrame);
+    AttachFunction(object, "setSize", setSize);
+    AttachFunction(object, "show", show);
+    AttachFunction(object, "hide", hide);
 
-    auto window = new Window();
-    auto args = info[0].As<v8::Object>();
+    auto args = GetObject(info[0]);
     auto fullscreen = args->Get(v8::NewString("fullscreen"));
-    auto t = args->Get(v8::NewString("title"));
-    auto x = args->Get(v8::NewString("x"));
-    auto y = args->Get(v8::NewString("y"));
-    auto w = args->Get(v8::NewString("w"));
-    auto h = args->Get(v8::NewString("h"));
-
+    auto title = args->Get(v8::NewString("title"));
+   
+    auto window = new Window();
     window->fullscreen = fullscreen->BooleanValue() ? SDL_TRUE : SDL_FALSE;
-    window->windowTitle = std::string(*v8::String::Utf8Value(t));
-    window->rect.x = x->Int32Value();
-    window->rect.y = y->Int32Value();
-    window->rect.w = w->Int32Value();
-    window->rect.h = h->Int32Value();
+    window->rect.x = args->Get(v8::NewString("x"))->Int32Value();
+    window->rect.y = args->Get(v8::NewString("y"))->Int32Value();
+    window->rect.w = args->Get(v8::NewString("w"))->Int32Value();
+    window->rect.h = args->Get(v8::NewString("h"))->Int32Value();
+    window->title = std::string(*v8::String::Utf8Value(title));
     window->wrap(object);
 
     info.GetReturnValue().Set(object);
 }
 
-void Window::setSize(const v8::FunctionCallbackInfo<v8::Value>& args) {
-    auto that = unwrap(args);
-    auto w = (*args[0])->ToInteger()->Value();
-    auto h = (*args[1])->ToInteger()->Value();
-
-    if (that->window == nullptr) {
-        that->rect.w = w;
-        that->rect.h = h;
-    }
-    else {
-        SDL_SetWindowSize(that->window, w, h);
-    }
-}
-
-void Window::setPosition(const v8::FunctionCallbackInfo<v8::Value>& args) {
-    auto that = unwrap(args);
-    auto x = (*args[0])->ToInteger()->Value();
-    auto y = (*args[1])->ToInteger()->Value();
-
-    if (that->window == nullptr) {
-        that->rect.x = x;
-        that->rect.y = y;
-    }
-    else {
-        SDL_SetWindowPosition(that->window, x, y);
-    }
-}
-
-void Window::onFrame(const v8::FunctionCallbackInfo<v8::Value>& args)
+void Window::setSize(v8::FunctionArgs args) 
 {
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> callback;
-    callback.Reset(v8::Isolate::GetCurrent(), args[0].As<v8::Function>());
+    auto object = unwrap(args);
+    auto w = GetNumber(args[0]);
+    auto h = GetNumber(args[1]);
 
-    v8::Persistent<v8::Object, v8::CopyablePersistentTraits<v8::Object>> window;
-    window.Reset(v8::Isolate::GetCurrent(), args.This());
-  
-    auto& platform = compute::JsRuntime::getPlatform();
-    auto isolate = v8::Isolate::GetCurrent();
-
-    platform.CallOnForegroundThread(isolate, new JsAwaitTask([=]() {
-        auto parent = window.Get(isolate);
-        auto instance = unwrap(parent);
-        auto function = callback.Get(isolate);
-
-        v8::TryCatch trycatch(isolate);
-        function->Call(function, 0, nullptr);
-        CatchExceptions(trycatch);
-        return !instance->window;
-    }));
+    if (object->window == nullptr) 
+    {
+        object->rect.w = w;
+        object->rect.h = h;
+    }
+    else 
+    {
+        SDL_SetWindowSize(object->window, w, h);
+    }
 }
 
-void Window::swapBuffers(const v8::FunctionCallbackInfo<v8::Value>& args)
+void Window::setPosition(v8::FunctionArgs args)
+{
+    const auto object = unwrap(args);
+    const auto x = GetNumber(args[0]);
+    const auto y = GetNumber(args[1]);
+
+    if (object->window == nullptr) 
+    {
+        object->rect.x = x;
+        object->rect.y = y;
+    }
+    else 
+    {
+        SDL_SetWindowPosition(object->window, x, y);
+    }
+}
+
+const auto Render = [](auto window, auto callback, auto isolate)
+{
+    const auto instance = JsObject<Window>::unwrap(window.Get(isolate));
+    const auto function = callback.Get(isolate);
+
+    v8::TryCatch trycatch(isolate);
+    function->Call(function, 0, nullptr);
+    CatchExceptions(trycatch);
+    return !instance->hasWindow();
+};
+
+void Window::onFrame(v8::FunctionArgs args)
+{
+    v8::PersistentCopyable window(args.GetIsolate(), args.This().As<v8::Function>());
+    v8::PersistentCopyable callback(args.GetIsolate(), args[0].As<v8::Function>());
+    v8::OnForeground(Render, window, callback, args.GetIsolate());
+}
+
+void Window::swapBuffers(v8::FunctionArgs args)
 {
     auto object = unwrap(args);
     auto window = object->window;
@@ -122,17 +118,16 @@ void Window::swapBuffers(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void Window::show(const v8::FunctionCallbackInfo<v8::Value>& args) {
+void Window::show(v8::FunctionArgs args) 
+{
     auto object = unwrap(args);
 
     if (object->window == nullptr)
     {
-        const auto window = SDL_CreateWindow(
-            object->windowTitle.c_str(),
-            object->rect.x, object->rect.y,
-            object->rect.w, object->rect.h,
-            SDL_WINDOW_OPENGL
-        );
+        const auto title = object->title.c_str();
+        const auto p = object->rect;
+
+        const auto window = SDL_CreateWindow(title, p.x, p.y, p.w, p.h, SDL_WINDOW_OPENGL);
 
         if(object->fullscreen && window != nullptr)
         {
@@ -140,36 +135,29 @@ void Window::show(const v8::FunctionCallbackInfo<v8::Value>& args) {
         }
 
         object->window = window;
-        SDL_ShowWindow(window);
     }
-    else
-    {
-        if(object->window != nullptr)
-        {
-            SDL_ShowWindow(object->window);
-        }
-    }
+
+    SDL_ShowWindow(object->window);
 }
 
-void Window::enableOpenGL(const v8::FunctionCallbackInfo<v8::Value>& args)
+void Window::enableOpenGL(v8::FunctionArgs args)
 {
     auto object = unwrap(args);
 
     if (object->context == nullptr && object->window != nullptr)
     {
-        object->context = SDL_GL_CreateContext(object->window);
+        const auto context = SDL_GL_CreateContext(object->window);
+
         SDL_GL_MakeCurrent(object->window, object->context);
-        
-        if (SDL_GL_SetSwapInterval(1) != 0)
-        {
-            std::cout << "Error VSync not supported " << SDL_GetError() << std::endl;
-        }
+        SDL_GL_SetSwapInterval(1);
+
+        object->context = context;
     }
 }
 
-void Window::hide(const v8::FunctionCallbackInfo<v8::Value>& args) {
-    auto that = unwrap(args);
-    auto window = that->window;
+void Window::hide(v8::FunctionArgs args)
+{
+    const auto window = unwrap(args)->window;
 
     if (window != nullptr)
     {
@@ -177,12 +165,28 @@ void Window::hide(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
-void Window::setTitle(const v8::FunctionCallbackInfo<v8::Value>& args) {
-    auto that = unwrap(args);
-    v8::String::Utf8Value str(args[0]);
-    that->windowTitle = std::string(*str);
-    if (that->window != nullptr)
+void Window::setTitle(v8::FunctionArgs args) 
+{
+    const auto title = GetString(args[0]);
+    const auto object = unwrap(args);
+    object->title = title;
+
+    if (object->window != nullptr)
     {
-        SDL_SetWindowTitle(that->window, that->windowTitle.c_str());
+        SDL_SetWindowTitle(object->window, title.c_str());
     }
+}
+
+void Window::destroy()
+{
+    if (window != nullptr)
+    {
+        SDL_DestroyWindow(window);
+        window = nullptr;
+    }
+}
+
+bool Window::hasWindow()
+{
+    return window != nullptr;
 }

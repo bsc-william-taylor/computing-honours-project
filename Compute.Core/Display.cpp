@@ -5,20 +5,6 @@
 
 using namespace compute;
 
-void openMessage(const v8::FunctionCallbackInfo<v8::Value>& args)
-{
-    if (args.Length() == 3)
-    {
-        auto function = GetFunction(args[2]);
-        auto title = GetString(args[0]);
-        auto body = GetString(args[1]);
-
-        SDL_ShowSimpleMessageBox(0, title.c_str(), body.c_str(), nullptr);
-
-        function->Call(function, 0, nullptr);
-    }
-}
-
 const auto Show = [](v8::PersistentCopyable window, v8::PersistentCopyable callback)
 {
     auto isolate = v8::Isolate::GetCurrent();
@@ -47,6 +33,20 @@ const auto OnQuit = [](v8::PersistentCopyable window)
     return false;
 };
 
+void openMessage(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+    if (args.Length() == 3)
+    {
+        auto function = GetFunction(args[2]);
+        auto title = GetString(args[0]);
+        auto body = GetString(args[1]);
+
+        SDL_ShowSimpleMessageBox(0, title.c_str(), body.c_str(), nullptr);
+
+        function->Call(function, 0, nullptr);
+    }
+}
+
 void openWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 2)
@@ -54,12 +54,8 @@ void openWindow(const v8::FunctionCallbackInfo<v8::Value>& args)
         auto windowCallback = GetFunction(args[1]);
         auto windowObject = GetFunction(args[0]);
 
-        v8::PersistentCopyable callback;
-        v8::PersistentCopyable window;
-
-        callback.Reset(args.GetIsolate(), windowCallback);
-        window.Reset(args.GetIsolate(), windowObject);
-
+        v8::PersistentCopyable callback(args.GetIsolate(), windowCallback);
+        v8::PersistentCopyable window(args.GetIsolate(), windowObject);
         v8::OnForeground<JsAsyncTask>(Show, window, callback);
         v8::OnForeground(OnQuit, window);
     }
