@@ -35,9 +35,9 @@ void get(v8::FunctionArgs args)
     args.GetReturnValue().Set(v8::NewString(input.c_str()));
 }
 
-void compute::registerConsole(v8::Local<v8::Object>& object)
+void compute::registerConsole(v8::Exports exports)
 {
-    AttachFunction(object, "printLine", printLine);
-    AttachFunction(object, "print", print);
-    AttachFunction(object, "read", get);
+    AttachFunction(exports, "printLine", printLine);
+    AttachFunction(exports, "print", print);
+    AttachFunction(exports, "read", get);
 }

@@ -25,28 +25,28 @@ void exit(v8::FunctionArgs args)
     exit(0);
 }
 
-void compute::registerSystem(v8::Local<v8::Object>& object)
+void compute::registerSystem(v8::Exports exports)
 {
-    AttachString(object, "osArchitecture", Poco::Environment::osArchitecture());
-    AttachString(object, "osVersion", Poco::Environment::osVersion());
-    AttachString(object, "osName", Poco::Environment::osName());
+    AttachFunction(exports, "battery", battery);
+    AttachFunction(exports, "exit", exit);
 
-    AttachNumber(object, "cpuCacheLineSize", SDL_GetCPUCacheLineSize());
-    AttachNumber(object, "systemRam", SDL_GetSystemRAM());
-    AttachNumber(object, "cpuCount", SDL_GetCPUCount());
+    AttachString(exports, "osArchitecture", Poco::Environment::osArchitecture());
+    AttachString(exports, "osVersion", Poco::Environment::osVersion());
+    AttachString(exports, "osName", Poco::Environment::osName());
 
-    AttachBoolean(object, "hasAltiVec", SDL_HasAltiVec());
-    AttachBoolean(object, "hasRDTSC", SDL_HasRDTSC());
-    AttachBoolean(object, "has3DNow", SDL_Has3DNow());
-    AttachBoolean(object, "hasSSE41", SDL_HasSSE41());
-    AttachBoolean(object, "hasSSE42", SDL_HasSSE42());
-    AttachBoolean(object, "hasAVX2", SDL_HasAVX2());
-    AttachBoolean(object, "hasSSE3", SDL_HasSSE3());
-    AttachBoolean(object, "hasSSE2", SDL_HasSSE2());
-    AttachBoolean(object, "hasMMX", SDL_HasMMX());
-    AttachBoolean(object, "hasAVX", SDL_HasAVX());
-    AttachBoolean(object, "hasSSE", SDL_HasSSE());
+    AttachNumber(exports, "cpuCacheLineSize", SDL_GetCPUCacheLineSize());
+    AttachNumber(exports, "systemRam", SDL_GetSystemRAM());
+    AttachNumber(exports, "cpuCount", SDL_GetCPUCount());
 
-    AttachFunction(object, "battery", battery);
-    AttachFunction(object, "exit", exit);
+    AttachBoolean(exports, "hasAltiVec", SDL_HasAltiVec());
+    AttachBoolean(exports, "hasRDTSC", SDL_HasRDTSC());
+    AttachBoolean(exports, "has3DNow", SDL_Has3DNow());
+    AttachBoolean(exports, "hasSSE41", SDL_HasSSE41());
+    AttachBoolean(exports, "hasSSE42", SDL_HasSSE42());
+    AttachBoolean(exports, "hasAVX2", SDL_HasAVX2());
+    AttachBoolean(exports, "hasSSE3", SDL_HasSSE3());
+    AttachBoolean(exports, "hasSSE2", SDL_HasSSE2());
+    AttachBoolean(exports, "hasMMX", SDL_HasMMX());
+    AttachBoolean(exports, "hasAVX", SDL_HasAVX());
+    AttachBoolean(exports, "hasSSE", SDL_HasSSE());
 }

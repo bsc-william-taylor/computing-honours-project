@@ -55,8 +55,8 @@ void write(v8::FunctionArgs args)
     }
 }
 
-void compute::registerFs(v8::Local<v8::Object>& object)
+void compute::registerFs(v8::Exports exports)
 {
-    AttachFunction(object, "write", write);
-    AttachFunction(object, "read", read);
+    AttachFunction(exports, "write", write);
+    AttachFunction(exports, "read", read);
 }

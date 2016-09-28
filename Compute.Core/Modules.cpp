@@ -82,12 +82,12 @@ auto createScript(v8::Isolate * isolate, std::string module)
     return v8::NewString(script);
 }
 
-void compute::destroyModuleCache()
+auto compute::releaseModuleCache() -> void
 {
     modules::moduleCache.clear();
 }
 
-void compute::require(const v8::FunctionCallbackInfo<v8::Value>& args)
+auto compute::require(const v8::FunctionCallbackInfo<v8::Value>& args) -> void
 {
     if (args.Length() != 1) 
     {

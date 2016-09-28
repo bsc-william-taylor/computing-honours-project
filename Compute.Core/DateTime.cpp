@@ -5,7 +5,7 @@
 
 const auto TimeoutID = SDL_USEREVENT + 3;
 
-SDL_TimerCallback createTimeoutFunction()
+auto createTimeoutFunction()
 {
     return [](Uint32, void *p) -> Uint32
     {
@@ -18,7 +18,7 @@ SDL_TimerCallback createTimeoutFunction()
     };
 }
 
-const auto Timeout = [](int uniqueID, v8::PersistentCopyable callback)
+const auto Timeout = [](auto uniqueID, auto callback)
 {
     auto& systemEvents = compute::JsRuntime::getPlatform().GetSystemEvents();
     auto* isolate = v8::Isolate::GetCurrent();
@@ -36,7 +36,7 @@ const auto Timeout = [](int uniqueID, v8::PersistentCopyable callback)
     return false;
 };
 
-void timeout(const v8::FunctionCallbackInfo<v8::Value>& args)
+void timeout(v8::FunctionArgs args)
 {
     const auto uniqueID = GetNumber(args[0]);
     const auto ms = GetNumber(args[1]);
@@ -63,8 +63,8 @@ void pause(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void compute::registerDateTime(v8::Local<v8::Object>& object)
+void compute::registerDateTime(v8::Exports exports)
 {
-    AttachFunction(object, "timeout", timeout);
-    AttachFunction(object, "pause", pause);
+    AttachFunction(exports, "timeout", timeout);
+    AttachFunction(exports, "pause", pause);
 }

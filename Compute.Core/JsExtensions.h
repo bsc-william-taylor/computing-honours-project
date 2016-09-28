@@ -14,6 +14,7 @@ namespace v8
 {
     using PersistentCopyable = Persistent<Function, CopyablePersistentTraits<Function>>;
     using FunctionArgs = const FunctionCallbackInfo<Value>&;
+    using Exports = Local<Object>;
 
     Local<Function> GetFunction(Local<Value> value, std::string err = "");
     Local<Object> GetObject(Local<Value> value, std::string err = "");

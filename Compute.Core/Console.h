@@ -6,5 +6,5 @@
 
 namespace compute
 {
-    void registerConsole(v8::Local<v8::Object>& object);
+    void registerConsole(v8::Exports object);
 }

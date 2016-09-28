@@ -193,7 +193,7 @@ bool Window::hasWindow()
     return window != nullptr;
 }
 
-const auto Show = [](v8::PersistentCopyable window, v8::PersistentCopyable callback)
+const auto Show = [](auto window, auto callback)
 {
     auto isolate = v8::Isolate::GetCurrent();
     auto function = callback.Get(isolate);
@@ -203,7 +203,7 @@ const auto Show = [](v8::PersistentCopyable window, v8::PersistentCopyable callb
     function->Call(function, 1, args);
 };
 
-const auto OnQuit = [](v8::PersistentCopyable window)
+const auto OnQuit = [](auto window)
 {
     auto& events = JsRuntime::getPlatform().GetSystemEvents();
 
@@ -264,11 +264,11 @@ void displayInfo(v8::FunctionArgs args)
     args.GetReturnValue().Set(data);
 }
 
-void compute::registerDisplay(v8::Local<v8::Object>& object)
+void compute::registerDisplay(v8::Exports exports)
 {
-    AttachFunction(object, "displayInfo", displayInfo);
-    AttachFunction(object, "openMessage", openMessage);
-    AttachFunction(object, "openWindow", openWindow);
+    AttachFunction(exports, "displayInfo", displayInfo);
+    AttachFunction(exports, "openMessage", openMessage);
+    AttachFunction(exports, "openWindow", openWindow);
 
-    Window::create(object, v8::Isolate::GetCurrent());
+    Window::create(exports, v8::Isolate::GetCurrent());
 }

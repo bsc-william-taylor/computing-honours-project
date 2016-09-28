@@ -73,8 +73,8 @@ void httpGet(const v8::FunctionCallbackInfo<v8::Value>& args)
     v8::OnBackground<JsAsyncTask>(SendGetRequest, callback, domain, route, port);
 }
 
-void compute::registerHttp(v8::Local<v8::Object>& object)
+void compute::registerHttp(v8::Exports exports)
 {
-    AttachFunction(object, "post", httpPost);
-    AttachFunction(object, "get", httpGet);
+    AttachFunction(exports, "post", httpPost);
+    AttachFunction(exports, "get", httpGet);
 }

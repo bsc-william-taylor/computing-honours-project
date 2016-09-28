@@ -37,5 +37,5 @@ namespace compute
         void destroy();
     };
 
-    void registerDisplay(v8::Local<v8::Object>& object);
+    void registerDisplay(v8::Exports exports);
 }

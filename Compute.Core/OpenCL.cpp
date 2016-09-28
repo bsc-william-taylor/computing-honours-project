@@ -149,14 +149,14 @@ void createContextFromType(v8::FunctionArgs args)
     }
 }
 
-void compute::registerOpenCL(v8::Local<v8::Object>& object)
+void compute::registerOpenCL(v8::Exports exports)
 {
-    AttachFunction(object, "getPlatformIDs", getPlatforms);
-    AttachFunction(object, "getPlatformInfo", getPlatformInfo);
+    AttachFunction(exports, "getPlatformIDs", getPlatforms);
+    AttachFunction(exports, "getPlatformInfo", getPlatformInfo);
 
-    AttachFunction(object, "getDeviceIDs", getDevices);
-    AttachFunction(object, "getDeviceInfo", getDeviceInfo);
+    AttachFunction(exports, "getDeviceIDs", getDevices);
+    AttachFunction(exports, "getDeviceInfo", getDeviceInfo);
 
-    AttachFunction(object, "createContextFromType", createContextFromType);
-    AttachFunction(object, "releaseContext", releaseContext);
+    AttachFunction(exports, "createContextFromType", createContextFromType);
+    AttachFunction(exports, "releaseContext", releaseContext);
 }

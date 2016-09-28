@@ -2,9 +2,8 @@
 #include "OpenGL.h"
 #include "gl/GLU.h"
 #include "gl/gl.h"
-#include "JsExtensions.h"
 
-void glClearColor(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glClearColor(v8::FunctionArgs args)
 {
     if (args.Length() == 4)
     {
@@ -17,7 +16,7 @@ void glClearColor(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glClear(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glClear(v8::FunctionArgs args)
 {
     if (args.Length() == 1)
     {
@@ -25,7 +24,7 @@ void glClear(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glBegin(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glBegin(v8::FunctionArgs args)
 {
     if (args.Length() == 1)
     {
@@ -33,7 +32,7 @@ void glBegin(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glColor3(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glColor3(v8::FunctionArgs args)
 {
     if (args.Length() == 3)
     {
@@ -45,7 +44,7 @@ void glColor3(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glVertex2(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glVertex2(v8::FunctionArgs args)
 {
     if (args.Length() == 2)
     {
@@ -56,7 +55,7 @@ void glVertex2(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glVertex3(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glVertex3(v8::FunctionArgs args)
 {
     if (args.Length() == 3)
     {
@@ -68,12 +67,12 @@ void glVertex3(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glLoadIdentity(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glLoadIdentity(v8::FunctionArgs args)
 {
     ::glLoadIdentity();
 }
 
-void glMatrixMode(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glMatrixMode(v8::FunctionArgs args)
 {
     if (args.Length() == 1)
     {
@@ -81,7 +80,7 @@ void glMatrixMode(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glTranslate(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glTranslate(v8::FunctionArgs args)
 {
     if (args.Length() == 3)
     {
@@ -93,7 +92,7 @@ void glTranslate(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glRotate(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glRotate(v8::FunctionArgs args)
 {
     if (args.Length() == 4)
     {
@@ -106,7 +105,7 @@ void glRotate(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glPerspective(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glPerspective(v8::FunctionArgs args)
 {
     if (args.Length() == 4)
     {
@@ -119,12 +118,12 @@ void glPerspective(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void glEnd(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glEnd(v8::FunctionArgs args)
 {
     glEnd();
 }
 
-void glEnable(const v8::FunctionCallbackInfo<v8::Value>& args)
+void glEnable(v8::FunctionArgs args)
 {
     if (args.Length() == 1)
     {
@@ -132,19 +131,19 @@ void glEnable(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
-void compute::registerOpenGL(v8::Local<v8::Object>& object)
+void compute::registerOpenGL(v8::Exports exports)
 {
-    AttachFunction(object, "gluPerspective", glPerspective);
-    AttachFunction(object, "glEnable", glEnable);
-    AttachFunction(object, "glMatrixMode", glMatrixMode);
-    AttachFunction(object, "glLoadIdentity", glLoadIdentity);
-    AttachFunction(object, "glTranslatef", glTranslate);
-    AttachFunction(object, "glRotatef", glRotate);
-    AttachFunction(object, "glClearColor", glClearColor);
-    AttachFunction(object, "glVertex3f", glVertex3);
-    AttachFunction(object, "glVertex2f", glVertex2);
-    AttachFunction(object, "glColor3f", glColor3);
-    AttachFunction(object, "glClear", glClear);
-    AttachFunction(object, "glBegin", glBegin);
-    AttachFunction(object, "glEnd", glEnd);
+    AttachFunction(exports, "gluPerspective", glPerspective);
+    AttachFunction(exports, "glEnable", glEnable);
+    AttachFunction(exports, "glMatrixMode", glMatrixMode);
+    AttachFunction(exports, "glLoadIdentity", glLoadIdentity);
+    AttachFunction(exports, "glTranslatef", glTranslate);
+    AttachFunction(exports, "glRotatef", glRotate);
+    AttachFunction(exports, "glClearColor", glClearColor);
+    AttachFunction(exports, "glVertex3f", glVertex3);
+    AttachFunction(exports, "glVertex2f", glVertex2);
+    AttachFunction(exports, "glColor3f", glColor3);
+    AttachFunction(exports, "glClear", glClear);
+    AttachFunction(exports, "glBegin", glBegin);
+    AttachFunction(exports, "glEnd", glEnd);
 }
