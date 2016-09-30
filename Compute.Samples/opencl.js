@@ -6,38 +6,51 @@ const fs = require('fs');
 
 const randomArray = len => [...new Array(len)].map(x => Math.floor(Math.random() * 100));
 
-function acquirePlatform() {
+function acquirePlatform(){ 
     const platforms = [];
-    cl.getPlatformIDs(0, null, platforms);
-    cl.getPlatformIDs(platforms.length, platforms, null);
 
-    platforms.forEach(platform => {
-        cl.getPlatformInfo(platform, cl.CL_PLATFORM_NAME);
-        cl.getPlatformInfo(platform, cl.CL_PLATFORM_VERSION);
-        cl.getPlatformInfo(platform, cl.CL_PLATFORM_PROFILE);
-        cl.getPlatformInfo(platform, cl.CL_PLATFORM_VENDOR);
-    });
+    with(cl) {
+        clGetPlatformIDs(0, null, platforms);
+        clGetPlatformIDs(platforms.length, platforms, null);
 
-    return platforms[0];//platforms[console.read(platforms)];
+        platforms.forEach(platform => {
+            clGetPlatformInfo(platform, CL_PLATFORM_NAME);
+            clGetPlatformInfo(platform, CL_PLATFORM_VERSION);
+            clGetPlatformInfo(platform, CL_PLATFORM_PROFILE);
+            clGetPlatformInfo(platform, CL_PLATFORM_VENDOR);
+        });
+    }
+
+    return platforms[console.read(platforms)];
 }
 
 function acquireDevice(platform) {
     const devices = [];
-    cl.getDeviceIDs(platform, cl.CL_DEVICE_TYPE_ALL, 0, null, devices);
-    cl.getDeviceIDs(platform, cl.CL_DEVICE_TYPE_ALL, devices.length, devices, null);
 
-    devices.forEach(device => {
-        cl.getDeviceInfo(device, cl.CL_DEVICE_NAME);
-        cl.getDeviceInfo(device, cl.CL_DEVICE_VERSION);
-        cl.getDeviceInfo(device, cl.CL_DEVICE_VENDOR);
-    })
+    with(cl) {
+        clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 0, null, devices);
+        clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, devices.length, devices, null);
 
-    return devices[0];//devices[console.read(devices)];
+        devices.forEach(device => {
+            clGetDeviceInfo(device, CL_DEVICE_NAME);
+            clGetDeviceInfo(device, CL_DEVICE_VERSION);
+            clGetDeviceInfo(device, CL_DEVICE_VENDOR);
+        });
+    }
+
+    return devices[console.read(devices)];
 }
 
-const platform = acquirePlatform();
-const device = acquireDevice(platform);
+function start() {
+    const platform = acquirePlatform();
+    const device = acquireDevice(platform);
 
-const context = cl.createContextFromType( [ cl.CL_CONTEXT_PLATFORM, platform, 0 ], cl.CL_DEVICE_TYPE_ALL, null, null, null);
+    with(cl) {
+        const properties = [ CL_CONTEXT_PLATFORM, platform, 0 ];
+        const context = clCreateContextFromType(properties, CL_DEVICE_TYPE_ALL, null, null, null);
 
-cl.releaseContext(context);
+        clReleaseContext(context);
+    }
+}
+
+start();

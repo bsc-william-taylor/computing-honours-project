@@ -150,7 +150,7 @@ void Window::enableOpenGL(v8::FunctionArgs args)
     {
         const auto context = SDL_GL_CreateContext(object->window);
 
-        SDL_GL_MakeCurrent(object->window, object->context);
+        SDL_GL_MakeCurrent(object->window, context);
         SDL_GL_SetSwapInterval(1);
 
         object->context = context;

@@ -44,12 +44,15 @@ auto parseExternalModulePath(std::string name)
 auto compute::registerCommonJsModules() -> v8::Local<v8::ObjectTemplate>
 {
     auto isolate = v8::Isolate::GetCurrent();
+    auto exports = v8::ObjectTemplate::New(isolate);
+    auto module = v8::ObjectTemplate::New(isolate);
+    module->Set(v8::NewString("exports"), exports);
+
     auto moduleTemplate = v8::ObjectTemplate::New(isolate);
-
     moduleTemplate->Set(v8::NewString("require"), v8::FunctionTemplate::New(isolate, require));
-    moduleTemplate->Set(v8::NewString("exports"), v8::ObjectTemplate::New(isolate));
+    moduleTemplate->Set(v8::NewString("exports"), exports);
     moduleTemplate->Set(v8::NewString("cpp"), v8::ObjectTemplate::New(isolate));
-
+    moduleTemplate->Set(v8::NewString("module"), module);
     return moduleTemplate;
 }
 
@@ -87,7 +90,7 @@ auto compute::releaseModuleCache() -> void
     modules::moduleCache.clear();
 }
 
-auto compute::require(const v8::FunctionCallbackInfo<v8::Value>& args) -> void
+auto compute::require(v8::FunctionArgs args) -> void
 {
     if (args.Length() != 1) 
     {
@@ -106,8 +109,10 @@ auto compute::require(const v8::FunctionCallbackInfo<v8::Value>& args) -> void
     }
     else
     {
-        auto currentExports = global->Get(v8::String::NewFromUtf8(isolate, "exports"));
-        auto currentCpp = global->Get(v8::String::NewFromUtf8(isolate, "cpp"));
+        auto currentExports = global->Get(v8::NewString("exports"));
+        auto currentModule = global->Get(v8::NewString("module"));
+        auto currentCpp = global->Get(v8::NewString("cpp"));
+
         auto exports = v8::Object::New(isolate);
         auto module = v8::Object::New(isolate);
         auto raster = v8::Object::New(isolate);
@@ -128,9 +133,10 @@ auto compute::require(const v8::FunctionCallbackInfo<v8::Value>& args) -> void
         v8::Script::Compile(context, script).ToLocalChecked()->Run(context);
 
         global->Set(v8::NewString("exports"), currentExports);
+        global->Set(v8::NewString("module"), currentModule);
         global->Set(v8::NewString("cpp"), currentCpp);
 
-        modules::moduleCache[moduleName].Reset(v8::Isolate::GetCurrent(), exports);
+        modules::moduleCache[moduleName].Reset(isolate, exports);
 
         args.GetReturnValue().Set(exports);
     }

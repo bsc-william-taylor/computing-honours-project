@@ -22,6 +22,6 @@ namespace compute
     }
 
     auto registerCommonJsModules() -> v8::Local<v8::ObjectTemplate>;
-    auto require(const v8::FunctionCallbackInfo<v8::Value>& args) -> void;
+    auto require(v8::FunctionArgs args) -> void;
     auto releaseModuleCache() -> void;
 }

@@ -20,6 +20,14 @@ std::string compute::readFile(std::string filename)
     return data;
 }
 
+std::string compute::readStartupFile(std::string filename)
+{
+    std::stringstream ss;
+    ss << "module.name = '" << filename << "';";
+    ss << readFile(filename);
+    return ss.str();
+}
+
 void read(v8::FunctionArgs args)
 {
     if (args.Length() == 1)

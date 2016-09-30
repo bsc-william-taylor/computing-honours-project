@@ -125,12 +125,12 @@ exports.CL_DEVICE_PREFERRED_PLATFORM_ATOMIC_ALIGNMENT = 0x1058;
 exports.CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT = 0x1059;
 exports.CL_DEVICE_PREFERRED_LOCAL_ATOMIC_ALIGNMENT = 0x105A;
 
-exports.createContextFromType = raster.createContextFromType;
-exports.releaseContext = raster.releaseContext;
-exports.getPlatformIDs = raster.getPlatformIDs;
-exports.getDeviceIDs = raster.getDeviceIDs;
+exports.clCreateContextFromType = raster.createContextFromType;
+exports.clReleaseContext = raster.releaseContext;
+exports.clGetPlatformIDs = raster.getPlatformIDs;
+exports.clGetDeviceIDs = raster.getDeviceIDs;
 
-exports.getPlatformInfo = function(platform, info) {
+exports.clGetPlatformInfo = function(platform, info) {
     raster.getPlatformInfo(platform, info);
 
     const keyName = getKeyByValue(exports, info);
@@ -140,7 +140,7 @@ exports.getPlatformInfo = function(platform, info) {
     platform[keyName] = value;
 };
 
-exports.getDeviceInfo = (device, info) => {
+exports.clGetDeviceInfo = (device, info) => {
     raster.getDeviceInfo(device, info);
 
     const keyName = getKeyByValue(exports, info);

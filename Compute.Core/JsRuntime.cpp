@@ -79,7 +79,7 @@ void JsRuntime::start(std::string filename)
         auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
         auto scope = v8::Context::Scope(context);
 
-        const auto src = v8::NewString(readFile(filename.c_str()));
+        const auto src = v8::NewString(readStartupFile(filename.c_str()));
         filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
         releaseModuleCache();
     }
