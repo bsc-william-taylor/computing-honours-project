@@ -7,7 +7,7 @@ const auto TimeoutID = SDL_USEREVENT + 3;
 
 auto createTimeoutFunction()
 {
-    return [](Uint32, void *p) -> Uint32
+    return [](auto ms, auto p) -> Uint32
     {
         SDL_Event e;
         e.user.type = TimeoutID;
@@ -51,7 +51,7 @@ void timeout(v8::FunctionArgs args)
 const auto PauseConvertError = "pause: Error converting arg1 to number";
 const auto PauseNoArgError = "pause: Error expected 1 number parameter";
 
-void pause(const v8::FunctionCallbackInfo<v8::Value>& args)
+void pause(v8::FunctionArgs args)
 {
     if (args.Length() == 1)
     {

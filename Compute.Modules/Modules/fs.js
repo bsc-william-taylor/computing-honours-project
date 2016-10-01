@@ -1,4 +1,4 @@
-const { read, write } = raster;
+const { read, write } = compute;
 const defaultSpacing = 2;
 
 let jsonSpacing = defaultSpacing;

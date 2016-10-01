@@ -10,10 +10,10 @@ exports.PowerStateCharging = 'Charging';
 exports.PowerStateCharged = 'Charged';
 exports.PowerStateUnknown = 'Unknown';
 
-exports.exit = raster.exit;
+exports.exit = compute.exit;
 
 exports.battery = function () {
-    const info = raster.battery();
+    const info = compute.battery();
 
     switch (info.status) {
         case PowerStateNoBattery: info.status = 'No Battery'; break;
@@ -30,27 +30,27 @@ exports.battery = function () {
 }
 
 exports.os = {
-    'Name': raster.osName,
-    'Version': raster.osVersion,
-    'Architecture': raster.osArchitecture
+    'Name': compute.osName,
+    'Version': compute.osVersion,
+    'Architecture': compute.osArchitecture
 };
 
 exports.hardware = {
-    'CPU Cache Line Size': raster.cpuCacheLineSize,
-    'CPU count': raster.cpuCount,
-    'RAM': raster.systemRam
+    'CPU Cache Line Size': compute.cpuCacheLineSize,
+    'CPU count': compute.cpuCount,
+    'RAM': compute.systemRam
 }
 
 exports.instructions = {
-    '3DNow': raster.has3DNow,
-    'AltiVec': raster.hasAltiVec,
-    'AVX': raster.hasAVX,
-    'AVX2': raster.hasAVX2,
-    'MMX': raster.hasMMX,
-    'RDTSC': raster.hasRDTSC,
-    'SSE': raster.hasSSE,
-    'SSE2': raster.hasSSE2,
-    'SSE3': raster.hasSSE3,
-    'SSE41': raster.hasSSE41,
-    'SSE42': raster.hasSSE42
+    '3DNow': compute.has3DNow,
+    'AltiVec': compute.hasAltiVec,
+    'AVX': compute.hasAVX,
+    'AVX2': compute.hasAVX2,
+    'MMX': compute.hasMMX,
+    'RDTSC': compute.hasRDTSC,
+    'SSE': compute.hasSSE,
+    'SSE2': compute.hasSSE2,
+    'SSE3': compute.hasSSE3,
+    'SSE41': compute.hasSSE41,
+    'SSE42': compute.hasSSE42
 };

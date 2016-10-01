@@ -73,8 +73,3 @@
 
 #pragma warning(disable : 4099)
 #pragma warning(disable : 4244)
-
-#define V8_Function(func) v8::Function::New(v8::Isolate::GetCurrent(), func)
-#define V8_Integer(data) v8::Integer::New(v8::Isolate::GetCurrent(), data)
-
-extern std::string cwd;

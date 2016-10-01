@@ -2,20 +2,17 @@
 #include "Application.h"
 #include "JsRuntime.h"
 #include "glew.h"
-#include "gl/GLU.h"
 #include "gl/gl.h"
 
 using namespace Poco::Util;
 using namespace compute;
 
-const int RevisionVersion = 1;
-const int MajorVersion = 0;
-const int MinorVersion = 0;
+std::string exeDirectory = "";
 
 ComputeApp::ComputeApp() :
-    majorVersion(MajorVersion),
-    minorVersion(MinorVersion),
-    revVersion(RevisionVersion),
+    majorVersion(1),
+    minorVersion(0),
+    revVersion(0),
     skip(false)
 {
     setupExternalLirbaries();
@@ -34,7 +31,7 @@ void ComputeApp::initialize(Application& self)
     Poco::Path appPath = commandPath();
     appPath.setExtension("");
     appPath.setFileName("");
-    cwd = appPath.toString();
+    exeDirectory = appPath.toString();
 
     loadConfiguration();
 }
@@ -80,7 +77,6 @@ int ComputeApp::main(const std::vector<std::string>& args)
 
     auto mutableArgs = const_cast<std::vector<std::string>&>(args);
     mutableArgs.insert(mutableArgs.begin(), applicationFile.toString());
-
     auto runtime = JsRuntime(mutableArgs);
 
     if (args.empty())
@@ -114,25 +110,19 @@ void ComputeApp::handleHelp(const std::string& name, const std::string& v)
 
 void ComputeApp::handleVersion(const std::string& name, const std::string& v)
 {
-    // Compute Version
+    SDL_version version;
+    SDL_GetVersion(&version);
+
     std::stringstream ss;
     ss << "v";
     ss << majorVersion << ".";
     ss << minorVersion << ".";
-    ss << revVersion << std::endl << std::endl;
-
-    // V8 version
+    ss << revVersion << "\n\n";
     ss << "V8 version: " << v8::V8::GetVersion() << std::endl;
-
-    // SDL Version
-    SDL_version version;
-    SDL_GetVersion(&version);
     ss << "SDL version: ";
     ss << int(version.major) << ".";
     ss << int(version.minor) << ".";
     ss << int(version.patch) << std::endl;
-
-    // OpenGL/OpenCL Version
     ss << "OpenGL Version: " << getOpenGLVersion() << std::endl;
     ss << "OpenCL Version: " << getOpenCLVersion() << std::endl;
 
@@ -164,7 +154,7 @@ std::string ComputeApp::getOpenGLVersion()
     const auto window = SDL_CreateWindow("", 0, 0, 100, 100, flags);
     const auto context = SDL_GL_CreateContext(window);
 
-    GLint major = 0, minor = 0;
+    auto major = 0, minor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
 
@@ -180,24 +170,27 @@ std::string ComputeApp::getOpenCLVersion()
 {
     auto numericChars = [](char c) { return isalpha(c) || c == ' '; };
     auto allPlatforms = std::vector<cl::Platform>();
-    auto version{ 0.0 };
+    auto v{ 0.0 };
 
     cl::Platform::get(&allPlatforms);
     for (auto& platform : allPlatforms)
     {
-        auto versionString = platform.getInfo<CL_PLATFORM_VERSION>();
-        auto begin = versionString.begin();
-        auto end = versionString.end();
+        auto version = platform.getInfo<CL_PLATFORM_VERSION>();
+        auto begin = version.begin();
+        auto end = version.end();
 
-        versionString.erase(std::remove_if(begin, end, numericChars), end);
+        version.erase(std::remove_if(begin, end, numericChars), end);
 
-        auto pv = atoi(versionString.c_str());
-        version = pv > version ? pv : version;
+        auto pv = atoi(version.c_str());
+        v = pv > v ? pv : v;
     }
 
     std::stringstream ss;
-    ss << std::fixed;
-    ss << std::setprecision(2);
-    ss << version;
+    ss << std::fixed << std::setprecision(2) << v;
     return ss.str();
+}
+
+std::string ComputeApp::exeLocation()
+{
+    return exeDirectory;
 }

@@ -30,7 +30,6 @@
     <ClCompile Include="JsPlatform.cpp" />
     <ClCompile Include="JsRuntime.cpp" />
     <ClCompile Include="OpenCL.cpp" />
-    <ClCompile Include="ComputeCore.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Modules.cpp" />
     <ClCompile Include="OpenGL.cpp" />

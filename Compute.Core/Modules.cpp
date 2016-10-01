@@ -8,6 +8,7 @@
 #include "OpenCL.h"
 #include "Http.h"
 #include "Fs.h"
+#include "Application.h"
 
 std::map<std::string, compute::JsModule> compute::modules::moduleCache = {};
 std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::moduleBindings =
@@ -26,7 +27,8 @@ std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::modul
 
 auto parseInternalModulePath(std::string name)
 {
-    auto path = Poco::Path(cwd);
+    auto exeDir = compute::ComputeApp::exeLocation();
+    auto path = Poco::Path(exeDir);
     path.append("/modules/");
     path.append(name);
     path.setExtension("js");
@@ -80,7 +82,7 @@ auto createScript(v8::Isolate * isolate, std::string module)
     }
 
     auto script = compute::readFile(filename.c_str());
-    script.insert(0, "(function(raster, exports){");
+    script.insert(0, "(function(compute, exports){");
     script.append("})(cpp, exports);");
     return v8::NewString(script);
 }

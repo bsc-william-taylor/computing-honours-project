@@ -1,6 +1,6 @@
 
-const { openMessage, openWindow } = raster;
-const { Window, displayInfo } = raster;
+const { openMessage, openWindow } = compute;
+const { Window, displayInfo } = compute;
 
 exports.openMessage = function (title, body, callback) {
     if (title && body && callback) {

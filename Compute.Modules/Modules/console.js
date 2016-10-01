@@ -1,7 +1,7 @@
-const { printLine, print, read } = raster;
+const { printLine, print, read } = compute;
 const jsonReplacer = null;
 const jsonSpacing = 2;
-const readToken = "\n:";
+const readToken = "";
 
 const stringArguments = args => {
     let output = "";

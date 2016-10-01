@@ -17,6 +17,11 @@ namespace compute
     public:
         ComputeApp();
         virtual ~ComputeApp();
+
+        void releaseExternalLirbaries();
+        void setupExternalLirbaries();
+
+        static std::string exeLocation();
     protected:
         void defineOptions(Poco::Util::OptionSet& options) override;
         void initialize(Application& self) override;
@@ -37,8 +42,5 @@ namespace compute
 
         std::string getOpenGLVersion();
         std::string getOpenCLVersion();
-
-        void releaseExternalLirbaries();
-        void setupExternalLirbaries();
     };
 }

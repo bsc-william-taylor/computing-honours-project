@@ -1,5 +1,5 @@
 
-const { get, post } = raster;
+const { get, post } = compute;
 
 exports.post = function(domain, path, port, body, callback) {
     post(domain, path, port, callback, JSON.stringify(body));

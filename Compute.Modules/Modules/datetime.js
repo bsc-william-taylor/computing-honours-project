@@ -16,7 +16,7 @@ function beginTimer(callback, ms, repeat, identifier) {
         }
     };
 
-    raster.timeout(uniqueIdentifier, ms, invoke);
+    compute.timeout(uniqueIdentifier, ms, invoke);
     return uniqueIdentifier;
 }
 
@@ -56,7 +56,7 @@ exports.setTimeout = function (callback, ms) {
 
 exports.pause = function (ms) {
     if (ms >= 0) {
-        raster.pause(ms);
+        compute.pause(ms);
     } else {
         throw 'Error function takes 1 argument';
     }
