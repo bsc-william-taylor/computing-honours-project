@@ -3,8 +3,12 @@ const { openMessage, openWindow } = compute;
 const { Window, displayInfo } = compute;
 
 exports.openMessage = function (title, body, callback) {
-    if (title && body && callback) {
-        openMessage(title, body, callback);
+    if (title && body) {
+        openMessage(title, body, function() {
+            if (callback) {
+                callback();
+            }
+        });
     } else {
         throw 'Expected 3 args to openMessage';
     }

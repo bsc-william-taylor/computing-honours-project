@@ -2,50 +2,77 @@
 #include "Http.h"
 #include "JsExtensions.h"
 #include "JsRuntime.h"
+#include <Poco/Net/NetException.h>
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPResponse;
 using Poco::Net::HTTPRequest;
 
-const auto Callback = [](auto callback, auto response)
+const auto Callback = [](auto callback, auto response, auto error)
 {
     auto isolate = v8::Isolate::GetCurrent();
     auto function = callback.Get(isolate);
-
-    v8::Local<v8::Value> args[1];
+    
+    v8::Local<v8::Value> args[2];
     args[0] = v8::NewString(response);
-    function->Call(function, 1, args);
+
+    if(error.empty())
+    {
+        args[1] = v8::Null(isolate);
+    }
+    else
+    {
+        args[1] = v8::NewString(error);
+    }
+
+    function->Call(function, 2, args);
 };
 
 const auto SendGetRequest = [](auto callback, auto domain, auto route, auto port)
 {
-    HTTPClientSession session(domain);
-    HTTPRequest request(HTTPRequest::HTTP_GET, route);
-    HTTPResponse response;
+    try
+    {
+        HTTPClientSession session(domain);
+        HTTPRequest request(HTTPRequest::HTTP_GET, route);
+        HTTPResponse response;
 
-    session.setPort(port);
-    session.sendRequest(request);
+        session.setPort(port);
+        session.sendRequest(request);
 
-    std::stringstream ss;
-    Poco::StreamCopier::copyStream(session.receiveResponse(response), ss);
-    v8::OnForeground<JsAsyncTask>(Callback, callback, ss.str());
+        std::stringstream ss;
+        Poco::StreamCopier::copyStream(session.receiveResponse(response), ss);
+        v8::OnForeground<JsAsyncTask>(Callback, callback, ss.str(), std::string{});
+    }
+    catch(Poco::Net::NetException e)
+    {
+        std::string error = "An exception occured";
+        v8::OnForeground<JsAsyncTask>(Callback, callback, std::string{}, error);
+    }
 };
 
 const auto SendPostRequest = [](auto callback, auto domain, auto route, auto port, auto body)
 {
-    HTTPClientSession session(domain);
-    HTTPRequest request(HTTPRequest::HTTP_POST, route);
-    HTTPResponse response;
+    try {
+        HTTPClientSession session(domain);
+        HTTPRequest request(HTTPRequest::HTTP_POST, route);
+        HTTPResponse response;
 
-    request.setContentType("application/json");   
-    request.setContentLength(body.length());
+        request.setContentType("application/json");   
+        request.setContentLength(body.length());
 
-    session.setPort(port);
-    session.sendRequest(request) << body;
+        session.setPort(port);
+        session.sendRequest(request) << body;
 
-    std::stringstream ss;
-    Poco::StreamCopier::copyStream(session.receiveResponse(response), ss);
-    v8::OnForeground<JsAsyncTask>(Callback, callback, ss.str());
+        std::stringstream ss;
+        Poco::StreamCopier::copyStream(session.receiveResponse(response), ss);
+        v8::OnForeground<JsAsyncTask>(Callback, callback, ss.str(), std::string{});
+    } 
+    catch (Poco::Net::NetException e)
+    {
+        std::string error = "An exception occured";
+        std::string data = "";
+        v8::OnForeground<JsAsyncTask>(Callback, callback, data, error);
+    }
 };
 
 void httpPost(const v8::FunctionCallbackInfo<v8::Value>& args)

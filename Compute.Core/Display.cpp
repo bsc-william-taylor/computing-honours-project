@@ -203,6 +203,13 @@ const auto Show = [](auto window, auto callback)
     function->Call(function, 1, args);
 };
 
+const auto OpenMessage = [](auto title, auto body, auto callback)
+{   
+    SDL_ShowSimpleMessageBox(0, title.c_str(), body.c_str(), nullptr);
+    auto function = callback.Get(v8::Isolate::GetCurrent());
+    function->Call(function, 0, nullptr);
+};
+
 const auto OnQuit = [](auto window)
 {
     auto& events = JsRuntime::getPlatform().GetSystemEvents();
@@ -225,13 +232,11 @@ void openMessage(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
     if (args.Length() == 3)
     {
-        auto function = GetFunction(args[2]);
         auto title = GetString(args[0]);
         auto body = GetString(args[1]);
 
-        SDL_ShowSimpleMessageBox(0, title.c_str(), body.c_str(), nullptr);
-
-        function->Call(function, 0, nullptr);
+        v8::PersistentCopyable callback(args.GetIsolate(), GetFunction(args[2]));
+        v8::OnForeground<JsAsyncTask>(OpenMessage, title, body, callback);
     }
 }
 

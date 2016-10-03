@@ -1,6 +1,6 @@
 
-const { openFullscreenWindow, openMessageBox } = require('display');
-const { setTimeout, setInterval } = require('datetime');
+const { openFullscreenWindow, openMessage } = require('display');
+const { setTimeout } = require('datetime');
 const console = require('console');
 const http = require('http');
 const gl = require('opengl');
@@ -11,8 +11,12 @@ let rotation = 0.0;
 
 function bootstrap() {
     setTimeout(() => {
-        http.get('www.williamsamtaylor.co.uk', '/shapes', 3010, res => {
-            renderData = JSON.parse(res);
+        http.get('www.williamsamtaylor.co.uk', '/shapes', 3010, (res, err) => {
+            if(err) {
+                openMessage('Error', 'Could not get drawing data');
+            } else {
+                renderData = JSON.parse(res);
+            }
         });
     }, 1000);
 

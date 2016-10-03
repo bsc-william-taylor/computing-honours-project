@@ -7,10 +7,10 @@ const page = '/';
 const port = 3000;
 const body = {};
 
-http.get(address, page, port, res => {
-    console.log(res);
+http.get(address, page, port, (res, err) => {
+    console.log(res, err);
 });
 
-http.post(address, page, port, body, res => {
-    console.log(res);
+http.post(address, page, port, body, (res, err) => {
+    console.log(res, err);
 });
