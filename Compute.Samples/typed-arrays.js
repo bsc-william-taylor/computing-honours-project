@@ -12,4 +12,10 @@ for(let i = 0; i < int8Array.length; ++i) {
     int8Array[i] = Math.random() * 100;
 }
 
+async function load() {
+    
+}
+
+await load();
+
 //console.log(int8Array);
