@@ -1,21 +1,11 @@
 
+
 const console = require('console');
-console.log(this);
+//const stuff = require('./hello.js');
+const moment = require('moment');
+const glm = require('gl-matrix');
 
+const matrix = glm.mat4.create();
 
-// Int8Array, Int16Array, Int32Array
-// Uint8Array, Uint8ClampedArray Uint16Array, Uint32Array
-// Float32Array, Float62Array
-const int8Array = new Int8Array(10);
-
-for(let i = 0; i < int8Array.length; ++i) {
-    int8Array[i] = Math.random() * 100;
-}
-
-async function load() {
-    
-}
-
-await load();
-
-//console.log(int8Array);
+console.log(matrix);
+//console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));

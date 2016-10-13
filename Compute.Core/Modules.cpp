@@ -10,6 +10,9 @@
 #include "Fs.h"
 #include "Application.h"
 
+#include <Poco/JSON/JSON.h>
+#include <Poco/JSON/Parser.h>
+
 std::map<std::string, compute::JsModule> compute::modules::moduleCache = {};
 std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::moduleBindings =
 {
@@ -25,20 +28,55 @@ std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::modul
     }
 };
 
+std::string moduleDirectory = "";
+std::string moduleBegin = "(function(compute){ const module = { exports: {} }, exports = module.exports; ";
+std::string moduleEnd = " return module.exports;})(cpp);";
+
 auto parseInternalModulePath(std::string name)
 {
     auto exeDir = compute::ComputeApp::exeLocation();
     auto path = Poco::Path(exeDir);
     path.append("/modules/");
-    path.append(name);
+    path.setFileName(name);
     path.setExtension("js");
+
+    if(!Poco::File(path).exists())
+    {
+        auto packagePath = Poco::Path(Poco::Path::current());
+        packagePath.append("/node_modules/" + name + "/");
+        packagePath.setFileName("package");
+        packagePath.setExtension("json");
+
+        if(!Poco::File(packagePath).exists())
+        {
+            return std::string("");
+        }
+
+        Poco::JSON::Parser parser;
+        Poco::Path npmDirectory;
+
+        auto jsonData = compute::readFile(packagePath.toString());
+        auto json = parser.parse(jsonData);
+        auto object = json.extract<Poco::JSON::Object::Ptr>();
+       
+        npmDirectory.append("/node_modules/" + name + "/");
+        npmDirectory.append(object->get("main").toString());
+        npmDirectory.setFileName("");
+        npmDirectory.setBaseName("");
+        moduleDirectory = npmDirectory.toString();
+
+        packagePath.setFileName(object->get("main"));
+        return packagePath.toString();
+    }
+    
     return path.toString();
 }
 
 auto parseExternalModulePath(std::string name)
 {
     auto path = Poco::Path(Poco::Path::current());
-    path.append(name);
+    path.append(moduleDirectory.c_str());
+    path.setFileName(name);
     path.setExtension("js");
     return path.toString();
 }
@@ -81,15 +119,34 @@ auto createScript(v8::Isolate * isolate, std::string module)
         filename = parseExternalModulePath(module);
     }
 
+    if(filename.empty())
+    {
+        v8::Throw("Error couldnt load module " + module);
+    }
+
     auto script = compute::readFile(filename.c_str());
-    script.insert(0, "(function(compute, exports){");
-    script.append("})(cpp, exports);");
+
+    if (script.empty())
+    {
+        v8::Throw("Error couldnt load module " + filename);
+    }
+
+    script.insert(0, moduleBegin);
+    script.append(moduleEnd);
     return v8::NewString(script);
 }
 
 auto compute::releaseModuleCache() -> void
 {
     modules::moduleCache.clear();
+}
+
+auto getDirectory(std::string module)
+{
+    Poco::Path path(module);
+    path.setFileName("");
+    path.setBaseName("");
+    return path.toString();
 }
 
 auto compute::require(v8::FunctionArgs args) -> void
@@ -99,47 +156,39 @@ auto compute::require(v8::FunctionArgs args) -> void
         args.GetReturnValue().SetUndefined();
         return;
     } 
+
+    auto moduleName = GetString(args[0]);
     auto isolate = args.GetIsolate();
     auto context = isolate->GetCurrentContext();
     auto global = context->Global();
-    auto moduleName = GetString(args[0]);
+    
+    auto prevDirectory = moduleDirectory;
+    auto subDirectory = getDirectory(moduleName);
 
     if (modules::moduleCache.find(moduleName) != modules::moduleCache.end())
     {
-        const auto module = modules::moduleCache[moduleName].Get(isolate);
-        args.GetReturnValue().Set(module);
+        args.GetReturnValue().Set(modules::moduleCache[moduleName].Get(isolate));
     }
     else
     {
-        auto currentExports = global->Get(v8::NewString("exports"));
-        auto currentModule = global->Get(v8::NewString("module"));
-        auto currentCpp = global->Get(v8::NewString("cpp"));
-
-        auto exports = v8::Object::New(isolate);
-        auto module = v8::Object::New(isolate);
-        auto raster = v8::Object::New(isolate);
+        auto compute = v8::Object::New(isolate);
         auto script = createScript(isolate, moduleName);
+
+        moduleDirectory += subDirectory;
 
         if (modules::moduleBindings.find(moduleName) != modules::moduleBindings.end())
         {
-            modules::moduleBindings[moduleName](raster);
+            modules::moduleBindings[moduleName](compute);
         }
 
-        module->Set(v8::NewString("name"), v8::NewString(moduleName));
-        module->Set(v8::NewString("exports"), exports);
+        global->Set(v8::NewString("cpp"), compute);
 
-        global->Set(v8::NewString("exports"), exports);
-        global->Set(v8::NewString("module"), module);
-        global->Set(v8::NewString("cpp"), raster);
-
-        v8::Script::Compile(context, script).ToLocalChecked()->Run(context);
-
-        global->Set(v8::NewString("exports"), currentExports);
-        global->Set(v8::NewString("module"), currentModule);
-        global->Set(v8::NewString("cpp"), currentCpp);
+        auto runnable = v8::Script::Compile(context, script).ToLocalChecked();
+        auto exports = runnable->Run(context).ToLocalChecked();
 
         modules::moduleCache[moduleName].Reset(isolate, exports);
-
         args.GetReturnValue().Set(exports);
     }
+
+    moduleDirectory = prevDirectory;
 }
