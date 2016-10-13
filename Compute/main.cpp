@@ -16,5 +16,5 @@ int main(int argc, char* argv[])
         std::cerr << "Unknown argument -" << exception.message();
     }
 
-    return 1;
+    return 0;
 }
