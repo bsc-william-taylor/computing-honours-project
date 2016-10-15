@@ -8,7 +8,15 @@ const stringArguments = args => {
 
     for (let i = 0; i < args.length; ++i) {
         if (typeof (args[i]) === "object") {
-            output += JSON.stringify(args[i], jsonReplacer, jsonSpacing);
+            if (Array.isArray(args[i])) {
+                if (args[i].length <= 15) {
+                    output += JSON.stringify(args[i]);
+                } else {
+                    output += JSON.stringify(args[i], jsonReplacer, jsonSpacing);
+                }
+            } else {
+                output += JSON.stringify(args[i], jsonReplacer, jsonSpacing);    
+            }
         } else {
             output += args[i];
         }
@@ -30,6 +38,11 @@ exports.warn = function() {
 }
 
 exports.log = function() {
+    const output = stringArguments(arguments);
+    printLine(output);
+}
+
+exports.dir = function() {
     const output = stringArguments(arguments);
     printLine(output);
 }

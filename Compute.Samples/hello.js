@@ -1,2 +1,0 @@
-
-require('./dir/hi.js');

@@ -65,8 +65,11 @@ auto parseInternalModulePath(std::string name)
         npmDirectory.setBaseName("");
         moduleDirectory = npmDirectory.toString();
 
-        packagePath.setFileName(object->get("main"));
-        return packagePath.toString();
+        Poco::Path entryPath(Poco::Path::current());
+        entryPath.append("/node_modules/" + name + "/");
+        entryPath.setFileName(object->get("main"));
+        entryPath.setExtension("js");
+        return entryPath.toString();
     }
     
     return path.toString();
@@ -98,7 +101,7 @@ auto compute::registerCommonJsModules() -> v8::Local<v8::ObjectTemplate>
 
 auto moduleType(const std::string& path)
 {
-    if (path.find(".") != std::string::npos || path.find("/") != std::string::npos)
+    if (path.find(".") != std::string::npos)
     {
         return compute::ModuleType::External;
     }
