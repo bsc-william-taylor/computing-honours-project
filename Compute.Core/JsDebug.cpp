@@ -6,12 +6,14 @@
 
 const int debugging_port = 5858;
 
+//std::ofstream originalOutput("./compute-output.txt");
+//std::ofstream originalInput("./compute-input.txt");
+
 void SendBuffer(int socket, const std::string& message)
 {
     int n = send(socket, message.c_str(), message.size(), 0);
     SDL_assert(n >= 0);//, "ERROR writing to socket (%d)", WSAGetLastError());
 }
-
 
 void SendMessage(int socket, const std::string& message)
 {
@@ -22,12 +24,20 @@ void SendMessage(int socket, const std::string& message)
     ss << message.size();
     ss << "\r\n";
 
-    SendBuffer(socket, ss.str());//StringUtils::SPrintf("%s: %d\r\n", kContentLength, message.size()));
-                              
-    SendBuffer(socket, "\r\n");  // Terminate header with empty line.
+    SendBuffer(socket, ss.str()); //StringUtils::SPrintf("%s: %d\r\n", kContentLength, message.size()));                        
+    SendBuffer(socket, "\r\n");   // Terminate header with empty line.
+    SendBuffer(socket, message);  // Send message body as UTF-8.
 
-    // Send message body as UTF-8.
-    SendBuffer(socket, message);
+    /*
+    if (originalOutput.is_open())
+    {
+        originalOutput.close();
+    }
+
+    if(originalOutput.is_open())
+    {
+        originalOutput.close();
+    }*/
 }
 
 void DebuggerAgentMessageHandler(const v8::Debug::Message& message)
@@ -106,7 +116,7 @@ std::string GetRequest(int socket)
         }
 
         // Check that key is Content-Length.
-        if (strcmp(key, "Content-Length") == 0)
+        if (stricmp(key, "Content-Length") == 0)
         {
             // Get the content length value if present and within a sensible range.
             if (value == nullptr || strlen(value) > 7)
@@ -145,12 +155,13 @@ std::string GetRequest(int socket)
         TRACE("Error request data size\n");
         return std::string();
     }
-    buffer[content_length] = '\0';
 
+    buffer[content_length] = '\0';
     return buffer;
 }
 
-void DebuggerThread(v8::Isolate * isolate)
+
+void DebuggerThread(v8::Isolate * isolate, DebugMessage incoming)
 {
     WSADATA wsa_data = { 0 };
 
@@ -180,8 +191,6 @@ void DebuggerThread(v8::Isolate * isolate)
         client_socket = accept(sockfd, reinterpret_cast<sockaddr *>(&cli_addr), &clilen);
         SDL_assert(client_socket >= 0);
 
-        //_main_debug_client_socket = client_socket;
-
         TRACE("Client connected to debugger.\n");
 
         std::stringstream ss1, ss2;
@@ -190,7 +199,7 @@ void DebuggerThread(v8::Isolate * isolate)
         ss1 << "\r\n";
 
         ss2 << "Embedding-Host: ";
-        ss2 << "ComputeJs";
+        ss2 << "Compute";
         ss2 << "\r\n";
 
         // Say hello
@@ -227,12 +236,22 @@ void DebuggerThread(v8::Isolate * isolate)
                 }
             }
 
-            // Send the request received to the debugger.
-            auto data = ToUInt16Vector(request);
+
+            auto buffer = ToUInt16Vector(request);
             auto debug = new DebugData;
             debug->socket = client_socket;
 
-            v8::Debug::SendCommand(isolate, &data[0], data.size(), debug);
+/*
+
+            std::ofstream file("./compute-input.txt", std::ios::out | std::ios::app);
+            file << request;
+            file << "\r\n";
+            file << std::endl;
+            file.close();
+*/
+
+            incoming(buffer, debug);
+            //v8::Debug::SendCommand(isolate, &data[0], data.size(), debug);
 
 
             if (is_closing_session)
@@ -243,7 +262,6 @@ void DebuggerThread(v8::Isolate * isolate)
         }
 
         TRACE("Client disconnected from debugger.\n");
-        break;
     }
 
     WSACleanup();

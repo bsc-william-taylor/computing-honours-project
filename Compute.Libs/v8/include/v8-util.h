@@ -95,12 +95,12 @@ class DefaultPersistentValueMapTraits : public StdMapTraits<K, V> {
       MapType* map, const K& key, Local<V> value) {
     return NULL;
   }
-  static MapType* MapFromWeakCallbackInfo(
-      const WeakCallbackInfo<WeakCallbackDataType>& data) {
+  static MapType* MapFromWeakCallbackData(
+          const WeakCallbackData<V, WeakCallbackDataType>& data) {
     return NULL;
   }
-  static K KeyFromWeakCallbackInfo(
-      const WeakCallbackInfo<WeakCallbackDataType>& data) {
+  static K KeyFromWeakCallbackData(
+      const WeakCallbackData<V, WeakCallbackDataType>& data) {
     return K();
   }
   static void DisposeCallbackData(WeakCallbackDataType* data) { }
@@ -203,17 +203,6 @@ class PersistentValueMapBase {
     GetIsolate()->SetReference(
       reinterpret_cast<internal::Object**>(parent.val_),
       reinterpret_cast<internal::Object**>(FromVal(Traits::Get(&impl_, key))));
-  }
-
-  /**
-   * Call V8::RegisterExternallyReferencedObject with the map value for given
-   * key.
-   */
-  void RegisterExternallyReferencedObject(K& key) {
-    DCHECK(Contains(key));
-    V8::RegisterExternallyReferencedObject(
-        reinterpret_cast<internal::Object**>(FromVal(Traits::Get(&impl_, key))),
-        reinterpret_cast<internal::Isolate*>(GetIsolate()));
   }
 
   /**
@@ -413,11 +402,11 @@ class PersistentValueMap : public PersistentValueMapBase<K, V, Traits> {
 
  private:
   static void WeakCallback(
-      const WeakCallbackInfo<typename Traits::WeakCallbackDataType>& data) {
+      const WeakCallbackData<V, typename Traits::WeakCallbackDataType>& data) {
     if (Traits::kCallbackType != kNotWeak) {
       PersistentValueMap<K, V, Traits>* persistentValueMap =
-          Traits::MapFromWeakCallbackInfo(data);
-      K key = Traits::KeyFromWeakCallbackInfo(data);
+          Traits::MapFromWeakCallbackData(data);
+      K key = Traits::KeyFromWeakCallbackData(data);
       Traits::Dispose(data.GetIsolate(),
                       persistentValueMap->Remove(key).Pass(), key);
       Traits::DisposeCallbackData(data.GetParameter());

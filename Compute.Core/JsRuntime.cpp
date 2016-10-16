@@ -21,9 +21,11 @@ JsRuntime::~JsRuntime()
 
 void LogCallback(const char* name, int event)
 {
+/*
     std::ofstream fileLog("./log.txt", std::ios::out | std::ios::app);
     fileLog << name << event << std::endl;
     fileLog.close();
+*/
 }
 
 void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> context, v8::Local<v8::String> source)
@@ -88,15 +90,7 @@ void JsRuntime::start(std::string filename)
         auto moduleTemplate = registerCommonJsModules();
         auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
         auto scope = v8::Context::Scope(context);
-
-        platform.SetContext(context);
-       
-        debugThread = std::thread([=]() { DebuggerThread(isolate); });
-        debugThread.detach();
-
-        v8::Debug::SetDebugEventListener(isolate, DebugEventHandler);
-        v8::Debug::SetMessageHandler(isolate, DebuggerAgentMessageHandler);
-       
+    
         const auto src = v8::NewString(readStartupFile(filename.c_str()));
         filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
         releaseModuleCache();
@@ -119,9 +113,8 @@ void JsRuntime::initialise(std::vector<std::string>& args)
         argv[i] = const_cast<char *>(args[i].c_str());
     }
 
-    const auto v8Flags = "--expose_gc --nolazy";
+    const auto v8Flags = "--expose_gc --expose-debug-as=v8debug";
 
-    v8::V8::InitializeICUDefaultLocation(argv[0]);
     v8::V8::InitializeExternalStartupData(argv[0]);
     v8::V8::SetFlagsFromString(v8Flags, strlen(v8Flags));
     v8::V8::InitializePlatform(&platform);

@@ -1,15 +1,29 @@
 
-const { setInterval, pause } = require('datetime');
-const moment = require('moment');
+const process = this;
+
+const { setInterval, setTimeout } = require('datetime');
 const console = require('console');
+const debug = require('debug');
+process.pid = debug.get();
+debug.init();
 
-function example() {
-    console.log(moment().format())
+
+setInterval(function() {
+    console.log('HelloWorld');
+}, 2000);
+
+
+
+
+
+
+function incoming(msg, port) {
+    //console.log(Object.keys(v8debug.Debug));
+    //console.log(v8debug.Debug.debuggerFlags())
 }
 
-for(var i = 0; i < 1000; i++)
-{
-    console.log(moment().format());
-    pause(100);
+function outgoing(msg) {
+    //console.log(`outgoing: ${msg}`);
 }
-//setInterval(example, 2500);
+
+debug.onmessage(incoming, outgoing);

@@ -6,12 +6,6 @@
 
 namespace compute
 {
-    enum class ModuleType
-    {
-        Internal,
-        External
-    };
-
     using JsModuleRegisterCallback = std::function<void(v8::Local<v8::Object>&)>;
     using JsModule = v8::Persistent<v8::Value, v8::CopyablePersistentTraits<v8::Value>>;
 

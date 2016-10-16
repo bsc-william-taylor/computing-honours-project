@@ -25,11 +25,14 @@ std::vector<uint16_t> ToUInt16Vector(const S& str)
     return data;
 }
 
+
+using DebugMessage = std::function<void(std::vector<uint16_t>, DebugData*)>;
+
 std::string GetRequest(int socket);
 
 void SendMessage(int socket, const std::string& message);
 void SendBuffer(int socket, const std::string& message);
 
 void DebuggerAgentMessageHandler(const v8::Debug::Message& message);
-void DebuggerThread(v8::Isolate * isolate);
+void DebuggerThread(v8::Isolate * isolate, DebugMessage incoming);
 void DebugEventHandler(const v8::Debug::EventDetails& details);

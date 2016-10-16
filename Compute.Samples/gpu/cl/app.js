@@ -1,10 +1,11 @@
 
+const randomArray = require('random-array');
 const console = require('console');
 const http = require('http');
-const cl = require('opencl');
+const cl = require('cl');
 const fs = require('fs');
 
-const randomArray = len => [...new Array(len)].map(x => Math.floor(Math.random() * 100));
+const data = randomArray(1, 1000).oned(10000);
 
 function acquirePlatform(){ 
     const platforms = [];

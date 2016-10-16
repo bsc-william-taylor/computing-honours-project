@@ -9,6 +9,7 @@
 #include "Http.h"
 #include "Fs.h"
 #include "Application.h"
+#include "Debug.h"
 
 #include <Poco/JSON/JSON.h>
 #include <Poco/JSON/Parser.h>
@@ -21,9 +22,10 @@ std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::modul
         { "display", [](auto& object) { compute::registerDisplay(object); } },
         { "console", [](auto& object) { compute::registerConsole(object); } },
         { "system", [](auto& object) { compute::registerSystem(object); } },
-        { "opencl", [](auto& object) { compute::registerOpenCL(object); } },
-        { "opengl", [](auto& object) { compute::registerOpenGL(object); } },
+        { "debug", [](auto& object) { compute::registerDebug(object); } },
         { "http", [](auto& object) { compute::registerHttp(object); } },
+        { "cl", [](auto& object) { compute::registerOpenCL(object); } },
+        { "gl", [](auto& object) { compute::registerOpenGL(object); } },
         { "fs", [](auto& object) { compute::registerFs(object); } }
     }
 };
@@ -100,16 +102,6 @@ auto compute::registerCommonJsModules() -> v8::Local<v8::ObjectTemplate>
     return moduleTemplate;
 }
 
-auto moduleType(const std::string& path)
-{
-    if (path.find(".") != std::string::npos)
-    {
-        return compute::ModuleType::External;
-    }
-
-    return compute::ModuleType::Internal;
-}
-
 auto findModule(const std::string& path)
 {
     auto directory = tryNpmDirectory(path);
@@ -119,23 +111,13 @@ auto findModule(const std::string& path)
         return tryLocalFile(path);
     }
      
-    return directory;//path.find(".") != std::string::npos;
+    return directory;
 }
 
 auto createScript(v8::Isolate * isolate, std::string module)
 {
     std::string filename = findModule(module);
 
-    /*
-    if (findModule(module))
-    {
-        filename = parseInternalModulePath(module);
-    }
-    else
-    {
-        filename = parseExternalModulePath(module);
-    }
-    */
 
     if(filename.empty())
     {

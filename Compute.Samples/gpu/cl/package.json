@@ -1,0 +1,15 @@
+{
+  "name": "cl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "compute app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "random-array": "0.0.2"
+  }
+}

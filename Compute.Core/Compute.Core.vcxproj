@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Http.cpp" />
     <ClCompile Include="JsArrayAllocater.cpp" />
     <ClCompile Include="Fs.cpp" />
@@ -39,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="Http.h" />
     <ClInclude Include="JsDebug.h" />
     <ClInclude Include="JsExtensions.h" />
@@ -110,8 +112,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)Compute.Libs\v8;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\sdl\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\v8\v8\;$(SolutionDir)Compute.Libs\v8\v8\include\libplatform;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(SolutionDir)Compute.Libs\glew\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Compute.Libs\v8\lib\;$(SolutionDir)Debug;$(SolutionDir)Compute.Libs\sdl\lib\x86\;$(SolutionDir)Compute.Libs\poco\lib\;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(SolutionDir)Compute.Libs\glew\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\sdl\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Debug;$(SolutionDir)Compute.Libs\v8\lib\Debug;$(SolutionDir)Compute.Libs\sdl\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)Raster.Libs\v8\include;$(SolutionDir)Raster.Libs\sdl\include;$(SolutionDir)Raster.Core;$(SolutionDir)Raster.Libs\poco\Foundation\include;$(SolutionDir)Raster.Libs\poco\JSON\include;$(SolutionDir)Raster.Libs\v8\v8\;$(SolutionDir)Raster.Libs\v8\v8\include\libplatform;$(SolutionDir)Raster.Libs\poco\Net\include;$(SolutionDir)Raster.Libs\poco\Util\include;$(SolutionDir)Raster.Libs\poco\XML\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(SolutionDir)Raster.Libs\glew\include;$(IncludePath)</IncludePath>

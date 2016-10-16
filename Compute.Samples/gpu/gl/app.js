@@ -1,15 +1,16 @@
 
-const { openFullscreenWindow, openMessage } = require('display');
+const { openWindow } = require('display');
 const { setTimeout } = require('datetime');
 const console = require('console');
+const async = require('async');
 const http = require('http');
-const gl = require('opengl');
+const gl = require('gl');
 const fs = require('fs');
 
 function renderObject(object, type, rotation) {
-    const { x, y, z } = object.translate;
-
     with(gl) {
+        const { x, y, z } = object.translate;
+
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glTranslatef(x, y, z);
@@ -19,29 +20,19 @@ function renderObject(object, type, rotation) {
         object.faces.forEach((face, index) => {
             const { r, g, b } = object.colours[index]; 
             glColor3f(r, g, b);
-            face.vertices.forEach(({ x, y, z }) => { 
-                glVertex3f(x, y, z);
-            });
+            face.vertices.forEach(({ x, y, z }) => glVertex3f(x, y, z));
         });
 
         glEnd();
     }
 }
 
-const promise = new Promise((resolve, reject) => {
-    http.get('www.williamsamtaylor.co.uk', '/shapes', 3010, (res, err) => {
-        if(err) {
-            reject('Could not get drawing data');
-        } else {
-            resolve(JSON.parse(res));
-        }
-    });
-}).then(renderData => {
-    openFullscreenWindow(window => {
+function bootstrap(renderData) {
+    openWindow({ w: 800, h: 500 }, window => {
         window.setTitle('OpenGL Example');
         window.show();
         window.enableOpenGL();
-  
+
         let rotation = 0.0;
 
         with(gl) {
@@ -64,4 +55,22 @@ const promise = new Promise((resolve, reject) => {
             });
         }
     });
-}, error => openMessage('Error', error));
+}
+
+async.series([
+    function(next) {
+        http.get('www.williamsamtaylor.co.uk', '/shapes', 3010, (res, err) => {
+            if(err) {
+                next('Could not get drawing data', null);
+            } else {
+                next(null, JSON.parse(res));
+            }
+        });
+    }
+], function(err, json) {
+    if(err) {
+        console.log(err)
+    } else {
+        bootstrap(json[0]);
+    }
+});

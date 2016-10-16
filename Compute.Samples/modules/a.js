@@ -1,1 +1,0 @@
-(function(compute){ const module = { exports: {} }, exports = module.exports;  return module.exports;})(cpp);

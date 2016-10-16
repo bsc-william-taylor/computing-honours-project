@@ -8,7 +8,6 @@ namespace compute
     class JsRuntime
     {
         static JsPlatform platform;
-        std::thread debugThread;
     public:
         explicit JsRuntime(std::vector<std::string>& args);
         virtual ~JsRuntime();
