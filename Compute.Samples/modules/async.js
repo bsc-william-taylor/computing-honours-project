@@ -1,7 +1,15 @@
 
-const console = require('console');
-const async = require('async');
+//const console = require('console');
+//const async = require('async');
 
+const { setTimeout, pause } = require('datetime');
+const console = require('console');
+
+setTimeout(() => {
+  let i = 0;
+  console.log('helloworld');
+}, 2000);
+/*
 async.series([
   function(callback) {
     console.log("one")
@@ -15,4 +23,4 @@ async.series([
     console.log("three")
     callback();
   }
-]);
+]);*/

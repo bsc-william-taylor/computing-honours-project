@@ -52,6 +52,7 @@
 #include <Poco/Net/HttpResponse.h>
 
 #include "include/libplatform/libplatform.h"
+#include "include/v8-debug.h"
 #include "include/v8.h"
 
 #include <SDL.h>

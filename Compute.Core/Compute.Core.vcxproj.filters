@@ -70,6 +70,9 @@
     <ClCompile Include="JsPlatformStructures.cpp">
       <Filter>Source Code\JavaScript</Filter>
     </ClCompile>
+    <ClCompile Include="JsDebug.cpp">
+      <Filter>Source Code\JavaScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Modules.h">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="ComputeCore.h">
       <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="JsDebug.h">
+      <Filter>Source Code\JavaScript</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

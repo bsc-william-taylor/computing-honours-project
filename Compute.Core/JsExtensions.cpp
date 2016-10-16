@@ -95,7 +95,6 @@ v8::Local<v8::Number> v8::NewNumber(int number)
 std::string v8::GetString(Local<Value> value, std::string err)
 {
     String::Utf8Value stringValue(value->ToString());
-    
     return std::string(*stringValue);
 }
 

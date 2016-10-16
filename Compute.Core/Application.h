@@ -13,6 +13,7 @@ namespace compute
 
         int majorVersion, minorVersion, revVersion;
 
+
         bool skip;
     public:
         ComputeApp();
@@ -39,6 +40,7 @@ namespace compute
         void handleVersion(const std::string& name, const std::string& v);
         void handleInfo(const std::string& name, const std::string& v);
         void handleHelp(const std::string& name, const std::string& v);
+        void nothing(const std::string& name, const std::string& v);
 
         std::string getOpenGLVersion();
         std::string getOpenCLVersion();

@@ -23,6 +23,7 @@
     <ClCompile Include="Http.cpp" />
     <ClCompile Include="JsArrayAllocater.cpp" />
     <ClCompile Include="Fs.cpp" />
+    <ClCompile Include="JsDebug.cpp" />
     <ClCompile Include="JsExtensions.cpp" />
     <ClCompile Include="JsPlatformStructures.cpp" />
     <ClCompile Include="JsPlatformTasks.cpp" />
@@ -39,6 +40,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Http.h" />
+    <ClInclude Include="JsDebug.h" />
     <ClInclude Include="JsExtensions.h" />
     <ClInclude Include="JsPlatformStructures.h" />
     <ClInclude Include="JsPlatformTasks.h" />
@@ -67,7 +69,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>

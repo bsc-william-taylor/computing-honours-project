@@ -29,10 +29,10 @@ std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::modul
 };
 
 std::string moduleDirectory = "";
-std::string moduleBegin = "(function(compute){ const module = { exports: {} }, exports = module.exports; ";
+std::string moduleBegin = "(function(compute){ const module = { exports: {} }; let exports = module.exports; ";
 std::string moduleEnd = " return module.exports;})(cpp);";
 
-auto parseInternalModulePath(std::string name)
+auto tryNpmDirectory(std::string name)
 {
     auto exeDir = compute::ComputeApp::exeLocation();
     auto path = Poco::Path(exeDir);
@@ -53,21 +53,22 @@ auto parseInternalModulePath(std::string name)
         }
 
         Poco::JSON::Parser parser;
-        Poco::Path npmDirectory;
-
         auto jsonData = compute::readFile(packagePath.toString());
         auto json = parser.parse(jsonData);
         auto object = json.extract<Poco::JSON::Object::Ptr>();
-       
+        auto entry = object->get("main").toString();
+
+        Poco::Path npmDirectory;
         npmDirectory.append("/node_modules/" + name + "/");
-        npmDirectory.append(object->get("main").toString());
+        npmDirectory.append(entry);
         npmDirectory.setFileName("");
-        npmDirectory.setBaseName("");
+        npmDirectory.setExtension("");
+
         moduleDirectory = npmDirectory.toString();
 
         Poco::Path entryPath(Poco::Path::current());
         entryPath.append("/node_modules/" + name + "/");
-        entryPath.setFileName(object->get("main"));
+        entryPath.append(entry);
         entryPath.setExtension("js");
         return entryPath.toString();
     }
@@ -75,11 +76,11 @@ auto parseInternalModulePath(std::string name)
     return path.toString();
 }
 
-auto parseExternalModulePath(std::string name)
+auto tryLocalFile(std::string name)
 {
     auto path = Poco::Path(Poco::Path::current());
     path.append(moduleDirectory.c_str());
-    path.setFileName(name);
+    path.append(name);
     path.setExtension("js");
     return path.toString();
 }
@@ -109,11 +110,24 @@ auto moduleType(const std::string& path)
     return compute::ModuleType::Internal;
 }
 
+auto findModule(const std::string& path)
+{
+    auto directory = tryNpmDirectory(path);
+
+    if(directory.empty())
+    {
+        return tryLocalFile(path);
+    }
+     
+    return directory;//path.find(".") != std::string::npos;
+}
+
 auto createScript(v8::Isolate * isolate, std::string module)
 {
-    std::string filename;
+    std::string filename = findModule(module);
 
-    if (moduleType(module) == compute::ModuleType::Internal)
+    /*
+    if (findModule(module))
     {
         filename = parseInternalModulePath(module);
     }
@@ -121,6 +135,7 @@ auto createScript(v8::Isolate * isolate, std::string module)
     {
         filename = parseExternalModulePath(module);
     }
+    */
 
     if(filename.empty())
     {
@@ -175,7 +190,7 @@ auto compute::require(v8::FunctionArgs args) -> void
     else
     {
         auto compute = v8::Object::New(isolate);
-        auto script = createScript(isolate, moduleName);
+        auto source = createScript(isolate, moduleName);
 
         moduleDirectory += subDirectory;
 
@@ -186,11 +201,24 @@ auto compute::require(v8::FunctionArgs args) -> void
 
         global->Set(v8::NewString("cpp"), compute);
 
-        auto runnable = v8::Script::Compile(context, script).ToLocalChecked();
-        auto exports = runnable->Run(context).ToLocalChecked();
+        //std::ofstream ostream("./" + moduleName + ".js");
+        //ostream << v8::GetString(script);
+        //ostream.close();
+        
+        v8::Local<v8::Script> script;
+        v8::Local<v8::Value> output;
+        v8::TryCatch trycatch;
 
-        modules::moduleCache[moduleName].Reset(isolate, exports);
-        args.GetReturnValue().Set(exports);
+        if (!v8::Script::Compile(context, source).ToLocal(&script)) {
+            CatchExceptions(trycatch);
+        }
+
+        if (!script->Run(context).ToLocal(&output)) {
+            CatchExceptions(trycatch);
+        }
+
+        modules::moduleCache[moduleName].Reset(isolate, output);
+        args.GetReturnValue().Set(output);
     }
 
     moduleDirectory = prevDirectory;

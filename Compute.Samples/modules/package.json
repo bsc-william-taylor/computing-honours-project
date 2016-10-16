@@ -12,9 +12,11 @@
     "async": "^2.1.1",
     "benchmark": "^2.1.1",
     "gl-matrix": "^2.3.2",
+    "joi": "^9.1.1",
     "lodash": "^4.16.4",
     "minimist": "^1.2.0",
     "moment": "^2.15.1",
+    "topo": "^2.0.2",
     "validator": "^6.0.0",
     "xml2js": "^0.4.17"
   }

@@ -1,10 +1,10 @@
 ﻿
 #include "JsRuntime.h"
 #include "Modules.h"
-#include "gl/GL.h"
 #include "JsArrayAllocater.h"
 #include "Fs.h"
 #include "JsExtensions.h"
+#include "JsDebug.h"
 
 using namespace compute;
 
@@ -19,17 +19,27 @@ JsRuntime::~JsRuntime()
 {
 }
 
+void LogCallback(const char* name, int event)
+{
+    std::ofstream fileLog("./log.txt", std::ios::out | std::ios::app);
+    fileLog << name << event << std::endl;
+    fileLog.close();
+}
+
 void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> context, v8::Local<v8::String> source)
 {
     v8::TryCatch trycatch(isolate);
     v8::Local<v8::Script> script;
     v8::Local<v8::Value> output;
 
+    isolate->SetEventLogger(LogCallback);
+
     if (!v8::Script::Compile(context, source).ToLocal(&script))
     {
         CatchExceptions(trycatch);
     }
-    else if (!script->Run(context).ToLocal(&output))
+
+    if (!script->Run(context).ToLocal(&output))
     {
         CatchExceptions(trycatch);
     }
@@ -79,6 +89,14 @@ void JsRuntime::start(std::string filename)
         auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
         auto scope = v8::Context::Scope(context);
 
+        platform.SetContext(context);
+       
+        debugThread = std::thread([=]() { DebuggerThread(isolate); });
+        debugThread.detach();
+
+        v8::Debug::SetDebugEventListener(isolate, DebugEventHandler);
+        v8::Debug::SetMessageHandler(isolate, DebuggerAgentMessageHandler);
+       
         const auto src = v8::NewString(readStartupFile(filename.c_str()));
         filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
         releaseModuleCache();
@@ -101,12 +119,11 @@ void JsRuntime::initialise(std::vector<std::string>& args)
         argv[i] = const_cast<char *>(args[i].c_str());
     }
 
-    const auto v8Flags = "--expose_gc --expose_debug_as=v8debug";
+    const auto v8Flags = "--expose_gc --nolazy";
 
     v8::V8::InitializeICUDefaultLocation(argv[0]);
     v8::V8::InitializeExternalStartupData(argv[0]);
     v8::V8::SetFlagsFromString(v8Flags, strlen(v8Flags));
-    v8::V8::SetFlagsFromCommandLine(&argc, argv, false);
     v8::V8::InitializePlatform(&platform);
     v8::V8::Initialize();
 

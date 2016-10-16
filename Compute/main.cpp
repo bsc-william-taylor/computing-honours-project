@@ -5,6 +5,8 @@ using namespace compute;
 
 int main(int argc, char* argv[])
 {
+    SetConsoleOutputCP(CP_UTF8);
+
     try
     {
         ComputeApp compute;

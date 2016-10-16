@@ -36,6 +36,11 @@ void ComputeApp::initialize(Application& self)
     loadConfiguration();
 }
 
+void ComputeApp::nothing(const std::string& name, const std::string& v)
+{
+    
+}
+
 void ComputeApp::defineOptions(OptionSet& options)
 {
     Application::defineOptions(options);
@@ -77,7 +82,7 @@ int ComputeApp::main(const std::vector<std::string>& args)
 
     auto mutableArgs = const_cast<std::vector<std::string>&>(args);
     mutableArgs.insert(mutableArgs.begin(), applicationFile.toString());
-    auto runtime = JsRuntime(mutableArgs);
+    JsRuntime runtime(mutableArgs);
 
     if (args.empty())
     {

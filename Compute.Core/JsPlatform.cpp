@@ -50,6 +50,9 @@ void JsPlatform::CallOnForegroundThread(v8::Task* task)
 
 bool JsPlatform::PumpMessageLoop(v8::Isolate* isolate)
 {
+    v8::Local<v8::Context> debugContext(v8::Local<v8::Context>::New(isolate, context));
+    v8::Debug::ProcessDebugMessages(isolate);
+
     SDL_Event e;
     while (SDL_PollEvent(&e))
     {

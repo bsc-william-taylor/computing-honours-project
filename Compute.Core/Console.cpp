@@ -10,7 +10,7 @@ void printLine(v8::FunctionArgs args)
     {
         if (args[i]->IsString())
         {
-            std::cout << GetString(args[i]) << std::endl;
+            printf((GetString(args[i]) + "\n").c_str());
         }
     }
 }
@@ -23,7 +23,7 @@ void print(v8::FunctionArgs args)
     {
         if (args[i]->IsString())
         {
-            std::cout << GetString(args[i]);
+            printf(GetString(args[i]).c_str());
         }
     }
 }
