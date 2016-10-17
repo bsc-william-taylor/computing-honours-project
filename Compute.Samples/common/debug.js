@@ -1,29 +1,20 @@
 
-const process = this;
-
-const { setInterval, setTimeout } = require('datetime');
+const { setTimeout } = require('datetime');
 const console = require('console');
 const debug = require('debug');
+
+const process = this;
 process.pid = debug.get();
-debug.init();
-
-
-setInterval(function() {
-    console.log('HelloWorld');
-}, 2000);
-
-
-
-
-
 
 function incoming(msg, port) {
-    //console.log(Object.keys(v8debug.Debug));
-    //console.log(v8debug.Debug.debuggerFlags())
+    console.log(`incoming: ${msg}`);
 }
 
 function outgoing(msg) {
-    //console.log(`outgoing: ${msg}`);
+    console.log(`outgoing: ${msg}`);
 }
 
 debug.onmessage(incoming, outgoing);
+debug.init();
+
+setTimeout(x => x, 100000);
