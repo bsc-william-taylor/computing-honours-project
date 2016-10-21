@@ -4,6 +4,8 @@
 
 void battery(v8::FunctionArgs args)
 {
+    v8::HandleScope handle_scope(args.GetIsolate());
+
     auto secs{ 0 }, pct{ 0 };
     auto status = SDL_GetPowerInfo(&secs, &pct);
     auto object = v8::Object::New(args.GetIsolate());

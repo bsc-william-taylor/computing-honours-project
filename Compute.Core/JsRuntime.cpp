@@ -5,6 +5,7 @@
 #include "Fs.h"
 #include "JsExtensions.h"
 #include "JsDebug.h"
+#include "Debug.h"
 
 using namespace compute;
 
@@ -79,6 +80,7 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
 
 void JsRuntime::start(std::string filename)
 {
+
     ArrayBufferAllocator allocator;
     v8::Isolate::CreateParams createParams;
     createParams.array_buffer_allocator = &allocator;
@@ -90,6 +92,8 @@ void JsRuntime::start(std::string filename)
         auto moduleTemplate = registerCommonJsModules();
         auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
         auto scope = v8::Context::Scope(context);
+
+        _context.Reset(isolate, context);
     
         const auto src = v8::NewString(readStartupFile(filename.c_str()));
         filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
@@ -113,7 +117,7 @@ void JsRuntime::initialise(std::vector<std::string>& args)
         argv[i] = const_cast<char *>(args[i].c_str());
     }
 
-    const auto v8Flags = "--expose_gc --expose-debug-as=v8debug";
+    const auto v8Flags = "--expose_gc --expose-debug-as=v8debug --trace-hydrogen-file=hydrogen.cfg --trace-turbo-cfg-file=turbo.cfg --redirect-code-traces-to=code.asm";
 
     v8::V8::InitializeExternalStartupData(argv[0]);
     v8::V8::SetFlagsFromString(v8Flags, strlen(v8Flags));

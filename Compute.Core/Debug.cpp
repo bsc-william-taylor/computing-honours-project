@@ -5,6 +5,7 @@
 
 v8::Persistent<v8::Function> incomingCallback;
 v8::Persistent<v8::Function> outgoingCallback;
+v8::Persistent<v8::Context> _context;
 v8::Isolate * Isolate = nullptr;
 std::thread background;
 
@@ -26,12 +27,12 @@ auto invokeFunction = [](std::vector<uint16_t> message, DebugData* data)
     auto isolate = v8::Isolate::GetCurrent();
     auto arg1 = v8::String::NewFromTwoByte(isolate, message.data(), v8::String::kNormalString, message.size());
     auto arg2 = v8::Number::New(isolate, data->socket);
-
+    v8::Context::Scope debugScope(_context.Get(isolate));
+    v8::Debug::ProcessDebugMessages(Isolate);
     v8::Local<v8::Value> args[2];
     args[0] = arg1;
     args[1] = arg2;
 
-    v8::Debug::ProcessDebugMessages(isolate);
     v8::TryCatch trycatch(isolate);
     auto function = incomingCallback.Get(isolate);
     function->Call(function, 2, args);
@@ -40,10 +41,10 @@ auto invokeFunction = [](std::vector<uint16_t> message, DebugData* data)
 
 auto incoming = [](auto msg, auto d)
 {
-    if(Isolate != nullptr)
+    if (Isolate != nullptr)
     {
-        v8::OnForeground<JsAsyncTask>(invokeFunction, msg, d);
         v8::Debug::SendCommand(Isolate, &msg[0], msg.size(), d);
+        v8::OnForeground<JsAsyncTask>(invokeFunction, msg, d);       
     }
 };
 
@@ -52,7 +53,8 @@ auto invokeOutgoing = [](auto message)
 {
     auto isolate = v8::Isolate::GetCurrent();
 
-    v8::Debug::ProcessDebugMessages(isolate);
+    v8::Context::Scope debugScope(_context.Get(isolate));
+    v8::Debug::ProcessDebugMessages(Isolate);
     v8::Local<v8::Value> args[1];
     v8::TryCatch trycatch(isolate);
     args[0] = v8::NewString(message);
