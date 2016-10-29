@@ -7,7 +7,9 @@ const stringArguments = args => {
     let output = "";
 
     for (let i = 0; i < args.length; ++i) {
-        if (typeof (args[i]) === "object") {
+        if (Array.isArray(args[i])) {
+            output += JSON.stringify(args[i]);
+        } else if (typeof (args[i]) === "object") {
             output += JSON.stringify(args[i], jsonReplacer, jsonSpacing);
         } else {
             output += args[i];

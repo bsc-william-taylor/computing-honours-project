@@ -118,3 +118,8 @@ v8::Local<v8::Object> v8::GetObject(Local<Value> value, std::string err)
 {
     return value.As<Object>();
 }
+
+v8::Local<v8::Array> v8::GetArray(Local<Value> value, std::string err)
+{
+    return value.As<Array>();
+}

@@ -131,8 +131,57 @@ void glEnable(v8::FunctionArgs args)
     }
 }
 
+void glGetError(v8::FunctionArgs args)
+{
+    args.GetReturnValue().Set(glGetError());
+}
+
+void glGetResetStatus(v8::FunctionArgs args)
+{
+    if(GLEW_VERSION_4_5)
+    {
+        args.GetReturnValue().Set(glGetGraphicsResetStatus());
+    }
+    else
+    {
+        v8::Throw("Error calling GL4.5 method glGetGraphicsResetStatus");
+    }
+}
+
+void glGetInterger(v8::FunctionArgs args)
+{
+    auto param = v8::GetNumber(args[0]);
+    auto array = v8::GetArray(args[1]);
+    auto length = array->Length();
+  
+    std::vector<int> values(length);
+    glGetIntegerv(param, values.data());
+
+    for(auto i = 0; i < length; i++)
+    {
+        array->Set(i, v8::NewNumber(values[i]));
+    }
+}
+
+void glFlush(v8::FunctionArgs args)
+{
+    glFlush();
+}
+
+void glFinish(v8::FunctionArgs args)
+{
+    glFinish();
+}
+
 void compute::registerOpenGL(v8::Exports exports)
 {
+    AttachFunction(exports, "glGetError", glGetError);
+    AttachFunction(exports, "glGetGraphicsResetStatus", glGetResetStatus);
+    AttachFunction(exports, "glGetIntergerv", glGetInterger);
+    AttachFunction(exports, "glFlush", glFlush);
+    AttachFunction(exports, "glFinish", glFinish);
+
+    // Old functions
     AttachFunction(exports, "gluPerspective", glPerspective);
     AttachFunction(exports, "glEnable", glEnable);
     AttachFunction(exports, "glMatrixMode", glMatrixMode);

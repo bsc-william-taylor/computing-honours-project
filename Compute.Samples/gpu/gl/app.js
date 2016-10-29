@@ -7,6 +7,8 @@ const http = require('http');
 const gl = require('gl');
 const fs = require('fs');
 
+const core = require('./core.js');
+
 function renderObject(object, type, rotation) {
     with(gl) {
         const { x, y, z } = object.translate;

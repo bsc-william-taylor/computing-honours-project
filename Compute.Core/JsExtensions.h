@@ -18,6 +18,7 @@ namespace v8
 
     Local<Function> GetFunction(Local<Value> value, std::string err = "");
     Local<Object> GetObject(Local<Value> value, std::string err = "");
+    Local<Array> GetArray(Local<Value> value, std::string err = "");
     std::string GetString(Local<Value> value, std::string err = "");
     int GetNumber(Local<Value> value, std::string err = "");
 

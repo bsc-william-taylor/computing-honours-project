@@ -198,9 +198,11 @@ const auto Show = [](auto window, auto callback)
     auto isolate = v8::Isolate::GetCurrent();
     auto function = callback.Get(isolate);
 
+    v8::TryCatch trycatch(isolate);
     v8::Local<v8::Value> args[1];
     args[0] = window.Get(isolate);
     function->Call(function, 1, args);
+    CatchExceptions(trycatch);
 };
 
 const auto OpenMessage = [](auto title, auto body, auto callback)
