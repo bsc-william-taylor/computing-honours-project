@@ -201,11 +201,141 @@ void glSendBufferData(v8::FunctionArgs args)
 {
     auto target = GetNumber(args[0]);
     auto size = GetNumber(args[1]);
-    auto array = args[2].As<v8::Float64Array>();
+    auto array = args[2].As<v8::Float32Array>();
     auto usage = GetNumber(args[3]);
     auto data = array->Buffer()->GetContents().Data();
+    glBufferData(target, size, data, usage);
+}
 
-    glBufferData(target, size, data, usage);    
+void glEnableAttribArray(v8::FunctionArgs args)
+{
+    auto index = GetNumber(args[0]);
+    glEnableVertexAttribArray(index);
+}
+
+void glDisableAttribArray(v8::FunctionArgs args)
+{
+    auto index = GetNumber(args[0]);
+    glDisableVertexAttribArray(index);
+}
+
+void glSetVertexAttribPoint(v8::FunctionArgs args)
+{
+    auto bufferID = GetNumber(args[0]);
+    auto size = GetNumber(args[1]);
+    auto type = GetNumber(args[2]);
+    auto normal = GetNumber(args[3]);
+    auto stride = GetNumber(args[4]);
+
+    glVertexAttribPointer(bufferID, size, type, normal, stride, nullptr);
+}
+
+void createProgram(v8::FunctionArgs args)
+{
+    args.GetReturnValue().Set(glCreateProgram());
+}
+
+void attachShader(v8::FunctionArgs args)
+{
+    auto program = GetNumber(args[0]);
+    auto shader = GetNumber(args[1]);
+    glAttachShader(program, shader);
+}
+
+void linkProgram(v8::FunctionArgs args)
+{
+    auto program = GetNumber(args[0]);
+    glLinkProgram(program);
+}
+
+void useProgram(v8::FunctionArgs args)
+{
+    auto program = GetNumber(args[0]);
+    glUseProgram(program);
+}
+
+void createShader(v8::FunctionArgs args)
+{
+    auto type = GetNumber(args[0]);
+    args.GetReturnValue().Set(glCreateShader(type));
+}
+
+void shaderSource(v8::FunctionArgs args)
+{
+    auto shader = GetNumber(args[0]);
+    auto count = GetNumber(args[1]);
+    auto source = GetString(args[2]);
+    auto sourceArray = new char*[1];
+
+    sourceArray[0] = (char*)source.c_str();
+    glShaderSource(shader, 1, sourceArray, nullptr);
+    delete[] sourceArray;
+}
+
+void compileShader(v8::FunctionArgs args)
+{
+    auto shader = GetNumber(args[0]);
+    glCompileShader(shader);
+}
+
+void deleteShader(v8::FunctionArgs args)
+{
+    auto shader = GetNumber(args[0]);
+    glDeleteShader(shader);
+}
+
+void getShaderInfoLog(v8::FunctionArgs args)
+{
+    auto shader = GetNumber(args[0]);
+    auto bufsz = GetNumber(args[1]);
+    auto len = GetNumber(args[2]);
+    auto arr = GetArray(args[3]);
+
+    auto buffer = new char[bufsz];
+    glGetShaderInfoLog(shader, bufsz, &len, buffer);
+    arr->Set(0, v8::NewString(buffer));
+    delete[] buffer;
+}
+
+void getShaderiv(v8::FunctionArgs args)
+{
+    auto shader = GetNumber(args[0]);
+    auto pname = GetNumber(args[1]);
+    auto array = GetArray(args[2]);
+
+    std::vector<int> result(array->Length());
+    glGetShaderiv(shader, pname, result.data());    
+    for(auto i = 0; i < array->Length(); i++)
+    {
+       array->Set(i, v8::NewNumber(result[i]));
+    }
+}
+
+void glDraw(v8::FunctionArgs args)
+{
+    auto mode = GetNumber(args[0]);
+    auto first = GetNumber(args[1]);
+    auto count = GetNumber(args[2]);
+    glDrawArrays(mode, first, count);
+}
+
+void genVertexArray(v8::FunctionArgs args)
+{
+    auto count = v8::GetNumber(args[0]);
+    auto array = v8::GetArray(args[1]);
+    
+    std::vector<GLuint> ids(count);
+    glGenVertexArrays(count, ids.data());
+    for(auto i = 0; i < count; i++)
+    {
+        array->Set(i, v8::NewNumber(ids[i]));
+    }
+}
+
+void bindVertexArray(v8::FunctionArgs args)
+{
+    auto num = v8::GetNumber(args[0]);
+    glBindVertexArray(num);
 }
 
 void compute::registerOpenGL(v8::Exports exports)
@@ -223,8 +353,28 @@ void compute::registerOpenGL(v8::Exports exports)
     AttachFunction(exports, "glDeleteBuffers", glDelBuffers);
     AttachFunction(exports, "glBufferData", glSendBufferData);
 
-    // Shader objects
+    AttachFunction(exports, "glVertexAttribPointer", glSetVertexAttribPoint);
+    AttachFunction(exports, "glEnableVertexAttribArray", glEnableAttribArray);
+    AttachFunction(exports, "glDisableVertexAttribArray", glDisableAttribArray);
 
+    // VAO
+    AttachFunction(exports, "glGenVertexArray", genVertexArray);
+    AttachFunction(exports, "glBindVertexArray", bindVertexArray);
+
+    // Shader objects
+    AttachFunction(exports, "glCreateShader", createShader);
+    AttachFunction(exports, "glShaderSource", shaderSource);
+    AttachFunction(exports, "glCompileShader", compileShader);
+    AttachFunction(exports, "glDeleteShader", deleteShader);
+    AttachFunction(exports, "glCreateProgram", createProgram);
+    AttachFunction(exports, "glAttachShader", attachShader);
+    AttachFunction(exports, "glLinkProgram", linkProgram);
+    AttachFunction(exports, "glUseProgram", useProgram);
+    AttachFunction(exports, "glGetShaderiv", getShaderiv);
+    AttachFunction(exports, "glGetShaderInfoLog", getShaderInfoLog);
+
+    // Drawing functions
+    AttachFunction(exports, "glDrawArrays", glDraw);
     // Deprecated Functions
     AttachFunction(exports, "gluPerspective", glPerspective);
     AttachFunction(exports, "glEnable", glEnable);

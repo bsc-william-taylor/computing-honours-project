@@ -153,6 +153,7 @@ void Window::enableOpenGL(v8::FunctionArgs args)
         SDL_GL_MakeCurrent(object->window, context);
         SDL_GL_SetSwapInterval(1);
 
+        glewExperimental = GL_TRUE;
         glewInit();
 
         object->context = context;

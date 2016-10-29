@@ -1054,16 +1054,41 @@ exports.GL_MAX_VERTEX_ATTRIB_STRIDE = 33509;
 exports.GL_TEXTURE_BUFFER_BINDING = 35882;
 exports.GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT = 4;
 
+exports.glGenVertexArray = compute.glGenVertexArray;
+exports.glBindVertexArray = compute.glBindVertexArray;
+
+// Shaders
+exports.glCreateShader = compute.glCreateShader;
+exports.glShaderSource = function (shader, count, source, out) {
+    const lines = [source];//.split('\n');
+    return compute.glShaderSource(shader, count, lines, out);
+}
+exports.glCompileShader = compute.glCompileShader;
+exports.glDeleteShader = compute.glDeleteShader;
+exports.glCreateProgram = compute.glCreateProgram;
+exports.glAttachShader = compute.glAttachShader;
+exports.glLinkProgram = compute.glLinkProgram;
+exports.glUseProgram = compute.glUseProgram;
+exports.glGetShaderiv = compute.glGetShaderiv;
+exports.glGetShaderInfoLog = compute.glGetShaderInfoLog;
+
+// Buffers
+exports.glVertexAttribPointer = compute.glVertexAttribPointer;
+exports.glEnableVertexAttribArray = compute.glEnableVertexAttribArray;
+exports.glDisableVertexAttribArray = compute.glDisableVertexAttribArray;
 exports.glDeleteBuffers = compute.glDeleteBuffers;
 exports.glBindBuffer = compute.glBindBuffer;
 exports.glGenBuffers = compute.glGenBuffers;
 exports.glBufferData = compute.glBufferData;
 
+// Command Execution
 exports.glGetGraphicsResetStatus = compute.glGetGraphicsResetStatus;
 exports.glGetIntergerv = compute.glGetIntergerv;
 exports.glGetError = compute.glGetError;
 exports.glFinish = compute.glFinish;
 exports.glFlush = compute.glFlush;
+
+exports.glDrawArrays = compute.glDrawArrays;
 
 exports.glBegin = function(type) {
     compute.glBegin(type);

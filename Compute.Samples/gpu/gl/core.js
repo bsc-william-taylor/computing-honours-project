@@ -1,30 +1,60 @@
 
 const { openWindow } = require('display');
 const console = require('console');
+const fs = require('fs');
 const gl = require('gl');
 
-openWindow({}, window => {
-    window.setTitle('');
+const triangle = [ -1.0, -1.0, 0.1, 0.0, 1.0, 0.1, 1.0, -1.0, 0.1 ];
+const vertShader = fs.read('./vert.glsl');
+const fragShader = fs.read('./frag.glsl');
+
+function createShader(shaderType, shaderSource) {
+    with(gl) {
+        const shader = glCreateShader(shaderType);
+        glShaderSource(shader, shaderSource.length, shaderSource, 0);
+        glCompileShader(shader);
+
+        const compileStatus = [,], logLength = [,];
+        glGetShaderiv(shader, GL_COMPILE_STATUS, compileStatus);
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, logLength);
+
+        if(compileStatus[0] != GL_TRUE) {
+            const log = [,];
+            glGetShaderInfoLog(shader, logLength[0], logLength[0], log)
+            console.log('Compile error', log[0]);
+        }
+
+        return shader;
+    }
+}
+
+openWindow({ w: 720, h: 480 }, window => {
+    window.setTitle('VAO + VBO');
     window.show();
     window.enableOpenGL();
+
     with(gl) {       
-        const major = [,], minor = [,];
-        glGetIntergerv(GL_MAJOR_VERSION, major);
-        glGetIntergerv(GL_MINOR_VERSION, minor);
+        const VAO = new Uint32Array(1), VBO = new Uint32Array(1), data = Float32Array.from(triangle);
+        const program = glCreateProgram();
+        
+        glAttachShader(program, createShader(GL_VERTEX_SHADER, vertShader.contents));
+        glAttachShader(program, createShader(GL_FRAGMENT_SHADER, fragShader.contents));
+        glLinkProgram(program);
+        glUseProgram(program);
+        glGenVertexArray(1, VAO);
+        glBindVertexArray(VAO[0]);
+        glGenBuffers(1, VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+        glBufferData(GL_ARRAY_BUFFER, data.byteLength, data, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-        console.log(glGetError(), glGetGraphicsResetStatus());
-        console.log(major, minor);
+        window.onFrame(() => {
+            glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(0.0, 0.0, 0.0, 0.0);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        const vertices = Float64Array.from([ 1, 2, 3, 4, 5 ]);
-        const buffer = new Uint32Array(1);
-        glGenBuffers(1, buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
-        glBufferData(GL_ARRAY_BUFFER, vertices.byteLength, vertices, GL_STATIC_DRAW);
-
-        console.log('Buffer ', buffer[0], glGetError() == GL_NO_ERROR);
-
-        glDeleteBuffers(1, buffer);
+            window.swapBuffers();
+        });
     }
 })
-
-
