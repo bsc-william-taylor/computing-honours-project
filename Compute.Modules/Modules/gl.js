@@ -1054,6 +1054,11 @@ exports.GL_MAX_VERTEX_ATTRIB_STRIDE = 33509;
 exports.GL_TEXTURE_BUFFER_BINDING = 35882;
 exports.GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT = 4;
 
+exports.glDeleteBuffers = compute.glDeleteBuffers;
+exports.glBindBuffer = compute.glBindBuffer;
+exports.glGenBuffers = compute.glGenBuffers;
+exports.glBufferData = compute.glBufferData;
+
 exports.glGetGraphicsResetStatus = compute.glGetGraphicsResetStatus;
 exports.glGetIntergerv = compute.glGetIntergerv;
 exports.glGetError = compute.glGetError;

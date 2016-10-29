@@ -173,15 +173,59 @@ void glFinish(v8::FunctionArgs args)
     glFinish();
 }
 
+void glGenerateBuffers(v8::FunctionArgs args)
+{
+    auto size = GetNumber(args[0]);
+    auto array = args[1].As<v8::Uint32Array>();
+    auto data = array->Buffer()->GetContents().Data();
+    glGenBuffers(size, static_cast<GLuint *>(data));
+}
+
+void glDelBuffers(v8::FunctionArgs args)
+{
+    auto size = GetNumber(args[0]);
+    auto array = args[1].As<v8::Uint32Array>();
+    auto data = array->Buffer()->GetContents().Data();
+    glDeleteBuffers(size, static_cast<GLuint *>(data));
+}
+
+void glBindBuffers(v8::FunctionArgs args)
+{
+    auto target = GetNumber(args[0]);
+    auto buffer = GetNumber(args[1]);
+
+    glBindBuffer(target, buffer);
+}
+
+void glSendBufferData(v8::FunctionArgs args)
+{
+    auto target = GetNumber(args[0]);
+    auto size = GetNumber(args[1]);
+    auto array = args[2].As<v8::Float64Array>();
+    auto usage = GetNumber(args[3]);
+    auto data = array->Buffer()->GetContents().Data();
+
+    glBufferData(target, size, data, usage);    
+}
+
 void compute::registerOpenGL(v8::Exports exports)
 {
+    // Command Execution
     AttachFunction(exports, "glGetError", glGetError);
     AttachFunction(exports, "glGetGraphicsResetStatus", glGetResetStatus);
     AttachFunction(exports, "glGetIntergerv", glGetInterger);
     AttachFunction(exports, "glFlush", glFlush);
     AttachFunction(exports, "glFinish", glFinish);
 
-    // Old functions
+    // Buffer Objects
+    AttachFunction(exports, "glGenBuffers", glGenerateBuffers);
+    AttachFunction(exports, "glBindBuffer", glBindBuffers);
+    AttachFunction(exports, "glDeleteBuffers", glDelBuffers);
+    AttachFunction(exports, "glBufferData", glSendBufferData);
+
+    // Shader objects
+
+    // Deprecated Functions
     AttachFunction(exports, "gluPerspective", glPerspective);
     AttachFunction(exports, "glEnable", glEnable);
     AttachFunction(exports, "glMatrixMode", glMatrixMode);
