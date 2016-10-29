@@ -1057,11 +1057,15 @@ exports.GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT = 4;
 exports.glGenVertexArray = compute.glGenVertexArray;
 exports.glBindVertexArray = compute.glBindVertexArray;
 
+// TODO: Implement
+exports.glDeleteProgram = x => x;
+exports.glDeleteShader = x => x;
+exports.glDeleteVertexArray = x => x;
+
 // Shaders
 exports.glCreateShader = compute.glCreateShader;
 exports.glShaderSource = function (shader, count, source, out) {
-    const lines = [source];//.split('\n');
-    return compute.glShaderSource(shader, count, lines, out);
+    return compute.glShaderSource(shader, count, [source], out);
 }
 exports.glCompileShader = compute.glCompileShader;
 exports.glDeleteShader = compute.glDeleteShader;

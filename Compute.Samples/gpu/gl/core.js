@@ -36,9 +36,11 @@ openWindow({ w: 720, h: 480 }, window => {
     with(gl) {       
         const VAO = new Uint32Array(1), VBO = new Uint32Array(1), data = Float32Array.from(triangle);
         const program = glCreateProgram();
+        const vs = createShader(GL_VERTEX_SHADER, vertShader.contents);
+        const fs = createShader(GL_FRAGMENT_SHADER, fragShader.contents);
         
-        glAttachShader(program, createShader(GL_VERTEX_SHADER, vertShader.contents));
-        glAttachShader(program, createShader(GL_FRAGMENT_SHADER, fragShader.contents));
+        glAttachShader(program, vs);
+        glAttachShader(program, fs);
         glLinkProgram(program);
         glUseProgram(program);
         glGenVertexArray(1, VAO);
@@ -55,6 +57,14 @@ openWindow({ w: 720, h: 480 }, window => {
             glDrawArrays(GL_TRIANGLES, 0, 3);
 
             window.swapBuffers();
+        });
+
+        window.onClose(() => {
+            glDeleteVertexArray(1, VAO);
+            glDeleteBuffers(1, VBO);
+            glDeleteProgram(program);
+            glDeleteShader(vs);
+            glDeleteShader(fs);
         });
     }
 })

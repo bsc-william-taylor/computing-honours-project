@@ -16,6 +16,7 @@ namespace compute
         SDL_bool fullscreen;
         SDL_Rect rect;
 
+        v8::Persistent<v8::Function> onCloseCallback;
         std::string title;
     public:
         Window();
@@ -31,6 +32,7 @@ namespace compute
         static void setTitle(v8::FunctionArgs args);
         static void setSize(v8::FunctionArgs args);
         static void onFrame(v8::FunctionArgs args);
+        static void onClose(v8::FunctionArgs args);
         static void hide(v8::FunctionArgs args);
         static void show(v8::FunctionArgs args);
 

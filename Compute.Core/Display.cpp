@@ -37,6 +37,7 @@ void Window::newWindow(v8::FunctionArgs info)
     AttachFunction(object, "setPosition", setPosition);
     AttachFunction(object, "setTitle", setTitle);
     AttachFunction(object, "onFrame", onFrame);
+    AttachFunction(object, "onClose", onClose);
     AttachFunction(object, "setSize", setSize);
     AttachFunction(object, "show", show);
     AttachFunction(object, "hide", hide);
@@ -55,6 +56,12 @@ void Window::newWindow(v8::FunctionArgs info)
     window->wrap(object);
 
     info.GetReturnValue().Set(object);
+}
+
+void Window::onClose(v8::FunctionArgs args)
+{
+    auto object = unwrap(args);
+    object->onCloseCallback.Reset(args.GetIsolate(), v8::GetFunction(args[0]));
 }
 
 void Window::setSize(v8::FunctionArgs args)
@@ -186,6 +193,14 @@ void Window::destroy()
 {
     if (window != nullptr)
     {
+        if(!onCloseCallback.IsEmpty())
+        {
+            v8::TryCatch trycatch;
+            auto function = onCloseCallback.Get(v8::Isolate::GetCurrent());
+            function->Call(function, 0, nullptr);
+            v8::CatchExceptions(trycatch);
+        }
+
         SDL_DestroyWindow(window);
         window = nullptr;
     }
