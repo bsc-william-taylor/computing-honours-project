@@ -82,6 +82,16 @@ v8::Local<v8::Object> v8::WrapPointer(void* pointer)
     return object;
 }
 
+void* v8::UnwrapPointer(v8::Local< v8::Value> value)
+{   
+    if(value->IsNull())
+    {
+        return nullptr;
+    }
+
+    return value.As<v8::Object>()->GetAlignedPointerFromInternalField(0);
+}
+
 v8::Local<v8::String> v8::NewString(std::string value)
 {
     return String::NewFromUtf8(Isolate::GetCurrent(), value.c_str());
@@ -98,7 +108,7 @@ std::string v8::GetString(Local<Value> value, std::string err)
     return std::string(*stringValue);
 }
 
-int v8::GetNumber(Local<Value> value, std::string err)
+double v8::GetNumber(Local<Value> value, std::string err)
 {
     if(value->IsNumber())
     {
@@ -108,6 +118,19 @@ int v8::GetNumber(Local<Value> value, std::string err)
     Throw(err.length() ? err : "Error with number conversion");
     return 0;
 }
+
+v8::Local<v8::TypedArray> v8::GetTypedArray(Local<Value> value, std::string err)
+{
+    if(value->IsTypedArray() || value->IsNull())
+    {
+        return value.As<TypedArray>();
+    }
+
+
+    Throw(err.length() ? err : "Error with typed array conversion");
+    return Local<TypedArray>();
+}
+
 
 v8::Local<v8::Function> v8::GetFunction(Local<Value> value, std::string err)
 {

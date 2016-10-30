@@ -9,8 +9,18 @@ const getKeyByValue = (object, value) => {
     }
 }
 
+exports.CL_TRUE = 1;
+exports.CL_FALSE = 0;
+exports.CL_SUCCESS = 0;
 exports.CL_BUILD_SUCCESS = 0;
 exports.CL_DEVICE_NAME = 0x102B;
+
+/* cl_program_build_info */
+exports.CL_PROGRAM_BUILD_STATUS = 0x1181;
+exports.CL_PROGRAM_BUILD_OPTIONS = 0x1182;
+exports.CL_PROGRAM_BUILD_LOG = 0x1183;
+exports.CL_PROGRAM_BINARY_TYPE = 0x1184;
+exports.CL_PROGRAM_BUILD_GLOBAL_VARIABLE_TOTAL_SIZE = 0x1185;
 
 /* cl_context_properties */
 exports.CL_CONTEXT_PLATFORM = 0x1084;
@@ -125,8 +135,37 @@ exports.CL_DEVICE_PREFERRED_PLATFORM_ATOMIC_ALIGNMENT = 0x1058;
 exports.CL_DEVICE_PREFERRED_GLOBAL_ATOMIC_ALIGNMENT = 0x1059;
 exports.CL_DEVICE_PREFERRED_LOCAL_ATOMIC_ALIGNMENT = 0x105A;
 
-exports.clCreateContextFromType = compute.createContextFromType;
+/* cl_mem_flags and cl_svm_mem_flags - bitfield */
+exports.CL_MEM_READ_WRITE = (1 << 0);
+exports.CL_MEM_WRITE_ONLY = (1 << 1);
+exports.CL_MEM_READ_ONLY = (1 << 2);
+exports.CL_MEM_USE_HOST_PTR = (1 << 3);
+exports.CL_MEM_ALLOC_HOST_PTR = (1 << 4);
+exports.CL_MEM_COPY_HOST_PTR = (1 << 5);
+/* reserved                                         (1 << 6)    */
+exports.CL_MEM_HOST_WRITE_ONLY = (1 << 7);
+exports.CL_MEM_HOST_READ_ONLY = (1 << 8);
+exports.CL_MEM_HOST_NO_ACCESS = (1 << 9);
+exports.CL_MEM_SVM_FINE_GRAIN_BUFFER = (1 << 10);  /* used by cl_svm_mem_flags only */
+exports.CL_MEM_SVM_ATOMICS = (1 << 11);  /* used by cl_svm_mem_flags only */
+exports.CL_MEM_KERNEL_READ_AND_WRITE = (1 << 12);
+
+exports.clCreateProgramWithSource = compute.createProgramWithSource;
+exports.clGetProgramBuildInfo = compute.getProgramBuildInfo;
+exports.clBuildProgram = compute.buildProgram;
+exports.clCreateKernel = compute.createKernel;
+exports.clSetKernelArg = compute.setKernelArg;
+exports.clEnqueueNDRangeKernel = compute.enqueueNDRangeKernel;
+exports.clEnqueueReadBuffer = compute.enqueueReadBuffer;
+
+exports.clCreateBuffer = compute.createBuffer;
 exports.clReleaseContext = compute.releaseContext;
+exports.clReleaseProgram = compute.releaseProgram;
+exports.clReleaseKernel = compute.releaseKernel;
+exports.clReleaseCommandQueue = compute.releaseCommandQueue;
+
+exports.clCreateContextFromType = compute.createContextFromType;
+exports.clCreateCommandQueue = compute.createCommandQueue;
 exports.clGetPlatformIDs = compute.getPlatformIDs;
 exports.clGetDeviceIDs = compute.getDeviceIDs;
 

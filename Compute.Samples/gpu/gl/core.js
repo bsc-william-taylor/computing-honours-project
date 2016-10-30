@@ -4,7 +4,7 @@ const console = require('console');
 const fs = require('fs');
 const gl = require('gl');
 
-const triangle = [ -1.0, -1.0, 0.1, 0.0, 1.0, 0.1, 1.0, -1.0, 0.1 ];
+const triangle = [ -0.8, -1.0, 0.1, 0.0, 1.0, 0.1, 0.8, -1.0, 0.1 ];
 const vertShader = fs.read('./vert.glsl');
 const fragShader = fs.read('./frag.glsl');
 

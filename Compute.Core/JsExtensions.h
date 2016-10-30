@@ -16,11 +16,12 @@ namespace v8
     using FunctionArgs = const FunctionCallbackInfo<Value>&;
     using Exports = Local<Object>;
 
+    Local<TypedArray> GetTypedArray(Local<Value>, std::string err = "");
     Local<Function> GetFunction(Local<Value> value, std::string err = "");
     Local<Object> GetObject(Local<Value> value, std::string err = "");
     Local<Array> GetArray(Local<Value> value, std::string err = "");
     std::string GetString(Local<Value> value, std::string err = "");
-    int GetNumber(Local<Value> value, std::string err = "");
+    double GetNumber(Local<Value> value, std::string err = "");
 
     void AttachFunction(Local<Object>& obj, std::string key, FunctionCallback function);
     void AttachBoolean(Local<Object>& obj, std::string key, SDL_bool boolean);
@@ -34,7 +35,14 @@ namespace v8
     Local<String> NewString(std::string value);
     Local<Number> NewNumber(int number);
 
+    void* UnwrapPointer(Local<Value> object);
     Local<Object> WrapPointer(void* pointer);
+
+    template<typename T>
+    void Return(FunctionArgs& args, T v)
+    {
+        args.GetReturnValue().Set(v);
+    }
 
     template<typename TaskType, typename Lambda, typename ...Args>
     void OnForeground(Lambda functor, Args... args)

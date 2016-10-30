@@ -292,7 +292,7 @@ void getShaderInfoLog(v8::FunctionArgs args)
     auto arr = GetArray(args[3]);
 
     auto buffer = new char[bufsz];
-    glGetShaderInfoLog(shader, bufsz, &len, buffer);
+    glGetShaderInfoLog(shader, bufsz, (int*)&len, buffer);
     arr->Set(0, v8::NewString(buffer));
     delete[] buffer;
 }

@@ -41,7 +41,7 @@ void timeout(v8::FunctionArgs args)
     const auto uniqueID = GetNumber(args[0]);
     const auto ms = GetNumber(args[1]);
 
-    SDL_AddTimer(ms, createTimeoutFunction(), new long long{ uniqueID });
+    SDL_AddTimer(ms, createTimeoutFunction(), new long long{ (int)uniqueID });
 
     v8::PersistentCopyable callback;
     callback.Reset(args.GetIsolate(), GetFunction(args[2]));
