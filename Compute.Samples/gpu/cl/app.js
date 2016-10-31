@@ -5,6 +5,10 @@ const http = require('http');
 const cl = require('cl');
 const fs = require('fs');
 
+class Kernel {
+    
+}
+
 function acquirePlatform(){ 
     const platforms = [];
 
@@ -20,7 +24,7 @@ function acquirePlatform(){
         });
     }
 
-    return platforms[0];//console.read(platforms)];
+    return platforms[console.read(platforms)];
 }
 
 function acquireDevice(platform) {
@@ -37,7 +41,7 @@ function acquireDevice(platform) {
         });
     }
 
-    return devices[0];//console.read(devices)];
+    return devices[console.read(devices)];
 }
 
 const platform = acquirePlatform();
