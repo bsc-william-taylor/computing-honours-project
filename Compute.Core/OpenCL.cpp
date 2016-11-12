@@ -226,12 +226,48 @@ void createBuffer(v8::FunctionArgs args)
 
 void setKernelArg(v8::FunctionArgs args)
 {
-    auto kernel = UnwrapPointer(args[0]);
-    auto buffer = UnwrapPointer(args[3]);
+    auto kernel = cl_kernel(UnwrapPointer(args[0]));
     auto index = GetNumber(args[1]);
     auto size = GetNumber(args[2]);
+    
+    v8::Local<v8::Value> value;
 
-    Return(args, clSetKernelArg(cl_kernel(kernel), index, size, &buffer));
+    // Convert to typed arrays
+    if(args[3]->IsObject())
+    {
+        auto buffer = UnwrapPointer(args[3]);
+        Return(args, clSetKernelArg(kernel, index, size, &buffer));
+    }
+    else if(args[3]->IsNumber())
+    {
+        auto number = GetNumber(args[3]);
+        Return(args, clSetKernelArg(kernel, index, size, &number));
+    }
+    else if (args[3]->IsString())
+    {
+        auto string = GetString(args[3]);
+        Return(args, clSetKernelArg(kernel, index, size, string.c_str()));
+    }
+}
+
+void createImage2D(v8::FunctionArgs args)
+{
+    auto object =  v8::Object::New(args.GetIsolate());
+
+    args.GetReturnValue().Set(object);
+}
+
+void createSampler(v8::FunctionArgs args)
+{
+    auto object = v8::Object::New(args.GetIsolate());
+
+    args.GetReturnValue().Set(object);
+}
+
+void enqueueReadImage(v8::FunctionArgs args)
+{
+     auto buffer = v8::ArrayBuffer::New(args.GetIsolate(), 5);
+
 }
 
 void compute::registerOpenCL(v8::Exports exports)
@@ -254,4 +290,7 @@ void compute::registerOpenCL(v8::Exports exports)
     AttachFunction(exports, "releaseProgram", releaseProgram);
     AttachFunction(exports, "releaseContext", releaseContext);
     AttachFunction(exports, "releaseKernel", releasekernel);
+    AttachFunction(exports, "createImage2D", createImage2D);
+    AttachFunction(exports, "createSampler", createSampler);
+    AttachFunction(exports, "enqueueReadImage", enqueueReadImage);
 }

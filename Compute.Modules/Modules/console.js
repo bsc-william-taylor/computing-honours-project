@@ -10,12 +10,10 @@ const stringArguments = args => {
         if (Array.isArray(args[i]) && typeof(args[i][0]) !== "object") {
             output += JSON.stringify(args[i]);
         } else if (typeof (args[i]) === "object") {
-            output += JSON.stringify(args[i], jsonReplacer, jsonSpacing);
+            output += args[i].toString() + '\n'; // JSON.stringify(args[i], jsonReplacer, jsonSpacing);
         } else {
-            output += args[i];
+            output += args[i] + ' ';
         }
-
-        output += " ";
     }
 
     return output;

@@ -1,4 +1,10 @@
 
+const makeNative = (object) => {
+    object.prototype.toString = () => {
+        return '[native cl object]';
+    }
+}
+
 const getKeyByValue = (object, value) => {
     for (let prop in object) {
         if (object.hasOwnProperty(prop)) {
@@ -7,7 +13,73 @@ const getKeyByValue = (object, value) => {
             }
         }
     }
-}
+};
+
+/* cl_addressing_mode */
+exports.CL_ADDRESS_NONE = 0x1130;
+exports.CL_ADDRESS_CLAMP_TO_EDGE = 0x1131;
+exports.CL_ADDRESS_CLAMP = 0x1132;
+exports.CL_ADDRESS_REPEAT = 0x1133;
+exports.CL_ADDRESS_MIRRORED_REPEAT = 0x1134;
+
+/* cl_filter_mode */
+exports.CL_FILTER_NEAREST = 0x1140;
+exports.CL_FILTER_LINEAR = 0x1141;
+
+/* cl_sampler_info */
+exports.CL_SAMPLER_REFERENCE_COUNT = 0x1150;
+exports.CL_SAMPLER_CONTEXT = 0x1151;
+exports.CL_SAMPLER_NORMALIZED_COORDS = 0x1152;
+exports.CL_SAMPLER_ADDRESSING_MODE = 0x1153;
+exports.CL_SAMPLER_FILTER_MODE = 0x1154;
+exports.CL_SAMPLER_MIP_FILTER_MODE = 0x1155;
+exports.CL_SAMPLER_LOD_MIN = 0x1156;
+exports.CL_SAMPLER_LOD_MAX = 0x1157;
+
+/* cl_map_flags - bitfield */
+exports.CL_MAP_READ = (1 << 0);
+exports.CL_MAP_WRITE = (1 << 1);
+exports.CL_MAP_WRITE_INVALIDATE_REGION = (1 << 2);
+
+/* cl_channel_type */
+exports.CL_SNORM_INT8 = 0x10D0;
+exports.CL_SNORM_INT16 = 0x10D1;
+exports.CL_UNORM_INT8 = 0x10D2;
+exports.CL_UNORM_INT16 = 0x10D3;;
+exports.CL_UNORM_SHORT_565 = 0x10D4;
+exports.CL_UNORM_SHORT_555 = 0x10D5;
+exports.CL_UNORM_INT_101010 = 0x10D6;
+exports.CL_SIGNED_INT8 = 0x10D7;
+exports.CL_SIGNED_INT16 = 0x10D8;
+exports.CL_SIGNED_INT32 = 0x10D9;
+exports.CL_UNSIGNED_INT8 = 0x10DA;;
+exports.CL_UNSIGNED_INT16 = 0x10DB;
+exports.CL_UNSIGNED_INT32 = 0x10DC;
+exports.CL_HALF_FLOAT = 0x10DD;
+exports.CL_FLOAT = 0x10DE;
+exports.CL_UNORM_INT24 = 0x10DF;
+
+/* cl_channel_order */
+exports.CL_R = 0x10B0;
+exports.CL_A = 0x10B1;
+exports.CL_RG = 0x10B2;
+exports.CL_RA = 0x10B3;
+exports.CL_RGB = 0x10B4;
+exports.CL_RGBA = 0x10B5;
+exports.CL_BGRA = 0x10B6;
+exports.CL_ARGB = 0x10B7;
+exports.CL_INTENSITY = 0x10B8;
+exports.CL_LUMINANCE = 0x10B9;
+exports.CL_Rx = 0x10BA;
+exports.CL_RGx = 0x10BB;
+exports.CL_RGBx = 0x10BC;
+exports.CL_DEPTH = 0x10BD;
+exports.CL_DEPTH_STENCIL = 0x10BE;
+exports.CL_sRGB = 0x10BF;
+exports.CL_sRGBx = 0x10C0;
+exports.CL_sRGBA = 0x10C1;
+exports.CL_sBGRA = 0x10C2;
+exports.CL_ABGR = 0x10C3;
 
 exports.CL_TRUE = 1;
 exports.CL_FALSE = 0;
@@ -189,3 +261,14 @@ exports.clGetDeviceInfo = (device, info) => {
     device[keyName] = value;
 };
 
+exports.clCreateImage2D = function () {
+    const method = compute.createImage2D;
+    return method.apply(null, arguments);
+}
+
+exports.clCreateSampler = function () {
+    const method = compute.createSampler;
+    return method.apply(null, arguments);
+}
+
+exports.clEnqueueReadImage = compute.enqueueReadImage;

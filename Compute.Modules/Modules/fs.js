@@ -1,4 +1,4 @@
-const { read, write } = compute;
+const { read, write, img } = compute;
 const defaultSpacing = 2;
 
 let jsonSpacing = defaultSpacing;
@@ -19,6 +19,11 @@ exports.writeJson = (path, json) => {
         write(path, string);
     }
 }
+
+
+exports.readImage = compute.readImage;
+exports.writeImage = compute.writeImage;
+exports.freeImage = compute.freeImage
 
 exports.write = (path, string) => write(path, string);
 exports.read = path => read(path);
