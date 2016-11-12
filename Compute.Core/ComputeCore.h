@@ -59,6 +59,9 @@
 #include <SDL_image.h>
 #include <functional>
 
+#include "FreeImage.h"
+
+#pragma comment(lib, "FreeImage.lib")
 #pragma comment(lib, "SDL2main.lib")
 #pragma comment(lib, "SDL2_image.lib")
 #pragma comment(lib, "SDL2.lib")

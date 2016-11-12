@@ -229,19 +229,17 @@ void setKernelArg(v8::FunctionArgs args)
     auto kernel = cl_kernel(UnwrapPointer(args[0]));
     auto index = GetNumber(args[1]);
     auto size = GetNumber(args[2]);
-    
-    v8::Local<v8::Value> value;
 
     // Convert to typed arrays
     if(args[3]->IsObject())
     {
         auto buffer = UnwrapPointer(args[3]);
-        Return(args, clSetKernelArg(kernel, index, size, &buffer));
+        Return(args, clSetKernelArg(kernel, index, sizeof(cl_mem), &buffer));
     }
     else if(args[3]->IsNumber())
     {
-        auto number = GetNumber(args[3]);
-        Return(args, clSetKernelArg(kernel, index, size, &number));
+        auto number = static_cast<int>(GetNumber(args[3]));
+        Return(args, clSetKernelArg(kernel, index, sizeof(cl_int), &number));
     }
     else if (args[3]->IsString())
     {
@@ -252,22 +250,61 @@ void setKernelArg(v8::FunctionArgs args)
 
 void createImage2D(v8::FunctionArgs args)
 {
-    auto object =  v8::Object::New(args.GetIsolate());
+    auto context = cl_context(UnwrapPointer(args[0]));
+    auto flags = GetNumber(args[1]);
+    auto format = GetObject(args[2]);
+    auto width = GetNumber(args[3]);
+    auto height = GetNumber(args[4]);
+    auto data = UnwrapPointer(args[6]);
+    
+    cl_image_format clFormat;
+    clFormat.image_channel_data_type = GetNumber(format->Get(v8::NewString("image_channel_data_type")));
+    clFormat.image_channel_order = GetNumber(format->Get(v8::NewString("image_channel_order")));
 
-    args.GetReturnValue().Set(object);
+    auto err = 0;
+    auto image = clCreateImage2D(context, flags, &clFormat, width, height, 0, data, &err);
+    args.GetReturnValue().Set(v8::WrapPointer(image));
 }
 
 void createSampler(v8::FunctionArgs args)
 {
-    auto object = v8::Object::New(args.GetIsolate());
-
-    args.GetReturnValue().Set(object);
+    auto context = cl_context(UnwrapPointer(args[0]));
+    auto normalise = GetNumber(args[1]);
+    auto param1 = GetNumber(args[2]);
+    auto param2 = GetNumber(args[3]);
+    auto error = 0;
+    auto sampler = clCreateSampler(context, normalise, param1, param2, &error);
+    args.GetReturnValue().Set(v8::WrapPointer(sampler));
 }
 
 void enqueueReadImage(v8::FunctionArgs args)
 {
-     auto buffer = v8::ArrayBuffer::New(args.GetIsolate(), 5);
+    auto commandQueue = cl_command_queue(UnwrapPointer(args[0]));
+    auto output = cl_mem(UnwrapPointer(args[1]));
+    auto boolean = GetNumber(args[2]);
+    auto origin = args[3].As<v8::TypedArray>();
+    auto region = args[4].As<v8::TypedArray>();
+    auto buffer = args[7].As<v8::ArrayBuffer>();
 
+    auto originPtr = (const size_t *)origin->Buffer()->GetContents().Data();
+    auto regionPtr = (const size_t *)region->Buffer()->GetContents().Data();
+    auto bufferPtr = buffer->GetContents().Data();
+
+    auto err = clEnqueueReadImage(commandQueue, output, boolean, originPtr, regionPtr, 0, 0, bufferPtr, 0, nullptr, nullptr);
+}
+
+void releaseSampler(v8::FunctionArgs args)
+{
+    clReleaseSampler(cl_sampler(UnwrapPointer(args[0])));
+}
+
+void hasImageSupport(v8::FunctionArgs args)
+{
+    auto device = cl_device_id(UnwrapPointer(args[0]));
+
+    cl_bool imageSupport = CL_FALSE;
+    clGetDeviceInfo(device, CL_DEVICE_IMAGE_SUPPORT, sizeof(cl_bool), &imageSupport, nullptr);
+    args.GetReturnValue().Set(imageSupport == CL_TRUE ? true : false);
 }
 
 void compute::registerOpenCL(v8::Exports exports)
@@ -292,5 +329,8 @@ void compute::registerOpenCL(v8::Exports exports)
     AttachFunction(exports, "releaseKernel", releasekernel);
     AttachFunction(exports, "createImage2D", createImage2D);
     AttachFunction(exports, "createSampler", createSampler);
+    AttachFunction(exports, "releaseSampler", releaseSampler);
     AttachFunction(exports, "enqueueReadImage", enqueueReadImage);
+
+    AttachFunction(exports, "hasImageSupport", hasImageSupport);
 }

@@ -3,6 +3,7 @@
 #include "JsRuntime.h"
 #include "glew.h"
 #include "gl/gl.h"
+#include "FreeImage.h"
 
 using namespace Poco::Util;
 using namespace compute;
@@ -38,7 +39,7 @@ void ComputeApp::initialize(Application& self)
 
 void ComputeApp::nothing(const std::string& name, const std::string& v)
 {
-    
+
 }
 
 void ComputeApp::defineOptions(OptionSet& options)
@@ -143,14 +144,14 @@ void ComputeApp::handleInfo(const std::string& name, const std::string& v)
 
 void ComputeApp::releaseExternalLirbaries()
 {
-    IMG_Quit();
+    FreeImage_DeInitialise();
     SDL_Quit();
 }
 
 void ComputeApp::setupExternalLirbaries()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
-    IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
+    FreeImage_Initialise();
 }
 
 std::string ComputeApp::getOpenGLVersion()

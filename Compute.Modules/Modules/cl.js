@@ -271,4 +271,7 @@ exports.clCreateSampler = function () {
     return method.apply(null, arguments);
 }
 
+exports.clReleaseSampler = compute.releaseSampler;
+
 exports.clEnqueueReadImage = compute.enqueueReadImage;
+exports.hasImageSupport = compute.hasImageSupport;

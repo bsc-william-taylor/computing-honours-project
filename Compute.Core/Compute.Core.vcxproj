@@ -112,7 +112,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\sdl\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\sdl\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(SolutionDir)Compute.Libs\freeimage;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Debug;$(SolutionDir)Compute.Libs\v8\lib\Debug;$(SolutionDir)Compute.Libs\sdl\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
