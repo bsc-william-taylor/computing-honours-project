@@ -1126,6 +1126,12 @@ exports.glColor3f = function (r, g, b) {
     compute.glColor3f(r, g, b);
 }
 
+exports.glUniformMatrix4 = compute.uniformMatrix4fv;
+
+exports.glGetUniformLocation = function(programID, name) {
+    return compute.getUniformLocation(programID, name);
+}
+
 exports.glTranslatef = function(x, y, z) {
     compute.glTranslatef(x, y, z);
 };

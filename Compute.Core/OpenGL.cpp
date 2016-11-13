@@ -338,6 +338,26 @@ void bindVertexArray(v8::FunctionArgs args)
     glBindVertexArray(num);
 }
 
+void getUniformLocation(v8::FunctionArgs args)
+{
+    auto program = GetNumber(args[0]);
+    auto name = GetString(args[1]);
+
+    auto uniform = glGetUniformLocation(program, name.c_str());
+    Return(args, uniform);
+}
+
+void uniformMatrix4fv(v8::FunctionArgs args)
+{
+    auto location = GetNumber(args[0]);
+    auto count = GetNumber(args[1]);
+    auto normalise = GetNumber(args[2]);
+    auto matrix = args[3].As<v8::TypedArray>();
+    auto matrixPtr = (GLfloat*)matrix->Buffer()->GetContents().Data();
+
+    glUniformMatrix4fv(location, count, normalise, (GLfloat*)&matrixPtr[0]);
+}
+
 void compute::registerOpenGL(v8::Exports exports)
 {
     // Command Execution
@@ -389,4 +409,7 @@ void compute::registerOpenGL(v8::Exports exports)
     AttachFunction(exports, "glClear", glClear);
     AttachFunction(exports, "glBegin", glBegin);
     AttachFunction(exports, "glEnd", glEnd);
+
+    AttachFunction(exports, "uniformMatrix4fv", uniformMatrix4fv);
+    AttachFunction(exports, "getUniformLocation", getUniformLocation);
 }
