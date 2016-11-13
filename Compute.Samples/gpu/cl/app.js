@@ -95,8 +95,6 @@ function image(program, context, commandQueue, kernalName, inputName, outputName
     clSetKernelArg(kernel, 3, 4, img.width);
     clSetKernelArg(kernel, 4, 4, img.height);
 
-      console.log(img.width, img.height);
-
     const output = new ArrayBuffer(img.width * img.height * 4);
     const region = Uint32Array.from([img.width, img.height, 1]);
     const origin = Uint32Array.from([0, 0, 0]);
