@@ -5,9 +5,9 @@ const glm = require('gl-matrix');
 const gl = require('gl');
 const fs = require('fs');
 
-const triangle = [ -0.8, -1.0, 0.1, 0.0, 1.0, 0.1, 0.8, -1.0, 0.1 ];
 const shaders = { vs: fs.read('./vert.glsl'), fs: fs.read('./frag.glsl') };
 const geometry = fs.readJson('./cube.json');
+const texture = fs.readImage('./crate.jpg');
 
 function createShader(shaderType, shaderSource) {
     with(gl) {
@@ -42,14 +42,25 @@ openWindow({ w: 800, h: 500 }, window => {
         glAttachShader(program, fs);
         glLinkProgram(program);
         glUseProgram(program);
+
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_TEXTURE_2D);
 
         const vertexArrayObject = new Uint32Array(1);
         const vertexBuffer = new Uint32Array(1);
         const colourBuffer = new Uint32Array(1);
+        const uvBuffer = new Uint32Array(1);
+        const textureID = new Uint32Array(1);
+
+        glGenTextures(1, textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID[0]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
+        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
         const vertexData = Float32Array.from(geometry.cube);
         const colourData = Float32Array.from(geometry.colour);
+        const uvData = Float32Array.from(geometry.uvs);
 
         glGenVertexArray(1, vertexArrayObject);
         glBindVertexArray(vertexArrayObject[0]);
@@ -66,6 +77,12 @@ openWindow({ w: 800, h: 500 }, window => {
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+        glGenBuffers(1, uvBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer[0]);
+        glBufferData(GL_ARRAY_BUFFER, uvData.byteLength, uvData, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
         const projection = glm.mat4.create();
         const model = glm.mat4.create();
         const view = glm.mat4.create();
@@ -81,6 +98,8 @@ openWindow({ w: 800, h: 500 }, window => {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glClearColor(0.0, 0.0, 0.0, 0.0);
 
+            glm.mat4.rotate(model, model, glm.glMatrix.toRadian(1.0), glm.vec3.fromValues(0, 1, 0));
+
             const projectionLocation = glGetUniformLocation(program, "projection");
             const modelLocation = glGetUniformLocation(program, "model");
             const viewLocation = glGetUniformLocation(program, "view");
@@ -90,9 +109,11 @@ openWindow({ w: 800, h: 500 }, window => {
             glUniformMatrix4(viewLocation, 1, GL_FALSE, Float32Array.from(view));
             glDrawArrays(GL_TRIANGLES, 0, 36);
 
-            glm.mat4.rotate(model, model, glm.glMatrix.toRadian(1.0), glm.vec3.fromValues(0, 1, 0));
-
             window.swapBuffers();
+        });
+
+        window.onClose(() => {
+          //fs.freeImage(texture);
         });
     }
 });

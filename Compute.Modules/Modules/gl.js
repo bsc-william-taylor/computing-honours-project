@@ -1151,3 +1151,8 @@ exports.glLoadIdentity = function() {
 exports.glEnable = function(enable) {
     compute.glEnable(enable);
 }
+
+exports.glBindTexture = compute.bindTexture;
+exports.glTexImage2D = compute.textureImage2D;
+exports.glGenTextures = compute.genTextures;
+exports.glTexParameter = compute.textureParameter;

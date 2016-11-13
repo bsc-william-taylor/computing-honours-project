@@ -7,8 +7,6 @@ const http = require('http');
 const gl = require('gl');
 const fs = require('fs');
 
-const core = require('./core.js');
-
 function renderObject(object, type, rotation) {
     with(gl) {
         const { x, y, z } = object.translate;
@@ -20,7 +18,7 @@ function renderObject(object, type, rotation) {
         glBegin(type);
 
         object.faces.forEach((face, index) => {
-            const { r, g, b } = object.colours[index]; 
+            const { r, g, b } = object.colours[index];
             glColor3f(r, g, b);
             face.vertices.forEach(({ x, y, z }) => glVertex3f(x, y, z));
         });

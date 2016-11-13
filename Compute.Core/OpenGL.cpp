@@ -358,6 +358,57 @@ void uniformMatrix4fv(v8::FunctionArgs args)
     glUniformMatrix4fv(location, count, normalise, (GLfloat*)&matrixPtr[0]);
 }
 
+void bindTexture(v8::FunctionArgs args)
+{
+    auto textureType = GetNumber(args[0]);
+    auto textureID = GetNumber(args[1]);
+
+    glBindTexture(textureType, textureID);
+}
+
+void activeTexture(v8::FunctionArgs args)
+{
+    auto texture = GetNumber(args[0]);
+    glActiveTexture(texture);
+}
+
+void genTextures(v8::FunctionArgs args)
+{
+    auto count = GetNumber(args[0]);
+    auto array = GetArray(args[1]);
+
+    std::vector<GLuint> ids(count);
+    glGenTextures(count, ids.data());
+    for (auto i = 0; i < count; i++)
+    {
+        array->Set(i, v8::NewNumber(ids[i]));
+    }
+}
+
+void textureParameter(v8::FunctionArgs args)
+{
+    auto textureType = GetNumber(args[0]);
+    auto filterType = GetNumber(args[1]);
+    auto filterValue = GetNumber(args[2]);
+
+    glTexParameteri(textureType, filterType, filterValue);
+}
+
+void textureImage2D(v8::FunctionArgs args)
+{
+    auto target = GetNumber(args[0]);
+    auto level = GetNumber(args[1]);
+    auto internalFormat = GetNumber(args[2]);
+    auto width = GetNumber(args[3]);
+    auto height = GetNumber(args[4]);
+    auto border = GetNumber(args[5]);
+    auto format = GetNumber(args[6]);
+    auto type = GetNumber(args[7]);
+    auto data = (FIBITMAP*)UnwrapPointer(args[8]);
+
+    glTexImage2D(target, level, internalFormat, width, height, border, format, type, FreeImage_GetBits(data));
+}
+
 void compute::registerOpenGL(v8::Exports exports)
 {
     // Command Execution
@@ -392,6 +443,9 @@ void compute::registerOpenGL(v8::Exports exports)
     AttachFunction(exports, "glUseProgram", useProgram);
     AttachFunction(exports, "glGetShaderiv", getShaderiv);
     AttachFunction(exports, "glGetShaderInfoLog", getShaderInfoLog);
+    AttachFunction(exports, "uniformMatrix4fv", uniformMatrix4fv);
+    AttachFunction(exports, "getUniformLocation", getUniformLocation);
+
 
     // Drawing functions
     AttachFunction(exports, "glDrawArrays", glDraw);
@@ -410,6 +464,9 @@ void compute::registerOpenGL(v8::Exports exports)
     AttachFunction(exports, "glBegin", glBegin);
     AttachFunction(exports, "glEnd", glEnd);
 
-    AttachFunction(exports, "uniformMatrix4fv", uniformMatrix4fv);
-    AttachFunction(exports, "getUniformLocation", getUniformLocation);
+    // Texture Functions
+    AttachFunction(exports, "genTextures", genTextures);
+    AttachFunction(exports, "textureParameter", textureParameter);
+    AttachFunction(exports, "textureImage2D", textureImage2D);
+    AttachFunction(exports, "bindTexture", bindTexture);
 }
