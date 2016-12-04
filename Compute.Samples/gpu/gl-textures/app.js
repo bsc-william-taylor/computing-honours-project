@@ -10,7 +10,7 @@ const geometry = fs.readJson('./cube.json');
 const texture = fs.readImage('./crate.jpg');
 
 function createShader(shaderType, shaderSource) {
-    with(gl) {
+    with (gl) {
         const shader = glCreateShader(shaderType);
         glShaderSource(shader, shaderSource.length, shaderSource, 0);
         glCompileShader(shader);
@@ -19,7 +19,7 @@ function createShader(shaderType, shaderSource) {
         glGetShaderiv(shader, GL_COMPILE_STATUS, compileStatus);
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, logLength);
 
-        if(compileStatus[0] != GL_TRUE) {
+        if (compileStatus[0] != GL_TRUE) {
             const log = [,];
             glGetShaderInfoLog(shader, logLength[0], logLength[0], log)
             console.log('Compile error', log[0]);
@@ -34,10 +34,11 @@ openWindow({ w: 800, h: 500 }, window => {
     window.show();
     window.enableOpenGL();
 
-    with(gl) {
+    with (gl) {
         const vs = createShader(GL_VERTEX_SHADER, shaders.vs.contents);
         const fs = createShader(GL_FRAGMENT_SHADER, shaders.fs.contents);
         const program = glCreateProgram();
+        
         glAttachShader(program, vs);
         glAttachShader(program, fs);
         glLinkProgram(program);
@@ -89,9 +90,9 @@ openWindow({ w: 800, h: 500 }, window => {
 
         glm.mat4.perspective(projection, glm.glMatrix.toRadian(45.0), 4.0 / 3.0, 0.1, 100.0);
         glm.mat4.lookAt(view,
-          glm.vec3.fromValues(4,3,-3), // Camera is at (4,3,-3), in World Space
-					glm.vec3.fromValues(0,0,0), // and looks at the origin
-					glm.vec3.fromValues(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+            glm.vec3.fromValues(4, 3, -3),
+            glm.vec3.fromValues(0, 0, 0),
+            glm.vec3.fromValues(0, 1, 0)
         );
 
         window.onFrame(() => {
@@ -113,7 +114,7 @@ openWindow({ w: 800, h: 500 }, window => {
         });
 
         window.onClose(() => {
-          //fs.freeImage(texture);
+            fs.freeImage(texture);
         });
     }
 });
