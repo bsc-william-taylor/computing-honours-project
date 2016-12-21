@@ -21,8 +21,8 @@ exports.writeJson = (path, json) => {
 }
 
 
-exports.readImage = compute.readImage;
 exports.writeImage = compute.writeImage;
+exports.readImage = compute.readImage;
 exports.freeImage = compute.freeImage;
 
 exports.write = (path, string) => write(path, string);

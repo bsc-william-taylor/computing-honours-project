@@ -66,8 +66,11 @@ void write(v8::FunctionArgs args)
 
 void freeImage(v8::FunctionArgs args)
 {
-    auto bitmap = v8::UnwrapPointer(args.This());
-    //FreeImage_Unload(bitmap);
+    if(args.Length() == 1)
+    {
+        auto bitmap = UnwrapPointer(args[0]);
+        FreeImage_Unload(static_cast<FIBITMAP*>(bitmap));
+    } 
 }
 
 void readImage(v8::FunctionArgs args)

@@ -33,6 +33,9 @@ openWindow({ w: 800, h: 500 }, window => {
     window.setTitle('OpenGL Example');
     window.show();
     window.enableOpenGL();
+    window.onClose(() => {
+        fs.freeImage(texture)
+    });
 
     with (gl) {
         const vs = createShader(GL_VERTEX_SHADER, shaders.vs.contents);
@@ -111,10 +114,6 @@ openWindow({ w: 800, h: 500 }, window => {
             glDrawArrays(GL_TRIANGLES, 0, 36);
 
             window.swapBuffers();
-        });
-
-        window.onClose(() => {
-            fs.freeImage(texture);
         });
     }
 });

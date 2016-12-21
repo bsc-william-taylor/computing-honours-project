@@ -78,39 +78,8 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
     }
 }
 
-v8::Isolate* createIsolate(v8::Isolate::CreateParams& params)
-{
-   return v8::Isolate::New(params);
-}
-
-void createHandles(v8::Isolate* isolate)
-{
-    // Create new handle
-    v8::Local<v8::Number> number = v8::Number::New(isolate, 10.0);
-    // Acquire raw value
-    double v = number->Value();
-    // Check if handle is a number
-    bool b = number->IsNumber();
-}
-
-void createScope()
-{
-    // Handles are cleanup when scope is destroyed
-    v8::HandleScope scope(v8::Isolate::GetCurrent());
-}
-
-void createContext(v8::Isolate* isolate)
-{
-    // Create the global obejct for the context
-    auto global = v8::ObjectTemplate::New(isolate);
-
-    // Create our JavaScript context which can execute code
-    auto context = v8::Context::New(isolate, nullptr, global);
-}
-
 void JsRuntime::start(std::string filename)
 {
-
     ArrayBufferAllocator allocator;
     v8::Isolate::CreateParams createParams;
     createParams.array_buffer_allocator = &allocator;
