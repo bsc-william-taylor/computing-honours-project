@@ -28,7 +28,8 @@
 *.lai
 *.la
 *.a
-*.lib
+Release/*.lib
+Debug/*.lib
 
 # Executables
 *.exe
