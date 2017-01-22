@@ -183,10 +183,6 @@ auto compute::require(v8::FunctionArgs args) -> void
 
         global->Set(v8::NewString("cpp"), compute);
 
-        //std::ofstream ostream("./" + moduleName + ".js");
-        //ostream << v8::GetString(script);
-        //ostream.close();
-        
         v8::Local<v8::Script> script;
         v8::Local<v8::Value> output;
         v8::TryCatch trycatch;

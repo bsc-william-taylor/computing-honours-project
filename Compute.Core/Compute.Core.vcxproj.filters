@@ -1,142 +1,136 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Code">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Source Code\Modules">
-      <UniqueIdentifier>{0e30dd41-7f62-435f-b9ed-67e26a0dc9e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Application">
+    <Filter Include="Application">
       <UniqueIdentifier>{7d3451f7-02dc-4234-8d81-ec4fbe6c7fab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\JavaScript">
+    <Filter Include="JavaScript">
       <UniqueIdentifier>{b1de2429-0e43-4c9d-9dca-66fa9c2e8643}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Core">
+    <Filter Include="Modules">
+      <UniqueIdentifier>{0e30dd41-7f62-435f-b9ed-67e26a0dc9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Core">
       <UniqueIdentifier>{5b80a82b-ed38-45b1-958a-323e25051794}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Modules\Gpu">
+    <Filter Include="Modules\Gpu">
       <UniqueIdentifier>{6175045d-2283-44d6-8241-13862741eb78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Modules.cpp">
-      <Filter>Source Code\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="JsRuntime.cpp">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="JsPlatform.cpp">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="JsPlatformTasks.cpp">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="JsExtensions.cpp">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="JsArrayAllocater.cpp">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="OpenGL.cpp">
-      <Filter>Source Code\Modules\Gpu</Filter>
+      <Filter>Modules\Gpu</Filter>
     </ClCompile>
     <ClCompile Include="OpenCL.cpp">
-      <Filter>Source Code\Modules\Gpu</Filter>
+      <Filter>Modules\Gpu</Filter>
     </ClCompile>
     <ClCompile Include="DateTime.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClCompile>
     <ClCompile Include="Console.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClCompile>
     <ClCompile Include="Display.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClCompile>
     <ClCompile Include="Fs.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClCompile>
     <ClCompile Include="Http.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClCompile>
     <ClCompile Include="System.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Code\Application</Filter>
+      <Filter>Modules\Core</Filter>
     </ClCompile>
     <ClCompile Include="JsPlatformStructures.cpp">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="JsDebug.cpp">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Modules.h">
-      <Filter>Source Code\Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="JsRuntime.h">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="JsArrayAllocater.h">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="JsObject.h">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="JsPlatform.h">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="JsPlatformTasks.h">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="JsExtensions.h">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="OpenGL.h">
-      <Filter>Source Code\Modules\Gpu</Filter>
+      <Filter>Modules\Gpu</Filter>
     </ClInclude>
     <ClInclude Include="OpenCL.h">
-      <Filter>Source Code\Modules\Gpu</Filter>
+      <Filter>Modules\Gpu</Filter>
     </ClInclude>
     <ClInclude Include="DateTime.h">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="Fs.h">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="Http.h">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="System.h">
-      <Filter>Source Code\Modules\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Source Code\Application</Filter>
+      <Filter>Modules\Core</Filter>
     </ClInclude>
     <ClInclude Include="JsPlatformStructures.h">
-      <Filter>Source Code\JavaScript</Filter>
-    </ClInclude>
-    <ClInclude Include="ComputeCore.h">
-      <Filter>Source Code</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="JsDebug.h">
-      <Filter>Source Code\JavaScript</Filter>
+      <Filter>JavaScript</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
-      <Filter>Source Code\Modules\Core</Filter>
+      <Filter>Modules\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeCore.h" />
   </ItemGroup>
 </Project>
