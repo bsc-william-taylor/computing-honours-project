@@ -12,7 +12,7 @@ const texture = fs.readImage('./crate.jpg');
 function createShader(shaderType, shaderSource) {
     with (gl) {
         const shader = glCreateShader(shaderType);
-        glShaderSource(shader, shaderSource.length, shaderSource, 0);
+        glShaderSource(shader, 1, shaderSource, 0);
         glCompileShader(shader);
 
         const compileStatus = [,], logLength = [,];

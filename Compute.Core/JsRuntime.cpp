@@ -112,7 +112,7 @@ void JsRuntime::initialise(std::vector<std::string>& args)
         argv[i] = const_cast<char *>(args[i].c_str());
     }
 
-    const auto v8Flags = "--expose_gc --expose-debug-as=v8debug --trace-hydrogen-file=hydrogen.cfg --trace-turbo-cfg-file=turbo.cfg --redirect-code-traces-to=code.asm";
+    const auto v8Flags = "--expose_gc --expose-debug-as=v8debug";
 
     v8::V8::InitializeExternalStartupData(argv[0]);
     v8::V8::SetFlagsFromString(v8Flags, strlen(v8Flags));
