@@ -44,4 +44,5 @@ Compute.Samples/common/node_modules/
 Compute.Samples/gpu/cl/node_modules/
 Compute.Samples/gpu/gl/node_modules/
 Compute.Samples/gpu/node_modules/
+.vscode/
 .vs/
