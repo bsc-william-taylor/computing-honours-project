@@ -15,6 +15,15 @@ void printLine(v8::FunctionArgs args)
     }
 }
 
+void clear(v8::FunctionArgs args)
+{
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
 void print(v8::FunctionArgs args)
 {
     const auto argLength = args.Length();
@@ -40,4 +49,5 @@ void compute::registerConsole(v8::Exports exports)
     AttachFunction(exports, "printLine", printLine);
     AttachFunction(exports, "print", print);
     AttachFunction(exports, "read", get);
+    AttachFunction(exports, "clear", clear);
 }

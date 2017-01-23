@@ -9,20 +9,17 @@
 #include "Http.h"
 #include "Fs.h"
 #include "Application.h"
-#include "Debug.h"
 
-#include <Poco/JSON/JSON.h>
-#include <Poco/JSON/Parser.h>
+using ModuleCallbackMap = std::map<std::string, compute::JsModuleRegisterCallback>;
+using ModuleMap = std::map<std::string, compute::JsModule>;
 
-std::map<std::string, compute::JsModule> compute::modules::moduleCache = {};
-std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::moduleBindings =
+ModuleCallbackMap compute::modules::moduleBindings =
 {
     {
         { "datetime", [](auto& object) { compute::registerDateTime(object); } },
         { "display", [](auto& object) { compute::registerDisplay(object); } },
         { "console", [](auto& object) { compute::registerConsole(object); } },
         { "system", [](auto& object) { compute::registerSystem(object); } },
-        { "debug", [](auto& object) { compute::registerDebug(object); } },
         { "http", [](auto& object) { compute::registerHttp(object); } },
         { "cl", [](auto& object) { compute::registerOpenCL(object); } },
         { "gl", [](auto& object) { compute::registerOpenGL(object); } },
@@ -30,6 +27,8 @@ std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::modul
         { "maths", [](auto& object) {}}
     }
 };
+
+ModuleMap compute::modules::moduleCache = {};
 
 std::string moduleDirectory = "";
 std::string moduleBegin = "(function(compute){ const module = { exports: {} }; let exports = module.exports; ";

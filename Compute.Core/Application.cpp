@@ -37,11 +37,6 @@ void ComputeApp::initialize(Application& self)
     loadConfiguration();
 }
 
-void ComputeApp::nothing(const std::string& name, const std::string& v)
-{
-
-}
-
 void ComputeApp::defineOptions(OptionSet& options)
 {
     Application::defineOptions(options);

@@ -4,8 +4,6 @@
 #include "JsArrayAllocater.h"
 #include "Fs.h"
 #include "JsExtensions.h"
-#include "JsDebug.h"
-#include "Debug.h"
 
 using namespace compute;
 
@@ -20,22 +18,11 @@ JsRuntime::~JsRuntime()
 {
 }
 
-void LogCallback(const char* name, int event)
-{
-/*
-    std::ofstream fileLog("./log.txt", std::ios::out | std::ios::app);
-    fileLog << name << event << std::endl;
-    fileLog.close();
-*/
-}
-
-void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> context, v8::Local<v8::String> source)
+void JsRuntime::launchScript(v8::Isolate* isolate, v8::Local<v8::Context> context, v8::Local<v8::String> source)
 {
     v8::TryCatch trycatch(isolate);
     v8::Local<v8::Script> script;
     v8::Local<v8::Value> output;
-
-    isolate->SetEventLogger(LogCallback);
 
     if (!v8::Script::Compile(context, source).ToLocal(&script))
     {
@@ -50,12 +37,15 @@ void JsRuntime::executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> c
     while (platform.PumpMessageLoop(isolate));
 }
 
-void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> context)
+void JsRuntime::launchREPL(v8::Isolate* isolate, v8::Local<v8::Context> context)
 {
     std::string enteredLine;
     std::cout << "> ";
 
     while (getline(std::cin, enteredLine)) {
+        if(enteredLine == "quit")
+            break;
+
         v8::TryCatch trycatch(isolate);
         v8::Local<v8::Script> script;
         v8::Local<v8::Value> output;
@@ -63,15 +53,12 @@ void JsRuntime::executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> cont
 
         if (!v8::Script::Compile(context, source).ToLocal(&script)) {
             CatchExceptions(trycatch);
-            break;
-        }
-
-        if (!script->Run(context).ToLocal(&output)) {
+        } else if (!script->Run(context).ToLocal(&output)) {
             CatchExceptions(trycatch);
-            break;
+        } else {
+            std::cout << GetString(output->ToString()) << std::endl;
         }
 
-        std::cout << *v8::String::Utf8Value(output->ToString()) << std::endl;
         std::cout << "> ";
 
         while (platform.PumpMessageLoop(isolate));
@@ -89,18 +76,27 @@ void JsRuntime::start(std::string filename)
         v8::Isolate::Scope isolateScope(isolate);
         v8::HandleScope handleScope(isolate);
 
-        auto moduleTemplate = registerCommonJsModules();
-        auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
-        auto scope = v8::Context::Scope(context);
+        const auto fileProvided = filename.empty();
+        const auto moduleTemplate = registerCommonJsModules();
+        const auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
+        const auto scope = v8::Context::Scope(context);
 
-        _context.Reset(isolate, context);
-    
         const auto src = v8::NewString(readStartupFile(filename.c_str()));
-        filename.empty() ? executeRepMode(isolate, context) : executeScriptMode(isolate, context, src);
+
+        if(fileProvided)
+        {
+            launchScript(isolate, context, src);
+        }
+        else
+        {
+            launchREPL(isolate, context);
+        }
+
         releaseModuleCache();
     }
 
-    isolate->RequestGarbageCollectionForTesting(v8::Isolate::kFullGarbageCollection);
+    //isolate->RequestGarbageCollectionForTesting(v8::Isolate::kFullGarbageCollection);
+    isolate->LowMemoryNotification();
     isolate->Dispose();
 
     v8::V8::Dispose();

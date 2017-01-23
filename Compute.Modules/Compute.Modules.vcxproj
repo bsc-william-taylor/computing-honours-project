@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Modules\debug.js" />
     <None Include="Modules\http.js" />
     <None Include="Modules\maths.js" />
     <None Include="Modules\system.js" />

@@ -66,9 +66,6 @@
     <ClCompile Include="JsDebug.cpp">
       <Filter>JavaScript</Filter>
     </ClCompile>
-    <ClCompile Include="Debug.cpp">
-      <Filter>Modules\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -125,12 +122,9 @@
     <ClInclude Include="JsDebug.h">
       <Filter>JavaScript</Filter>
     </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>Modules\Core</Filter>
-    </ClInclude>
+    <ClInclude Include="ComputeCore.h" />
     <ClInclude Include="Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="ComputeCore.h" />
   </ItemGroup>
 </Project>

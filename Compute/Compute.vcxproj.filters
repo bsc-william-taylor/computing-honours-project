@@ -15,5 +15,12 @@
     <ClInclude Include="main.h">
       <Filter>Source Code</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Compute.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Processor-96.ico" />
   </ItemGroup>
 </Project>

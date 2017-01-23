@@ -268,7 +268,7 @@ void shaderSource(v8::FunctionArgs args)
     auto sourceArray = new char*[1];
 
     sourceArray[0] = (char*)source.c_str();
-    glShaderSource(shader, 1, sourceArray, nullptr);
+    glShaderSource(shader, count, sourceArray, nullptr);
     delete[] sourceArray;
 }
 

@@ -1,4 +1,4 @@
-const { printLine, print, read } = compute;
+const { printLine, print, read, clear } = compute;
 const jsonReplacer = null;
 const jsonSpacing = 2;
 const readToken = "";
@@ -18,6 +18,9 @@ const stringArguments = args => {
 
     return output;
 };
+
+exports.clear = clear;
+exports.cls = clear;
 
 exports.error = function() {
     const output = stringArguments(arguments);

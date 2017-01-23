@@ -6,9 +6,6 @@
 
 const int debugging_port = 5858;
 
-//std::ofstream originalOutput("./compute-output.txt");
-//std::ofstream originalInput("./compute-input.txt");
-
 void SendBuffer(int socket, const std::string& message)
 {
     int n = send(socket, message.c_str(), message.size(), 0);
@@ -27,17 +24,6 @@ void SendMessage(int socket, const std::string& message)
     SendBuffer(socket, ss.str()); //StringUtils::SPrintf("%s: %d\r\n", kContentLength, message.size()));                        
     SendBuffer(socket, "\r\n");   // Terminate header with empty line.
     SendBuffer(socket, message);  // Send message body as UTF-8.
-
-    /*
-    if (originalOutput.is_open())
-    {
-        originalOutput.close();
-    }
-
-    if(originalOutput.is_open())
-    {
-        originalOutput.close();
-    }*/
 }
 
 void DebuggerAgentMessageHandler(const v8::Debug::Message& message)
@@ -241,18 +227,8 @@ void DebuggerThread(v8::Isolate * isolate, DebugMessage incoming)
             auto debug = new DebugData;
             debug->socket = client_socket;
 
-/*
-
-            std::ofstream file("./compute-input.txt", std::ios::out | std::ios::app);
-            file << request;
-            file << "\r\n";
-            file << std::endl;
-            file.close();
-*/
-
             incoming(buffer, debug);
             //v8::Debug::SendCommand(isolate, &data[0], data.size(), debug);
-
 
             if (is_closing_session)
             {

@@ -17,7 +17,7 @@ namespace compute
 
         static JsPlatform& getPlatform();
     private:
-        void executeScriptMode(v8::Isolate* isolate, v8::Local<v8::Context> context, v8::Local<v8::String>);
-        void executeRepMode(v8::Isolate* isolate, v8::Local<v8::Context> context);
+        void launchScript(v8::Isolate* isolate, v8::Local<v8::Context> context, v8::Local<v8::String>);
+        void launchREPL(v8::Isolate* isolate, v8::Local<v8::Context> context);
     };
 }

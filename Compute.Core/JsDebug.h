@@ -3,7 +3,7 @@
 
 #include "ComputeCore.h"
 
-struct DebugData : public v8::Debug::ClientData
+struct DebugData : v8::Debug::ClientData
 {
     int socket;
 };
