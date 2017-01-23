@@ -76,7 +76,7 @@ void JsRuntime::start(std::string filename)
         v8::Isolate::Scope isolateScope(isolate);
         v8::HandleScope handleScope(isolate);
 
-        const auto fileProvided = filename.empty();
+        const auto fileProvided = !filename.empty();
         const auto moduleTemplate = registerCommonJsModules();
         const auto context = v8::Context::New(isolate, nullptr, moduleTemplate);
         const auto scope = v8::Context::Scope(context);
@@ -95,7 +95,6 @@ void JsRuntime::start(std::string filename)
         releaseModuleCache();
     }
 
-    //isolate->RequestGarbageCollectionForTesting(v8::Isolate::kFullGarbageCollection);
     isolate->LowMemoryNotification();
     isolate->Dispose();
 

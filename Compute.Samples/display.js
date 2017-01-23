@@ -13,7 +13,7 @@ openMessage(title, body, () => {
 
         window.enableOpenGL();
         window.onFrame(() => {
-            window.swapBuffers(x, y, z, str);
+            window.swapBuffers();
         });
     }); 
 });
