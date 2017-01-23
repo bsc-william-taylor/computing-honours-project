@@ -21,6 +21,7 @@
   <ItemGroup>
     <None Include="Modules\debug.js" />
     <None Include="Modules\http.js" />
+    <None Include="Modules\maths.js" />
     <None Include="Modules\system.js" />
     <None Include="Modules\console.js" />
     <None Include="Modules\display.js" />

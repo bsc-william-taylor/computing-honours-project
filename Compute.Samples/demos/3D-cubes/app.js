@@ -1,7 +1,7 @@
 
 const { openWindow } = require('display');
 const console = require('console');
-const glm = require('gl-matrix');
+const glm = require('maths');
 const gl = require('gl');
 const fs = require('fs');
 

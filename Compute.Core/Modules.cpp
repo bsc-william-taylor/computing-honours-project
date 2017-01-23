@@ -26,7 +26,8 @@ std::map<std::string, compute::JsModuleRegisterCallback> compute::modules::modul
         { "http", [](auto& object) { compute::registerHttp(object); } },
         { "cl", [](auto& object) { compute::registerOpenCL(object); } },
         { "gl", [](auto& object) { compute::registerOpenGL(object); } },
-        { "fs", [](auto& object) { compute::registerFs(object); } }
+        { "fs", [](auto& object) { compute::registerFs(object); } },
+        { "maths", [](auto& object) {}}
     }
 };
 
