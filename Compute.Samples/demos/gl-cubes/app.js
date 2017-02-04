@@ -1,5 +1,5 @@
 
-const { openWindow } = require('display');
+const { openFullscreenWindow } = require('display');
 const console = require('console');
 const glm = require('maths');
 const gl = require('gl');
@@ -29,8 +29,7 @@ function createShader(shaderType, shaderSource) {
     }
 }
 
-openWindow({ w: 800, h: 500 }, window => {
-    window.setTitle('OpenGL Example');
+openFullscreenWindow(window => {
     window.show();
     window.enableOpenGL();
     window.onClose(() => {
@@ -98,20 +97,44 @@ openWindow({ w: 800, h: 500 }, window => {
             glm.vec3.fromValues(0, 1, 0)
         );
 
+        let rotation = 1.0;
+
+        const number = 100;
+        const translations = [], rotations = [];
+
+        for(let i = 0; i < number; ++i) {
+            const randScale = () => Math.random() * 10 - 5
+            translations.push({x: randScale(), y: randScale(), z: randScale() });   
+            rotations.push({x: Math.random(), y: Math.random(), z: Math.random() });   
+        }
+
         window.onFrame(() => {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glClearColor(0.0, 0.0, 0.0, 0.0);
-
-            glm.mat4.rotate(model, model, glm.glMatrix.toRadian(1.0), glm.vec3.fromValues(0, 1, 0));
 
             const projectionLocation = glGetUniformLocation(program, "projection");
             const modelLocation = glGetUniformLocation(program, "model");
             const viewLocation = glGetUniformLocation(program, "view");
 
-            glUniformMatrix4(projectionLocation, 1, GL_FALSE, Float32Array.from(projection));
-            glUniformMatrix4(modelLocation, 1, GL_FALSE, Float32Array.from(model));
-            glUniformMatrix4(viewLocation, 1, GL_FALSE, Float32Array.from(view));
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            for(let i = 0; i < translations.length; i++)
+            {
+                const {x, y, z} = translations[i];
+                const scaleValue = 0.3 + x / 50.0;
+                const scaleVector = glm.vec3.fromValues(scaleValue, scaleValue, scaleValue);
+                const rotationVector = glm.vec3.fromValues(rotations[i].x, rotations[i].y, rotations[i].z);
+
+                glm.mat4.identity(model);
+                glm.mat4.translate(model, model, glm.vec3.fromValues(x, y, z));
+                glm.mat4.scale(model, model, scaleVector);
+                glm.mat4.rotate(model, model, glm.glMatrix.toRadian(rotation), rotationVector);
+                
+                glUniformMatrix4(projectionLocation, 1, GL_FALSE, Float32Array.from(projection));
+                glUniformMatrix4(modelLocation, 1, GL_FALSE, Float32Array.from(model));
+                glUniformMatrix4(viewLocation, 1, GL_FALSE, Float32Array.from(view));
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+            }
+         
+            rotation++;
 
             window.swapBuffers();
         });
