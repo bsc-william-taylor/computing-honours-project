@@ -1,8 +1,12 @@
 #version 330
 
-out vec4 color;
+uniform sampler2D sampler;
+
+in vec2 uv;
+
+out vec3 color;
 
 void main()
 {
-  color = vec4(0.0, 1.0, 0.0, 1.0);
+  color = texture2D(sampler, uv).bgr;
 }

@@ -1,34 +1,40 @@
-const console = require('console');
-const http = require('http');
 const cl = require('cl');
 const fs = require('fs');
 
-function acquirePlatform(){
-  const platforms = [];
+function acquireEnv(){
+  const platforms = [], devices = [];
 
   with(cl) {
     clGetPlatformIDs(0, null, platforms);
     clGetPlatformIDs(platforms.length, platforms, null);
-  }
 
-  return platforms[0];
-}
-
-function acquireDevice(platform) {
-  const devices = [];
-
-  with(cl) {
+    const platform = platforms[0];
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 0, null, devices);
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, devices.length, devices, null);
+    return { platform, device: devices[0],};
   }
-
-  return devices[0];
 }
 
-function image(program, context, commandQueue, kernalName, inputName, outputName) {
+const { platform, device } = acquireEnv();
+const source = fs.read('./kernel.cl');
+
+with(cl) {
+  const properties = [ CL_CONTEXT_PLATFORM, platform, 0 ];
+  const context = clCreateContextFromType(properties, CL_DEVICE_TYPE_ALL, null, null, null);
+  const commandQueue = clCreateCommandQueue(context, device, 0, null);
+
+  const program = clCreateProgramWithSource(context, 1, source.contents, null, null);
+  const err = clBuildProgram(program, 0, null, null, null, null);
+
+  if(err != CL_SUCCESS) {
+    const buildLog = {};
+    clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 1, buildLog, null);
+    console.log(buildLog.log);
+  }
+
   with(cl) {
-    const kernel = clCreateKernel(program, kernalName, null);
-    const img = fs.readImage(inputName);
+    const kernel = clCreateKernel(program, 'sobel', null);
+    const img = fs.readImage('image.png');
 
     const format = {}, error = {};
     format.image_channel_order = CL_RGBA;
@@ -52,33 +58,12 @@ function image(program, context, commandQueue, kernalName, inputName, outputName
     clEnqueueNDRangeKernel(commandQueue, kernel, 2, null, globalWorkSize, localWorkSize, 0, null, null);
     clEnqueueReadImage(commandQueue, imageMemory[1], CL_TRUE, origin, region, 0, 0, output, 0, null, null);
 
-    fs.writeImage(outputName, output, img.width, img.height);
+    fs.writeImage('output.png', output, img.width, img.height);
     fs.freeImage(img);
     
     clReleaseSampler(sampler);
     clReleaseKernel(kernel);
   }
-}
-
-const platform = acquirePlatform();
-const device = acquireDevice(platform);
-const source = fs.read('./kernel.cl');
-
-with(cl) {
-  const properties = [ CL_CONTEXT_PLATFORM, platform, 0 ];
-  const context = clCreateContextFromType(properties, CL_DEVICE_TYPE_ALL, null, null, null);
-  const commandQueue = clCreateCommandQueue(context, device, 0, null);
-
-  const program = clCreateProgramWithSource(context, 1, source.contents, null, null);
-  const err = clBuildProgram(program, 0, null, null, null, null);
-
-  if(err != CL_SUCCESS) {
-    const buildLog = {};
-    clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 1, buildLog, null);
-    console.log(buildLog.log);
-  }
-
-  image(program, context, commandQueue, "sobel", "image.png", "output.png");
 
   clReleaseCommandQueue(commandQueue);
   clReleaseContext(context);

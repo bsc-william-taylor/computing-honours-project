@@ -1,7 +1,7 @@
 
 const { openWindow } = require('display');
 const console = require('console');
-const glm = require('maths');
+const maths = require('maths');
 const gl = require('gl');
 const fs = require('fs');
 
@@ -30,12 +30,10 @@ function createShader(shaderType, shaderSource) {
 }
 
 openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
+    window.onClose(() => fs.freeImage(texture));
     window.setTitle('Cubes Example');
     window.show();
     window.enableOpenGL();
-    window.onClose(() => {
-        fs.freeImage(texture)
-    });
 
     with (gl) {
         const vs = createShader(GL_VERTEX_SHADER, shaders.vs.contents);
@@ -87,15 +85,15 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-        const projection = glm.mat4.create();
-        const model = glm.mat4.create();
-        const view = glm.mat4.create();
+        const projection = maths.mat4.create();
+        const model = maths.mat4.create();
+        const view = maths.mat4.create();
 
-        glm.mat4.perspective(projection, glm.glMatrix.toRadian(45.0), 4.0 / 3.0, 0.1, 100.0);
-        glm.mat4.lookAt(view,
-            glm.vec3.fromValues(4, 3, -3),
-            glm.vec3.fromValues(0, 0, 0),
-            glm.vec3.fromValues(0, 1, 0)
+        maths.mat4.perspective(projection, maths.glMatrix.toRadian(45.0), 4.0 / 3.0, 0.1, 100.0);
+        maths.mat4.lookAt(view,
+            maths.vec3.fromValues(4, 3, -3),
+            maths.vec3.fromValues(0, 0, 0),
+            maths.vec3.fromValues(0, 1, 0)
         );
 
         let rotation = 1.0;
@@ -121,13 +119,13 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
             {
                 const {x, y, z} = translations[i];
                 const scaleValue = 0.3 + x / 50.0;
-                const scaleVector = glm.vec3.fromValues(scaleValue, scaleValue, scaleValue);
-                const rotationVector = glm.vec3.fromValues(rotations[i].x, rotations[i].y, rotations[i].z);
+                const scaleVector = maths.vec3.fromValues(scaleValue, scaleValue, scaleValue);
+                const rotationVector = maths.vec3.fromValues(rotations[i].x, rotations[i].y, rotations[i].z);
 
-                glm.mat4.identity(model);
-                glm.mat4.translate(model, model, glm.vec3.fromValues(x, y, z));
-                glm.mat4.scale(model, model, scaleVector);
-                glm.mat4.rotate(model, model, glm.glMatrix.toRadian(rotation), rotationVector);
+                maths.mat4.identity(model);
+                maths.mat4.translate(model, model, maths.vec3.fromValues(x, y, z));
+                maths.mat4.scale(model, model, scaleVector);
+                maths.mat4.rotate(model, model, maths.glMatrix.toRadian(rotation), rotationVector);
                 
                 glUniformMatrix4(projectionLocation, 1, GL_FALSE, Float32Array.from(projection));
                 glUniformMatrix4(modelLocation, 1, GL_FALSE, Float32Array.from(model));
