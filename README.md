@@ -6,11 +6,13 @@ Compute.JS is a JavaScript runtime for prototyping and learning OpenCL and OpenG
 
 ## Introduction
 
-    Introduction
+This was my honours project which aimed to develop a GPU toolkit.
 
 ## Requirements
 
-    Requirements
+* Windows 10
+* Visual Studio 2015
+* OpenCL SDK
 
 ## Folders
 
@@ -20,9 +22,20 @@ Compute.JS is a JavaScript runtime for prototyping and learning OpenCL and OpenG
  * Compute.Core      - Core classes and functions for the platform
  * Compute           - Application which bootstraps Compute.
 
-
 ## Technologies
 
+#### C++
+
+* Poco
+* V8
+* SDL2
+* GLEW
+* FreeImage
+
+#### JavaScript
+
+* gl-matrix
+* npm
 
 ## License
 
