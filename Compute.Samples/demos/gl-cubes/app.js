@@ -1,5 +1,5 @@
 
-const { openFullscreenWindow } = require('display');
+const { openWindow } = require('display');
 const console = require('console');
 const glm = require('maths');
 const gl = require('gl');
@@ -29,7 +29,8 @@ function createShader(shaderType, shaderSource) {
     }
 }
 
-openFullscreenWindow(window => {
+openWindow({ w: 1600, h: 900 }, window => {
+    window.setTitle('Cubes Example');
     window.show();
     window.enableOpenGL();
     window.onClose(() => {
