@@ -1,3 +1,6 @@
+
+<img src="demo.gif" />
+
 <img align='right' width='150' height='150' src="Compute/icon.png" />
 
 # Compute.js

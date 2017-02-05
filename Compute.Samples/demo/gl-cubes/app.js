@@ -29,7 +29,7 @@ function createShader(shaderType, shaderSource) {
     }
 }
 
-openWindow({ w: 1600, h: 900 }, window => {
+openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
     window.setTitle('Cubes Example');
     window.show();
     window.enableOpenGL();
