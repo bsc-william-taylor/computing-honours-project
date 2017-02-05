@@ -28,14 +28,13 @@
 *.lai
 *.la
 *.a
-#Release/*.lib
-#Debug/*.lib
 
 # Executables
 *.exe
 *.out
 *.app
 
+*.db
 # Folders
 Debug/
 Release/
