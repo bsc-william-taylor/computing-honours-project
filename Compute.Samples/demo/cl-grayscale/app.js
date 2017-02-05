@@ -9,20 +9,9 @@ function acquirePlatform(){
   with(cl) {
     clGetPlatformIDs(0, null, platforms);
     clGetPlatformIDs(platforms.length, platforms, null);
-
-    platforms.forEach(platform => {
-      clGetPlatformInfo(platform, CL_PLATFORM_NAME);
-      clGetPlatformInfo(platform, CL_PLATFORM_VERSION);
-      clGetPlatformInfo(platform, CL_PLATFORM_PROFILE);
-      clGetPlatformInfo(platform, CL_PLATFORM_VENDOR);
-    });
   }
 
   return platforms[0];
-}
-
-function pretty(json) {
-  return JSON.stringify(json, null, 4) + '\n';
 }
 
 function acquireDevice(platform) {
@@ -31,12 +20,6 @@ function acquireDevice(platform) {
   with(cl) {
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 0, null, devices);
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, devices.length, devices, null);
-
-    devices.forEach(device => {
-      clGetDeviceInfo(device, CL_DEVICE_NAME);
-      clGetDeviceInfo(device, CL_DEVICE_VERSION);
-      clGetDeviceInfo(device, CL_DEVICE_VENDOR);
-    });
   }
 
   return devices[0];
@@ -62,8 +45,6 @@ function image(program, context, commandQueue, kernalName, inputName, outputName
     clSetKernelArg(kernel, 0, 4, imageMemory[0]);
     clSetKernelArg(kernel, 1, 4, imageMemory[1]);
     clSetKernelArg(kernel, 2, 4, sampler);
-    clSetKernelArg(kernel, 3, 4, img.width);
-    clSetKernelArg(kernel, 4, 4, img.height);
 
     const output = new ArrayBuffer(img.width * img.height * 4);
     const region = Uint32Array.from([img.width, img.height, 1]);
@@ -98,7 +79,6 @@ with(cl) {
     console.log(buildLog.log);
   }
 
-  image(program, context, commandQueue, "gaussian_filter", "image.jpg", "blur.png");
   image(program, context, commandQueue, "grayscale", "image.jpg", "grayscale.png");
 
   clReleaseCommandQueue(commandQueue);

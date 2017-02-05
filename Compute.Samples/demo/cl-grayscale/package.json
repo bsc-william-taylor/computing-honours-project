@@ -8,8 +8,5 @@
     "start": "compute app.js"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "random-array": "0.0.2"
-  }
+  "license": "ISC"
 }
