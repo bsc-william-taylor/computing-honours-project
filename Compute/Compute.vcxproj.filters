@@ -21,6 +21,6 @@
     <ResourceCompile Include="Compute.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\icon.ico" />
+    <Image Include="icon.ico" />
   </ItemGroup>
 </Project>
