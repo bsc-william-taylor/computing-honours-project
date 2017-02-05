@@ -112,9 +112,9 @@ void writeImage(v8::FunctionArgs args)
     auto height = GetNumber(args[3]);
     auto filename = GetString(args[0]);
    
-    auto data = (unsigned char *)arrayBuffer->GetContents().Data();
+    auto data = static_cast<BYTE*>(arrayBuffer->GetContents().Data());
 
-    if (!filename.empty())
+    if (!filename.empty() && data != nullptr)
     {
         auto fileType = FreeImage_GetFIFFromFilename(filename.c_str());
         auto bitmap = FreeImage_ConvertFromRawBits(data, width, height, width * 4, 32, 0xFF000000, 0x00FF0000, 0x0000FF00);
