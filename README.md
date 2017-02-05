@@ -6,7 +6,30 @@ Compute.JS is a JavaScript runtime for prototyping and learning OpenCL and OpenG
 
 ## Introduction
 
-This was my honours project which aimed to develop a GPU toolkit.
+This was my honours project which aimed to develop a GPU toolkit for developers to use when learning or prototyping 
+GPU applications. Basically MATLAB for thoose interested in OpenGL & OpenCL. You write your app in JavaScript where you can
+then import libraries that enable you to make calls to OpenCL or OpenGL. An example can be found below.
+
+```javascript
+const { openWindow } = require('display');
+const gl = require('gl');
+
+openWindow({ w: 800, h: 500 }, screen => {
+    screen.show();
+    screen.enableOpenGL();
+    screen.onFrame(() => {
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+        gl.glBegin(gl.GL_TRIANGLES);
+        gl.glVertex2f(-0.5, -0.5);
+        gl.glVertex2f(0.0, 0.5);
+        gl.glVertex2f(0.5, -0.5);
+        gl.glEnd();
+
+        screen.swapBuffers();
+    });
+});
+
+```
 
 ## Requirements
 
@@ -24,18 +47,13 @@ This was my honours project which aimed to develop a GPU toolkit.
 
 ## Technologies
 
-#### C++
+### C++
 
-* Poco
-* V8
-* SDL2
-* GLEW
-* FreeImage
+Poco, V8, SDL2, GLEW, FreeImage
 
-#### JavaScript
+### JavaScript
 
-* gl-matrix
-* npm
+gl-matrix, npm
 
 ## License
 
