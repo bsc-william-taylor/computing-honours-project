@@ -1,8 +1,10 @@
 <img align='right' width='150' height='150' src="icon.png" />
 
-# Compute.JS
+# Compute.js
 
-Compute.JS is a JavaScript runtime for prototyping and learning OpenCL and OpenGL.
+Compute.js is a JavaScript runtime for prototyping and learning OpenCL and OpenGL. It was 
+made as part of my final year of university as a proof of concept that a dedicated toolkit
+could make GPU programming easier.
 
 ## Introduction
 
