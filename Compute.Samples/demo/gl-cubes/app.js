@@ -57,8 +57,8 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
         glGenTextures(1, textureID);
         glBindTexture(GL_TEXTURE_2D, textureID[0]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
-        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
         const vertexData = Float32Array.from(geometry.cube);
         const colourData = Float32Array.from(geometry.colour);
