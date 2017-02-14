@@ -1056,6 +1056,7 @@ exports.GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT = 4;
 
 exports.glGenVertexArray = compute.glGenVertexArray;
 exports.glBindVertexArray = compute.glBindVertexArray;
+exports.glPolygonMode = compute.glPolygonMode;
 
 // TODO: Implement
 exports.glDeleteProgram = x => x;

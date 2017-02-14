@@ -7,7 +7,6 @@ const fs = require('fs');
 
 const shaders = { vs: fs.read('./vert.glsl'), fs: fs.read('./frag.glsl') };
 const terrain = fs.readJson('./terrain.json');
-const texture = fs.readImage('./grass.jpg');
 
 function createShader(shaderType, shaderSource) {
     with (gl) {
@@ -29,9 +28,37 @@ function createShader(shaderType, shaderSource) {
     }
 }
 
+Math.seed = function(s) {
+    return function() {
+        if(s == 0) {
+            return 0;
+        } else {
+            s = Math.sin(s) * 10000; 
+            return (s - Math.floor(s)) / 20.0
+        }
+    };
+};
+
+const makeTerrain = desc => {
+    const vertices = [];
+    const random = Math.seed(desc.seed);
+    
+    for(let y = 0; y < desc.grid.h; y += desc.grid.y) {
+        for(let x = 0; x < desc.grid.w; x += desc.grid.x) {       
+            vertices.push(x,   0.0, y);
+            vertices.push(x+1, 0.0, y);
+            vertices.push(x+1, 0.0, y+1);
+            vertices.push(x+1, 0.0, y+1);
+            vertices.push(x,   0.0, y+1);
+            vertices.push(x,   0.0, y);
+        }
+    }
+
+    return vertices;
+}
+
 openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
-    window.onClose(() => fs.freeImage(texture));
-    window.setTitle('Cubes Example');
+    window.setTitle('Terrain Generation Example');
     window.show();
     window.enableOpenGL();
 
@@ -45,55 +72,30 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
         glLinkProgram(program);
         glUseProgram(program);
 
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_TEXTURE_2D);
 
+        const terrainData = makeTerrain(terrain.terrain);
         const vertexArrayObject = new Uint32Array(1);
         const vertexBuffer = new Uint32Array(1);
-        const colourBuffer = new Uint32Array(1);
-        const uvBuffer = new Uint32Array(1);
-        const textureID = new Uint32Array(1);
-
-        glGenTextures(1, textureID);
-        glBindTexture(GL_TEXTURE_2D, textureID[0]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
-        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-        /*
-        const vertexData = Float32Array.from(geometry.cube);
-        const colourData = Float32Array.from(geometry.colour);
-        const uvData = Float32Array.from(geometry.uvs);
+        const vertexData = Float32Array.from(terrainData);
 
         glGenVertexArray(1, vertexArrayObject);
         glBindVertexArray(vertexArrayObject[0]);
-
         glGenBuffers(1, vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer[0]);
         glBufferData(GL_ARRAY_BUFFER, vertexData.byteLength, vertexData, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-        glGenBuffers(1, colourBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, colourBuffer[0]);
-        glBufferData(GL_ARRAY_BUFFER, colourData.byteLength, colourData, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-        glGenBuffers(1, uvBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer[0]);
-        glBufferData(GL_ARRAY_BUFFER, uvData.byteLength, uvData, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
-*/
         const projection = maths.mat4.create();
         const model = maths.mat4.create();
         const view = maths.mat4.create();
 
         maths.mat4.perspective(projection, maths.glMatrix.toRadian(45.0), 4.0 / 3.0, 0.1, 100.0);
         maths.mat4.lookAt(view,
-            maths.vec3.fromValues(4, 3, -3),
-            maths.vec3.fromValues(0, 0, 0),
+            maths.vec3.fromValues(0, 0.5, 0),
+            maths.vec3.fromValues(1, 0, 1),
             maths.vec3.fromValues(0, 1, 0)
         );
 
@@ -104,14 +106,11 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
             const projectionLocation = glGetUniformLocation(program, "projection");
             const modelLocation = glGetUniformLocation(program, "model");
             const viewLocation = glGetUniformLocation(program, "view");
-
-            //maths.mat4.identity(model);
             
             glUniformMatrix4(projectionLocation, 1, GL_FALSE, Float32Array.from(projection));
             glUniformMatrix4(modelLocation, 1, GL_FALSE, Float32Array.from(model));
             glUniformMatrix4(viewLocation, 1, GL_FALSE, Float32Array.from(view));
-            //glDrawArrays(GL_TRIANGLES, 0, 36);
-
+            glDrawArrays(GL_TRIANGLES, 0, vertexData.length / 3);
 
             window.swapBuffers();
         });

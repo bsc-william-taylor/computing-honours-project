@@ -409,6 +409,17 @@ void textureImage2D(v8::FunctionArgs args)
     glTexImage2D(target, level, internalFormat, width, height, border, format, type, FreeImage_GetBits(data));
 }
 
+void polygonMode(v8::FunctionArgs args)
+{
+    if(args.Length() == 2)
+    {
+        auto face = GetNumber(args[0]);
+        auto mode = GetNumber(args[1]);
+
+        glPolygonMode(face, mode);
+    }
+}
+
 void compute::registerOpenGL(v8::Exports exports)
 {
     // Command Execution
@@ -417,6 +428,7 @@ void compute::registerOpenGL(v8::Exports exports)
     AttachFunction(exports, "glGetIntergerv", glGetInterger);
     AttachFunction(exports, "glFlush", glFlush);
     AttachFunction(exports, "glFinish", glFinish);
+    AttachFunction(exports, "glPolygonMode", polygonMode);
 
     // Buffer Objects
     AttachFunction(exports, "glGenBuffers", glGenerateBuffers);
