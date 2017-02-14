@@ -271,6 +271,7 @@ exports.clCreateSampler = function () {
     return method.apply(null, arguments);
 }
 
+exports.clReleaseMemObject = compute.releaseMemObject;
 exports.clReleaseSampler = compute.releaseSampler;
 
 exports.clEnqueueReadImage = compute.enqueueReadImage;

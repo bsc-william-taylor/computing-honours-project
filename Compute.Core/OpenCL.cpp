@@ -173,6 +173,11 @@ void releaseProgram(v8::FunctionArgs args)
     Return(args, clReleaseProgram(cl_program(UnwrapPointer(args[0]))));
 }
 
+void releaseMemObject(v8::FunctionArgs args)
+{
+    Return(args, clReleaseMemObject(cl_mem(UnwrapPointer(args[0]))));
+}
+
 void releasekernel(v8::FunctionArgs args)
 {
     Return(args, clReleaseKernel(cl_kernel(UnwrapPointer(args[0]))));
@@ -331,6 +336,6 @@ void compute::registerOpenCL(v8::Exports exports)
     AttachFunction(exports, "createSampler", createSampler);
     AttachFunction(exports, "releaseSampler", releaseSampler);
     AttachFunction(exports, "enqueueReadImage", enqueueReadImage);
-
+    AttachFunction(exports, "releaseMemObject", releaseMemObject);
     AttachFunction(exports, "hasImageSupport", hasImageSupport);
 }

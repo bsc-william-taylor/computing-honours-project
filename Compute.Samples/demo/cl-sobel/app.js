@@ -32,38 +32,36 @@ with(cl) {
     console.log(buildLog.log);
   }
 
-  with(cl) {
-    const kernel = clCreateKernel(program, 'sobel', null);
-    const img = fs.readImage('image.png');
+  const kernel = clCreateKernel(program, 'sobel', null);
+  const img = fs.readImage('image.png');
 
-    const format = {}, error = {};
-    format.image_channel_order = CL_RGBA;
-    format.image_channel_data_type = CL_UNORM_INT8;
+  const format = {}, error = {};
+  format.image_channel_order = CL_RGBA;
+  format.image_channel_data_type = CL_UNORM_INT8;
 
-    const imageMemory = [,,];
-    imageMemory[0] = clCreateImage2D(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, format, img.width, img.height, 0, img.data, error);
-    imageMemory[1] = clCreateImage2D(context, CL_MEM_READ_WRITE, format, img.width, img.height, 0, null, error);
+  const imageMemory = [,,];
+  imageMemory[0] = clCreateImage2D(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, format, img.width, img.height, 0, img.data, error);
+  imageMemory[1] = clCreateImage2D(context, CL_MEM_READ_WRITE, format, img.width, img.height, 0, null, error);
 
-    const sampler = clCreateSampler(context, CL_FALSE, CL_ADDRESS_CLAMP_TO_EDGE, CL_FILTER_NEAREST, error);
-    const globalWorkSize = Uint32Array.from([600, 600]);
-    const localWorkSize = Uint32Array.from([1, 1]);
+  const sampler = clCreateSampler(context, CL_FALSE, CL_ADDRESS_CLAMP_TO_EDGE, CL_FILTER_NEAREST, error);
+  const globalWorkSize = Uint32Array.from([600, 600]);
+  const localWorkSize = Uint32Array.from([1, 1]);
 
-    clSetKernelArg(kernel, 0, 4, imageMemory[0]);
-    clSetKernelArg(kernel, 1, 4, imageMemory[1]);
+  clSetKernelArg(kernel, 0, 4, imageMemory[0]);
+  clSetKernelArg(kernel, 1, 4, imageMemory[1]);
 
-    const output = new ArrayBuffer(img.width * img.height * 4);
-    const region = Uint32Array.from([img.width, img.height, 1]);
-    const origin = Uint32Array.from([0, 0, 0]);
+  const output = new ArrayBuffer(img.width * img.height * 4);
+  const region = Uint32Array.from([img.width, img.height, 1]);
+  const origin = Uint32Array.from([0, 0, 0]);
 
-    clEnqueueNDRangeKernel(commandQueue, kernel, 2, null, globalWorkSize, localWorkSize, 0, null, null);
-    clEnqueueReadImage(commandQueue, imageMemory[1], CL_TRUE, origin, region, 0, 0, output, 0, null, null);
+  clEnqueueNDRangeKernel(commandQueue, kernel, 2, null, globalWorkSize, localWorkSize, 0, null, null);
+  clEnqueueReadImage(commandQueue, imageMemory[1], CL_TRUE, origin, region, 0, 0, output, 0, null, null);
 
-    fs.writeImage('output.png', output, img.width, img.height);
-    fs.freeImage(img);
-    
-    clReleaseSampler(sampler);
-    clReleaseKernel(kernel);
-  }
+  fs.writeImage('output.png', output, img.width, img.height);
+  fs.freeImage(img);
+  
+  clReleaseSampler(sampler);
+  clReleaseKernel(kernel);
 
   clReleaseCommandQueue(commandQueue);
   clReleaseContext(context);
