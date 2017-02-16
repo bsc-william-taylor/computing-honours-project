@@ -5,8 +5,11 @@ const maths = require('maths');
 const gl = require('gl');
 const fs = require('fs');
 
-const shaders = { vs: fs.read('./vert.glsl'), fs: fs.read('./frag.glsl') };
 const terrain = fs.readJson('./terrain.json');
+const shaders = { 
+    vs: fs.read('./terrain.vs.glsl'), 
+    fs: fs.read('./terrain.fs.glsl') 
+};
 
 function createShader(shaderType, shaderSource) {
     with (gl) {
@@ -28,29 +31,41 @@ function createShader(shaderType, shaderSource) {
     }
 }
 
-Math.seed = function(s) {
-    return function() {
-        if(s == 0) {
+Math.seed = seed => {
+    return () => {
+        if(seed == 0)
             return 0;
-        } else {
-            s = Math.sin(s) * 10000; 
-            return (s - Math.floor(s)) / 20.0
-        }
+        seed = Math.sin(seed) * 10000; 
+        return (seed - Math.floor(seed)) / 2.0
     };
 };
 
 const makeTerrain = desc => {
-    const vertices = [];
+    const incX = desc.grid.x, incY = desc.grid.y;
     const random = Math.seed(desc.seed);
-    
+    const vertices = [];
+    const heights = {};
+
     for(let y = 0; y < desc.grid.h; y += desc.grid.y) {
-        for(let x = 0; x < desc.grid.w; x += desc.grid.x) {       
-            vertices.push(x,   0.0, y);
-            vertices.push(x+1, 0.0, y);
-            vertices.push(x+1, 0.0, y+1);
-            vertices.push(x+1, 0.0, y+1);
-            vertices.push(x,   0.0, y+1);
-            vertices.push(x,   0.0, y);
+        for(let x = 0; x < desc.grid.w; x += desc.grid.x) {    
+            heights[x+incX] = heights[x+incX] || {};
+            heights[x] = heights[x] || {};
+
+            heights[x+incX][y+incY] = random();
+            heights[x+incX][y] = random();
+            heights[x][y+incY] = random(); 
+            heights[x][y] = random();
+        }
+    }
+
+    for(let y = 0; y < desc.grid.h; y += desc.grid.y) {
+        for(let x = 0; x < desc.grid.w; x += desc.grid.x) {    
+            vertices.push(x, heights[x][y], y);
+            vertices.push(x+incX, heights[x+incX][y], y);
+            vertices.push(x+incX, heights[x+incX][y+incY], y+incY);
+            vertices.push(x+incX, heights[x+incX][y+incY], y+incY);
+            vertices.push(x, heights[x][y+incY], y+incY);
+            vertices.push(x, heights[x][y], y);
         }
     }
 
@@ -67,13 +82,12 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
         const fs = createShader(GL_FRAGMENT_SHADER, shaders.fs.contents);
         const program = glCreateProgram();
         
+        glEnable(GL_DEPTH_TEST);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glAttachShader(program, vs);
         glAttachShader(program, fs);
         glLinkProgram(program);
         glUseProgram(program);
-
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glEnable(GL_DEPTH_TEST);
 
         const terrainData = makeTerrain(terrain.terrain);
         const vertexArrayObject = new Uint32Array(1);
@@ -94,19 +108,18 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
 
         maths.mat4.perspective(projection, maths.glMatrix.toRadian(45.0), 4.0 / 3.0, 0.1, 100.0);
         maths.mat4.lookAt(view,
-            maths.vec3.fromValues(0, 0.5, 0),
-            maths.vec3.fromValues(1, 0, 1),
+            maths.vec3.fromValues(0, 4.5, 0),
+            maths.vec3.fromValues(8, 0, 8),
             maths.vec3.fromValues(0, 1, 0)
         );
 
         window.onFrame(() => {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glClearColor(0.0, 0.0, 0.0, 0.0);
-
             const projectionLocation = glGetUniformLocation(program, "projection");
             const modelLocation = glGetUniformLocation(program, "model");
             const viewLocation = glGetUniformLocation(program, "view");
             
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClearColor(0.5, 0.5, 0.5, 0.5);
             glUniformMatrix4(projectionLocation, 1, GL_FALSE, Float32Array.from(projection));
             glUniformMatrix4(modelLocation, 1, GL_FALSE, Float32Array.from(model));
             glUniformMatrix4(viewLocation, 1, GL_FALSE, Float32Array.from(view));
