@@ -1,0 +1,4 @@
+
+const sub = process;
+
+sub = {};
