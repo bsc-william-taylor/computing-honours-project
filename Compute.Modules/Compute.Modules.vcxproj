@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy /Y "$(SolutionDir)Compute.Modules\Modules" "$(OutDir)\modules"</Command>
+      <Command>xcopy /D /Y "$(SolutionDir)Compute.Modules\Modules" "$(OutDir)\modules"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
