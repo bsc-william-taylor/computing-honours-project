@@ -1,4 +1,0 @@
-
-const sub = process;
-
-sub = {};
