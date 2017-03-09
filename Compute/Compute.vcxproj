@@ -84,7 +84,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\sdl\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(SolutionDir)Compute.Libs\freeimage;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Release;$(SolutionDir)Compute.Libs\v8\lib\release;$(SolutionDir)Compute.Libs\sdl\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(SolutionDir)Compute.Libs\freeimage;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Release;$(SolutionDir)Compute.Libs\v8\lib\release;$(SolutionDir)Compute.Libs\sdl\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(SolutionDir)Compute.Libs\freeimage;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>compute</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
