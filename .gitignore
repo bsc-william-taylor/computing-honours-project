@@ -45,3 +45,6 @@ Compute.Samples/gpu/gl/node_modules/
 Compute.Samples/gpu/node_modules/
 .vscode/
 .vs/
+
+
+*.DS_Store
