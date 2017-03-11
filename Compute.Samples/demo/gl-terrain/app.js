@@ -1,14 +1,13 @@
 
 const { openWindow } = require('display');
-const console = require('console');
 const maths = require('maths');
 const gl = require('gl');
 const fs = require('fs');
 
 const terrain = fs.readJson('./terrain.json');
-const shaders = { 
-    vs: fs.read('./terrain.vs.glsl'), 
-    fs: fs.read('./terrain.fs.glsl') 
+const shaders = {
+    vs: fs.read('./terrain.vs.glsl'),
+    fs: fs.read('./terrain.fs.glsl')
 };
 
 function createShader(shaderType, shaderSource) {
@@ -16,26 +15,14 @@ function createShader(shaderType, shaderSource) {
         const shader = glCreateShader(shaderType);
         glShaderSource(shader, 1, shaderSource, 0);
         glCompileShader(shader);
-
-        const compileStatus = [,], logLength = [,];
-        glGetShaderiv(shader, GL_COMPILE_STATUS, compileStatus);
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, logLength);
-
-        if (compileStatus[0] != GL_TRUE) {
-            const log = [,];
-            glGetShaderInfoLog(shader, logLength[0], logLength[0], log)
-            console.log('Compile error', log[0]);
-        }
-
         return shader;
     }
 }
 
 Math.seed = seed => {
     return () => {
-        if(seed == 0)
-            return 0;
-        seed = Math.sin(seed) * 10000; 
+        if (seed == 0) return 0;
+        seed = Math.sin(seed) * 10000;
         return (seed - Math.floor(seed)) / 2.0
     };
 };
@@ -43,33 +30,42 @@ Math.seed = seed => {
 const makeTerrain = desc => {
     const incX = desc.grid.x, incY = desc.grid.y;
     const random = Math.seed(desc.seed);
-    const vertices = [];
-    const heights = {};
+    const vertices = [], heights = {};
 
-    for(let y = 0; y < desc.grid.h; y += desc.grid.y) {
-        for(let x = 0; x < desc.grid.w; x += desc.grid.x) {    
-            heights[x+incX] = heights[x+incX] || {};
+    for (let y = 0; y < desc.grid.h; y += desc.grid.y) {
+        for (let x = 0; x < desc.grid.w; x += desc.grid.x) {
+            heights[x + incX] = heights[x + incX] || {};
             heights[x] = heights[x] || {};
-
-            heights[x+incX][y+incY] = random();
-            heights[x+incX][y] = random();
-            heights[x][y+incY] = random(); 
+            heights[x + incX][y + incY] = random();
+            heights[x + incX][y] = random();
+            heights[x][y + incY] = random();
             heights[x][y] = random();
         }
     }
 
-    for(let y = 0; y < desc.grid.h; y += desc.grid.y) {
-        for(let x = 0; x < desc.grid.w; x += desc.grid.x) {    
+    for (let y = 0; y < desc.grid.h; y += desc.grid.y) {
+        for (let x = 0; x < desc.grid.w; x += desc.grid.x) {
             vertices.push(x, heights[x][y], y);
-            vertices.push(x+incX, heights[x+incX][y], y);
-            vertices.push(x+incX, heights[x+incX][y+incY], y+incY);
-            vertices.push(x+incX, heights[x+incX][y+incY], y+incY);
-            vertices.push(x, heights[x][y+incY], y+incY);
+            vertices.push(x + incX, heights[x + incX][y], y);
+            vertices.push(x + incX, heights[x + incX][y + incY], y + incY);
+            vertices.push(x + incX, heights[x + incX][y + incY], y + incY);
+            vertices.push(x, heights[x][y + incY], y + incY);
             vertices.push(x, heights[x][y], y);
         }
     }
 
     return vertices;
+}
+
+function createProgram() {
+    with (gl) {
+        const program = glCreateProgram();
+        glAttachShader(program, createShader(GL_VERTEX_SHADER, shaders.vs.contents));
+        glAttachShader(program, createShader(GL_FRAGMENT_SHADER, shaders.fs.contents));
+        glLinkProgram(program);
+        glUseProgram(program);
+        return program;
+    }
 }
 
 openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
@@ -78,24 +74,15 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
     window.enableOpenGL();
 
     with (gl) {
-        const vs = createShader(GL_VERTEX_SHADER, shaders.vs.contents);
-        const fs = createShader(GL_FRAGMENT_SHADER, shaders.fs.contents);
-        const program = glCreateProgram();
-        
-        glEnable(GL_DEPTH_TEST);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glAttachShader(program, vs);
-        glAttachShader(program, fs);
-        glLinkProgram(program);
-        glUseProgram(program);
-
+        const vertexArrayObject = new Uint32Array(1), vertexBuffer = new Uint32Array(1);
         const terrainData = makeTerrain(terrain.terrain);
-        const vertexArrayObject = new Uint32Array(1);
-        const vertexBuffer = new Uint32Array(1);
         const vertexData = Float32Array.from(terrainData);
+        const program = createProgram();
 
         glGenVertexArray(1, vertexArrayObject);
         glBindVertexArray(vertexArrayObject[0]);
+        glEnable(GL_DEPTH_TEST);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glGenBuffers(1, vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer[0]);
         glBufferData(GL_ARRAY_BUFFER, vertexData.byteLength, vertexData, GL_STATIC_DRAW);
@@ -117,7 +104,7 @@ openWindow({ x: 450, y: 250, w: 800, h: 600 }, window => {
             const projectionLocation = glGetUniformLocation(program, "projection");
             const modelLocation = glGetUniformLocation(program, "model");
             const viewLocation = glGetUniformLocation(program, "view");
-            
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glClearColor(0.5, 0.5, 0.5, 0.5);
             glUniformMatrix4(projectionLocation, 1, GL_FALSE, Float32Array.from(projection));
