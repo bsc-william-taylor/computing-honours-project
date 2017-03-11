@@ -1,87 +1,50 @@
-const console = require('console');
-const http = require('http');
-const cl = require('cl');
-const fs = require('fs');
+const cl = require('cl'), fs = require('fs');
 
-function acquirePlatform(){
-  const platforms = [];
-
-  with(cl) {
-    clGetPlatformIDs(0, null, platforms);
-    clGetPlatformIDs(platforms.length, platforms, null);
-  }
-
-  return platforms[0];
+function acquireRuntime() {
+  const platforms = [], devices = [];
+  cl.clGetPlatformIDs(0, null, platforms);
+  cl.clGetPlatformIDs(platforms.length, platforms, null);
+  cl.clGetDeviceIDs(platforms[0], cl.CL_DEVICE_TYPE_ALL, 0, null, devices);
+  cl.clGetDeviceIDs(platforms[0], cl.CL_DEVICE_TYPE_ALL, devices.length, devices, null);
+  return { platform: platforms[0], device: devices[0] };
 }
 
-function acquireDevice(platform) {
-  const devices = [];
-
-  with(cl) {
-    clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 0, null, devices);
-    clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, devices.length, devices, null);
-  }
-
-  return devices[0];
-}
-
-function image(program, context, commandQueue, kernalName, inputName, outputName) {
-  with(cl) {
-    const kernel = clCreateKernel(program, kernalName, null);
-    const img = fs.readImage(inputName);
-
-    const format = {}, error = {};
-    format.image_channel_order = CL_RGBA;
-    format.image_channel_data_type = CL_UNORM_INT8;
-
-    const imageMemory = [,,];
-    imageMemory[0] = clCreateImage2D(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, format, img.width, img.height, 0, img.data, error);
-    imageMemory[1] = clCreateImage2D(context, CL_MEM_READ_WRITE, format, img.width, img.height, 0, null, error);
-
-    const sampler = clCreateSampler(context, CL_FALSE, CL_ADDRESS_CLAMP_TO_EDGE, CL_FILTER_NEAREST, error);
-    const globalWorkSize = Uint32Array.from([1920, 1200]);
-    const localWorkSize = Uint32Array.from([16, 16]);
-
-    clSetKernelArg(kernel, 0, 4, imageMemory[0]);
-    clSetKernelArg(kernel, 1, 4, imageMemory[1]);
-    clSetKernelArg(kernel, 2, 4, sampler);
-
-    const output = new ArrayBuffer(img.width * img.height * 4);
-    const region = Uint32Array.from([img.width, img.height, 1]);
-    const origin = Uint32Array.from([0, 0, 0]);
-
-    clEnqueueNDRangeKernel(commandQueue, kernel, 2, null, globalWorkSize, localWorkSize, 0, null, null);
-    clEnqueueReadImage(commandQueue, imageMemory[1], CL_TRUE, origin, region, 0, 0, output, 0, null, null);
-
-    fs.writeImage(outputName, output, img.width, img.height);
-    fs.freeImage(img);
-
-    clReleaseSampler(sampler);
-    clReleaseKernel(kernel);
-  }
-}
-
-const platform = acquirePlatform();
-const device = acquireDevice(platform);
-const source = fs.read('./kernel.cl');
-
-with(cl) {
-  const properties = [ CL_CONTEXT_PLATFORM, platform, 0 ];
-  const context = clCreateContextFromType(properties, CL_DEVICE_TYPE_ALL, null, null, null);
+with (cl) {
+  const image = fs.readImage("image.jpg"), kernelSrc = fs.read('./kernel.cl').contents;
+  const { platform, device } = acquireRuntime();
+  const props = [CL_CONTEXT_PLATFORM, platform, 0];
+  const context = clCreateContextFromType(props, CL_DEVICE_TYPE_ALL, null, null, null);
   const commandQueue = clCreateCommandQueue(context, device, 0, null);
+  const program = clCreateProgramWithSource(context, 1, kernelSrc, null, null);
+  const error = {}, format = {
+    image_channel_order: CL_RGBA,
+    image_channel_data_type: CL_UNORM_INT8
+  };
 
-  const program = clCreateProgramWithSource(context, 1, source.contents, null, null);
-  const err = clBuildProgram(program, 0, null, null, null, null);
+  const w = image.width, h = image.height;
+  const globalWork = Uint32Array.from([1920, 1200]);
+  const localWork = Uint32Array.from([16, 16]);
+  const region = Uint32Array.from([w, h, 1]);
+  const origin = Uint32Array.from([0, 0, 0]);
+  const output = new ArrayBuffer(w * h * 4);
 
-  if(err != CL_SUCCESS) {
-    const buildLog = {};
-    clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 1, buildLog, null);
-    console.log(buildLog.log);
-  }
+  clBuildProgram(program, 0, null, null, null, null);
 
-  image(program, context, commandQueue, "grayscale", "image.jpg", "grayscale.png");
+  const kernel = clCreateKernel(program, "grayscale", null);
+  const buffers = [
+    clCreateImage2D(context, (1 << 2)|(1 << 5), format, w, h, 0, image.data, error),
+    clCreateImage2D(context, (1 << 0), format, w, h, 0, null, error)
+  ];
 
+  clSetKernelArg(kernel, 0, Uint32Array.BYTES_PER_ELEMENT, buffers[0]);
+  clSetKernelArg(kernel, 1, Uint32Array.BYTES_PER_ELEMENT, buffers[1]);
+  clEnqueueNDRangeKernel(commandQueue, kernel, 2, null, globalWork, localWork, 0, null, null);
+  clEnqueueReadImage(commandQueue, buffers[1], CL_TRUE, origin, region, 0, 0, output, 0, null, null);
   clReleaseCommandQueue(commandQueue);
+  clReleaseKernel(kernel);
   clReleaseContext(context);
   clReleaseProgram(program);
+
+  fs.writeImage("grayscale.png", output, w, h);
+  fs.freeImage(image);
 }
