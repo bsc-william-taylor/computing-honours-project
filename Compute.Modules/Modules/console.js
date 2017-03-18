@@ -7,10 +7,10 @@ const stringArguments = args => {
     let output = "";
 
     for (let i = 0; i < args.length; ++i) {
-        if (Array.isArray(args[i]) && typeof(args[i][0]) !== "object") {
+        if (args[i] != null && Array.isArray(args[i]) && typeof(args[i][0]) !== "object") {
             output += JSON.stringify(args[i]);
-        } else if (typeof (args[i]) === "object") {
-            output += args[i].toString() + '\n'; // JSON.stringify(args[i], jsonReplacer, jsonSpacing);
+        } else if (typeof (args[i] != null && args[i]) === "object") {
+            output += args[i].toString() + '\n'; 
         } else {
             output += args[i] + ' ';
         }
