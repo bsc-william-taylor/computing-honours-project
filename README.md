@@ -64,4 +64,4 @@ gl-matrix, npm
 
 MIT
 
-<img align='right'src="http://forthebadge.com/images/badges/built-with-love.svg" />
+<img align='right' src="http://forthebadge.com/images/badges/built-with-love.svg" />
