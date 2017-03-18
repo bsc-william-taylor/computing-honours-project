@@ -15,7 +15,7 @@ const source = fs.read('./kernel.cl');
 with (cl) {
   const properties = [CL_CONTEXT_PLATFORM, platform, 0];
   const context = clCreateContextFromType(properties, CL_DEVICE_TYPE_ALL, null, null, null);
-  const cmdQueue = clCreatecmdQueue(context, device, 0, null);
+  const cmdQueue = clCreateCommandQueue(context, device, 0, null);
   const program = clCreateProgramWithSource(context, 1, source.contents, null, null);
   const err = clBuildProgram(program, 0, null, null, null, null);
   const kernel = clCreateKernel(program, 'sobel', null);
@@ -40,7 +40,7 @@ with (cl) {
   clEnqueueReadImage(cmdQueue, imageMemory[1], CL_TRUE, origin, region, 0, 0, output, 0, null, null);
 
   clReleaseKernel(kernel);
-  clReleasecmdQueue(cmdQueue);
+  clReleaseCommandQueue(cmdQueue);
   clReleaseContext(context);
   clReleaseProgram(program);
 
