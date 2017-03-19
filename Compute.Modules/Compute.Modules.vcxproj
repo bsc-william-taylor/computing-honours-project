@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy /D /Y "$(SolutionDir)Compute.Modules\Modules" "$(OutDir)\modules"</Command>
+      <Command>xcopy /S /Q /Y /F "$(SolutionDir)Compute.Modules\Modules" "$(OutDir)modules\ "</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -119,7 +119,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y "$(SolutionDir)Compute.Modules\Modules" "$(OutDir)\modules"</Command>
+      <Command>xcopy /S /Q /Y /F "$(SolutionDir)Compute.Modules\Modules" "$(OutDir)modules\ "</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
