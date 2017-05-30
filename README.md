@@ -1,7 +1,7 @@
 
 <img src="demo.gif" />
 
-<img align='right' width='150' height='150' src="Compute/icon.png" />
+<img align='right' width='150' height='150' src="src/Compute/icon.png" />
 
 # Compute.js
 
@@ -43,23 +43,6 @@ Samples were also submitted so markers could play around with the platform shoul
 * Visual Studio 2015
 * OpenCL SDK
 * OpenGL hardware
-
-*Folders*
-
- * Compute.Documents - Documents required for the honours project.
- * Compute.Samples   - Example code and tests for the platform
- * Compute.Modules   - JavaScript modules which call native C++ methods
- * Compute.Core      - Core classes and functions for the platform
- * Compute           - Application which bootstraps Compute.
-
-*Documents*
-
-* Project Specification
-* Project Management
-* Interim Report
-* Honours Report
-* Meetings
-* Gantt Charts
 
 ## License
 
