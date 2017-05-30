@@ -18,7 +18,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+#*.dll
 
 # Fortran module files
 *.mod
@@ -36,8 +36,8 @@
 
 *.db
 # Folders
-Debug/
-Release/
+#Debug/
+#Release/
 Compute.Samples/modules/node_modules/
 Compute.Samples/common/node_modules/
 Compute.Samples/gpu/cl/node_modules/
@@ -47,4 +47,6 @@ Compute.Samples/gpu/node_modules/
 .vs/
 
 
+*.opendb
+*.db
 *.DS_Store

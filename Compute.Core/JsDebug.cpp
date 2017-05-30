@@ -249,8 +249,8 @@ void DebugEventHandler(const v8::Debug::EventDetails& details)
     {
         case v8::DebugEvent::Break: std::cout << "BREAK_DEBUG_EVENT" << std::endl; break;
         case v8::DebugEvent::Exception: std::cout << "EXCEPTION_DEBUG_EVENT" << std::endl; break;
-        case v8::DebugEvent::NewFunction: std::cout << "NEW_FUNCTION_DEBUG_EVENT" << std::endl; break;
-        case v8::DebugEvent::BeforeCompile:std::cout << "BEFORE_COMPILE_DEBUG_EVENT" << std::endl; break;
+        //case v8::DebugEvent::NewFunction: std::cout << "NEW_FUNCTION_DEBUG_EVENT" << std::endl; break;
+        //case v8::DebugEvent::BeforeCompile:std::cout << "BEFORE_COMPILE_DEBUG_EVENT" << std::endl; break;
         case v8::DebugEvent::AfterCompile:std::cout << "AFTER_COMPILE_DEBUG_EVENT" << std::endl;  break;
         case v8::DebugEvent::CompileError:std::cout << "COPILE_ERROR_DEBUG_EVENT" << std::endl; break;
         case v8::DebugEvent::AsyncTaskEvent:std::cout << "ASYNC_TASK_DEBUG_EVENT" << std::endl;  break;

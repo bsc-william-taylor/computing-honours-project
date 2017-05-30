@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\sdl\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(SolutionDir)Compute.Libs\freeimage;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Debug;$(SolutionDir)Compute.Libs\v8\lib\debug;$(SolutionDir)Compute.Libs\sdl\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(SolutionDir)Compute.Libs\freeimage;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\lib\x86;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\SDL2\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;$(SolutionDir)Compute.Libs\freeimage\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Debug;$(SolutionDir)Compute.Libs\v8\lib\$(Configuration);$(SolutionDir)Compute.Libs\SDL2\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(SolutionDir)Compute.Libs\freeimage\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\lib\x86;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\Win32;$(LibraryPath)</LibraryPath>
     <TargetName>compute-debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -83,8 +83,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\sdl\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(SolutionDir)Compute.Libs\freeimage;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Release;$(SolutionDir)Compute.Libs\v8\lib\release;$(SolutionDir)Compute.Libs\sdl\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(SolutionDir)Compute.Libs\freeimage;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\lib\x86;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Compute.Libs\v8\;$(SolutionDir)Compute.Libs\v8\include;$(SolutionDir)Compute.Libs\SDL2\include;$(SolutionDir)Compute.Core;$(SolutionDir)Compute.Libs\poco\Foundation\include;$(SolutionDir)Compute.Libs\poco\JSON\include;$(SolutionDir)Compute.Libs\poco\Net\include;$(SolutionDir)Compute.Libs\poco\Util\include;$(SolutionDir)Compute.Libs\poco\XML\include;$(SolutionDir)Compute.Libs\glew\include;$(SolutionDir)Compute.Libs\freeimage\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include;C:\Program Files %28x86%29\Intel\OpenCL SDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Debug;$(SolutionDir)Compute.Libs\v8\lib\$(Configuration);$(SolutionDir)Compute.Libs\SDL2\lib\;$(SolutionDir)Compute.Libs\poco\lib\;$(SolutionDir)Compute.Libs\glew\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\lib\x86;$(SolutionDir)Compute.Libs\freeimage\lib;C:\Program Files %28x86%29\Intel\OpenCL SDK\6.3\lib\x86;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\Win32;$(LibraryPath)</LibraryPath>
     <TargetName>compute</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,7 +105,10 @@
       <AdditionalDependencies>ws2_32.lib;advapi32.lib;winmm.lib;$(OutDir)Compute.Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\bin" "$(OutDir) "</Command>
+      <Command>xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\freeimage\bin" "$(OutDir) "
+xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\glew\bin" "$(OutDir) "
+xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\SDL2\bin" "$(OutDir) "
+xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\v8\bin\$(Configuration)" "$(OutDir) "</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -142,7 +145,10 @@
       <AdditionalDependencies>ws2_32.lib;advapi32.lib;winmm.lib;$(OutDir)Compute.Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\bin" "$(OutDir) "</Command>
+      <Command>xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\freeimage\bin" "$(OutDir) "
+xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\glew\bin" "$(OutDir) "
+xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\SDL2\bin" "$(OutDir) "
+xcopy /S /Q /Y /F "$(SolutionDir)Compute.Libs\v8\bin\$(Configuration)" "$(OutDir) "</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
